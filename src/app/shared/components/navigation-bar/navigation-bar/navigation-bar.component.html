@@ -1,1 +1,71 @@
+<!--Navbar-->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark indigo">
 
+    <!-- Navbar brand -->
+    <mdb-navbar-brand>
+        <a class="navbar-brand" href="#">
+            <img src="../../../../../assets/images/Logo.png" height="40" alt="">
+        </a>
+    </mdb-navbar-brand>
+
+    <!-- Collapsible content -->
+    <links>
+
+    <!-- 
+    <li class="nav-item active" [ngClass]="{'active': url == '/my-task'}">
+        <a class="nav-link waves-light" routerLink="/my-task" mdbWavesEffect> Account & Grouping Creation </a>
+    </li>
+    -->
+
+        <!-- ADMIN -->
+        <ul class="navbar-nav mr-auto" *ngIf="user_role=='admin'">
+            <li class="nav-item active">
+                <a class="nav-link waves-light" mdbWavesEffect> Account & Grouping Creation </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-light" mdbWavesEffect> Edit Account & Grouping </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-light" mdbWavesEffect> Delete Account </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-light" mdbWavesEffect> Calculate Freelance Wages </a>
+            </li>
+        </ul>
+        <!-- END OF ADMIN -->
+
+        <!-- INSTRUCTOR -->
+        <ul class="navbar-nav mr-auto" *ngIf="user_role=='instructor'">
+            <li class="nav-item active">
+                <a class="nav-link waves-light" mdbWavesEffect> New Assignment </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-light" mdbWavesEffect> Edit Assignment </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-light" mdbWavesEffect> Mark Assignement </a>
+            </li>
+        </ul>
+        <!-- END OF INSTRUCTOR -->
+
+        <!-- STUDENT -->
+        <ul class="navbar-nav mr-auto" *ngIf="user_role=='student'">
+            <!-- Empty -->
+        </ul>
+        <!-- END OF INSTRUCTOR -->
+
+        <ul class="navbar-nav ml-auto nav-flex-icons">
+            <li class="nav-item dropdown" dropdown>
+                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+                  <mdb-icon fas icon="user"></mdb-icon> Profile<span class="caret"></span></a>
+                <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+                  <a class="dropdown-item waves-light" mdbWavesEffect href="#">My account</a>
+                  <a class="dropdown-item waves-light" mdbWavesEffect href="#">Log out</a>
+                </div>
+              </li>
+        </ul>
+    </links>
+    <!-- Collapsible content -->
+
+</mdb-navbar>
+<!--/.Navbar-->

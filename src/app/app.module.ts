@@ -37,6 +37,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
+// MDB Bootstrap
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+
 import { NavigationBarComponent } from './shared/components/navigation-bar/navigation-bar/navigation-bar.component';
 
 @NgModule({
@@ -45,6 +48,7 @@ import { NavigationBarComponent } from './shared/components/navigation-bar/navig
     NavigationBarComponent
   ],
   imports: [
+    MDBBootstrapModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     FormsModule,

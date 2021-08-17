@@ -22,15 +22,15 @@ export class NavigationBarComponent implements OnInit {
 
   validate_session(){
     if(sessionStorage.getItem('role') == null){
-      this.user_role = "test"
+      this.user_role = "admin"
       //this.router.navigate(['/login'])
     }
     if(sessionStorage.getItem('doc_id') == null){
-      this.user_role = "test"
+      this.user_doc_id = ""
       //this.router.navigate(['/login'])
     }
     if(sessionStorage.getItem('username') == null){
-      this.username = "test"
+      this.username = ""
       //this.router.navigate(['/login'])
     }
   } 
