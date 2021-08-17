@@ -37,10 +37,12 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { NavigationBarComponent } from './shared/components/navigation-bar/navigation-bar/navigation-bar.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavigationBarComponent
   ],
   imports: [
     BrowserModule,
