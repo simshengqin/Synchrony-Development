@@ -11,14 +11,14 @@
     <!-- Collapsible content -->
     <links>
 
-    <!-- 
+    <!--
     <li class="nav-item active" [ngClass]="{'active': url == '/my-task'}">
         <a class="nav-link waves-light" routerLink="/my-task" mdbWavesEffect> Account & Grouping Creation </a>
     </li>
     -->
 
         <!-- ADMIN -->
-        <ul class="navbar-nav mr-auto" *ngIf="user_role=='admin'">
+        <ul class="navbar-nav mr-auto" *ngIf="userRole=='admin'">
             <li class="nav-item active">
                 <a class="nav-link waves-light" mdbWavesEffect> Account & Grouping Creation </a>
             </li>
@@ -35,7 +35,7 @@
         <!-- END OF ADMIN -->
 
         <!-- INSTRUCTOR -->
-        <ul class="navbar-nav mr-auto" *ngIf="user_role=='instructor'">
+        <ul class="navbar-nav mr-auto" *ngIf="userRole=='instructor'">
             <li class="nav-item active">
                 <a class="nav-link waves-light" mdbWavesEffect> New Assignment </a>
             </li>
@@ -49,7 +49,7 @@
         <!-- END OF INSTRUCTOR -->
 
         <!-- STUDENT -->
-        <ul class="navbar-nav mr-auto" *ngIf="user_role=='student'">
+        <ul class="navbar-nav mr-auto" *ngIf="userRole=='student'">
             <!-- Empty -->
         </ul>
         <!-- END OF INSTRUCTOR -->

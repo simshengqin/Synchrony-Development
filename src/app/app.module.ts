@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-//Angular Material Components
+// Angular Material Components
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
@@ -40,13 +40,14 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 // MDB Bootstrap
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
-import { NavigationBarComponent } from './shared/components/navigation-bar/navigation-bar.component';
+import {AccountCreateComponent} from './ui/admin/account-create/account-create.component';
+import {HeaderComponent} from './shared/components/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationBarComponent,
-    LoginComponent
+    HeaderComponent,
+    AccountCreateComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
