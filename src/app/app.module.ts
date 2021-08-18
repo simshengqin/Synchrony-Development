@@ -40,12 +40,13 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 // MDB Bootstrap
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
-import { NavigationBarComponent } from './shared/components/navigation-bar/navigation-bar/navigation-bar.component';
+import { NavigationBarComponent } from './shared/components/navigation-bar/navigation-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationBarComponent
+    NavigationBarComponent,
+    LoginComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
@@ -83,6 +84,7 @@ import { NavigationBarComponent } from './shared/components/navigation-bar/navig
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
