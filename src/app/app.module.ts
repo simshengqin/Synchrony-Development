@@ -5,6 +5,13 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { environment } from 'src/environments/environment';
+
+// Firebase, Firestore
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 // Angular Material Components
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -87,7 +94,14 @@ import { CardsComponent } from './shared/components/cards/cards/cards.component'
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+<<<<<<< Updated upstream
     FormsModule
+=======
+    AngularFireModule.initializeApp(environment.firebase, 'Synchrony'), // Required for everything
+    AngularFirestoreModule, // Only required for database features
+    AngularFireAuthModule, // Only required for auth features
+    AngularFireStorageModule, // Only required for storage features
+>>>>>>> Stashed changes
   ],
   providers: [],
   bootstrap: [AppComponent]
