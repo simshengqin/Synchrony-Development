@@ -41,11 +41,13 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 import { NavigationBarComponent } from './shared/components/navigation-bar/navigation-bar.component';
+import { CardsComponent } from './shared/components/cards/cards/cards.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationBarComponent
+    NavigationBarComponent,
+    CardsComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
