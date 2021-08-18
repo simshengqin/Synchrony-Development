@@ -55,7 +55,7 @@ import { CardsComponent } from './shared/components/cards/cards/cards.component'
   declarations: [
     AppComponent,
     HeaderComponent,
-    AccountCreateComponent
+    AccountCreateComponent,
     CardsComponent
   ],
   imports: [
@@ -94,14 +94,11 @@ import { CardsComponent } from './shared/components/cards/cards/cards.component'
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-<<<<<<< Updated upstream
-    FormsModule
-=======
+    FormsModule,
     AngularFireModule.initializeApp(environment.firebase, 'Synchrony'), // Required for everything
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
     AngularFireStorageModule, // Only required for storage features
->>>>>>> Stashed changes
   ],
   providers: [],
   bootstrap: [AppComponent]
