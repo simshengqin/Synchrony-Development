@@ -47,6 +47,7 @@ import { CardsComponent } from './shared/components/cards/cards/cards.component'
   declarations: [
     AppComponent,
     NavigationBarComponent,
+    LoginComponent,
     CardsComponent
   ],
   imports: [
@@ -85,6 +86,7 @@ import { CardsComponent } from './shared/components/cards/cards/cards.component'
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
