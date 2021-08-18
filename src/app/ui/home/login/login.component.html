@@ -2,12 +2,13 @@
     <img src="../../../../assets/images/logo.png" width = "400" height = "400" class="center">
 
     <div class="container">
-    <label><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" [(ngModel)]="username">
 
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" [(ngModel)] = "password">
+        <label><b>Username</b></label>
+        <input [(ngModel)]="username"  type="text" placeholder="Enter Username" >
 
-    <button (click)="submitForm()"> Login </button>
+        <label><b>Password</b></label>
+        <input [(ngModel)]="password" type="password" placeholder="Enter Password" >
+
+        <button (click)="submitForm()"> Login </button>
     </div>
 </div>

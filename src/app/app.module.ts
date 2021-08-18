@@ -50,13 +50,15 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import {AccountCreateComponent} from './ui/admin/account-create/account-create.component';
 import {HeaderComponent} from './shared/components/header/header.component';
 import { CardsComponent } from './shared/components/cards/cards/cards.component';
+import { LoginComponent } from './ui/home/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     AccountCreateComponent,
-    CardsComponent
+    CardsComponent,
+    LoginComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
