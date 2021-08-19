@@ -19,14 +19,14 @@
 
         <!-- ADMIN -->
         <ul class="navbar-nav mr-auto" *ngIf="userRole=='admin'">
-            <li class="nav-item active">
-                <a class="nav-link waves-light" mdbWavesEffect> Account & Grouping Creation </a>
+            <li class="nav-item" [ngClass]="{'active': url == '/account/create'}">
+                <a class="nav-link waves-light"  routerLink="/account/create" mdbWavesEffect> Account & Grouping Creation </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link waves-light" mdbWavesEffect> Edit Account & Grouping </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link waves-light" mdbWavesEffect> Delete Account </a>
+            <li class="nav-item" [ngClass]="{'active': url == '/account/delete'}">
+                <a class="nav-link waves-light" routerLink="/account/delete" mdbWavesEffect> Delete Account </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link waves-light" mdbWavesEffect> Calculate Freelance Wages </a>
@@ -60,7 +60,7 @@
                   <mdb-icon fas icon="user"></mdb-icon> Profile<span class="caret"></span></a>
                 <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
                   <a class="dropdown-item waves-light" mdbWavesEffect href="#">My account</a>
-                  <a class="dropdown-item waves-light" mdbWavesEffect href="#">Log out</a>
+                  <a class="dropdown-item waves-light" mdbWavesEffect routerLink="login">Log out</a>
                 </div>
               </li>
         </ul>

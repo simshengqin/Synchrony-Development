@@ -8,32 +8,28 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
+  url!: string;
   userRole!: any;
   // user_doc_id!:any;
   // username!:any;
 
   constructor(
-    // private router:Router
+    private router:Router
   ) { }
 
   ngOnInit(): void {
-    // this.validate_session();
+    this.validate_session();
+    this.url = this.router.url;
   }
 
-  // validate_session(){
-  //   if(sessionStorage.getItem('role') == null){
-  //     this.user_role = "admin"
-  //     //this.router.navigate(['/login'])
-  //   }
-  //   if(sessionStorage.getItem('doc_id') == null){
-  //     this.user_doc_id = ""
-  //     //this.router.navigate(['/login'])
-  //   }
-  //   if(sessionStorage.getItem('username') == null){
-  //     this.username = ""
-  //     //this.router.navigate(['/login'])
-  //   }
-  // }
+  validate_session(){
+      if(sessionStorage.getItem('role') != null || sessionStorage.getItem('role') != undefined){
+        this.userRole = sessionStorage.getItem('role')
+    } else {
+        this.router.navigate(['/login'])
+    }
+  }
+
   // async onSubmitClick() {
   //   if (!this.scoresheetFile.nativeElement.files.item(0) && !this.recordingFile.nativeElement.files.item(0)) {
   //     this.toastrService.error('Please upload a file!', '',{positionClass: 'toast-top-center'}); this.toastrService.error('Please upload a file!', '',{positionClass: 'toast-top-center'});

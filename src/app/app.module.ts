@@ -50,6 +50,8 @@ import {AccountCreateComponent} from './ui/admin/account-create/account-create.c
 import {HeaderComponent} from './shared/components/header/header.component';
 import { CardsComponent } from './shared/components/cards/cards/cards.component';
 import { LoginComponent } from './ui/home/login/login.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';
 
 // Form modules 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -60,7 +62,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HeaderComponent,
     AccountCreateComponent,
     CardsComponent,
-    LoginComponent
+    LoginComponent,
+    AccountDeleteComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
@@ -103,7 +106,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AngularFireModule.initializeApp(environment.firebase, 'Synchrony'), // Required for everything
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
-    AngularFireStorageModule, // Only required for storage features
+    AngularFireStorageModule,  // Only required for storage features
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
