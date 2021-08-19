@@ -51,6 +51,7 @@ import {AccountCreateComponent} from './ui/admin/account-create/account-create.c
 import {HeaderComponent} from './shared/components/header/header.component';
 import { CardsComponent } from './shared/components/cards/cards/cards.component';
 import { LoginComponent } from './ui/home/login/login.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,8 @@ import { LoginComponent } from './ui/home/login/login.component';
     AngularFireModule.initializeApp(environment.firebase, 'Synchrony'), // Required for everything
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
-    AngularFireStorageModule, // Only required for storage features
+    AngularFireStorageModule,  // Only required for storage features
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
