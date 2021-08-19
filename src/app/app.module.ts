@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -52,6 +51,9 @@ import {HeaderComponent} from './shared/components/header/header.component';
 import { CardsComponent } from './shared/components/cards/cards/cards.component';
 import { LoginComponent } from './ui/home/login/login.component';
 
+// Form modules 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,6 +66,7 @@ import { LoginComponent } from './ui/home/login/login.component';
     MDBBootstrapModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
     MatCheckboxModule,

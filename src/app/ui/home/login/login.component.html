@@ -2,13 +2,33 @@
     <img src="../../../../assets/images/logo.png" width = "400" height = "400" class="center">
 
     <div class="container">
+      <div ></div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-        <label><b>Username</b></label>
-        <input [(ngModel)]="username"  type="text" placeholder="Enter Username" >
+            <label for="username"> Username: </label>
+            <input type="text" formControlName="username"/>
 
-        <label><b>Password</b></label>
-        <input [(ngModel)]="password" type="password" placeholder="Enter Password" >
+            <mat-error *ngIf="isSubmitClicked && username.errors?.required">
+              Please enter a username
+            </mat-error><br/>
 
-        <button (click)="submitForm()"> Login </button>
+            <label for="password"> Password: </label>
+            <input type="password" formControlName="password"/>
+
+            <mat-error *ngIf="isSubmitClicked && password.errors?.required">
+              Please enter a password
+            </mat-error><br/>
+
+            <!-- <p>Complete the form to enable button.</p> -->
+            <mat-error *ngIf="isSubmitClicked && !isValidUsernamePasswordCombi">
+              Wrong username/password combination!
+            </mat-error><br/>
+            <button type="submit">Login</button>
+
+            <!-- <p>Form Value: {{ loginForm.value | json }}</p>
+            <p>Form status: {{ loginForm.status | json }}</p> -->
+
+        </form>
     </div>
+
 </div>
