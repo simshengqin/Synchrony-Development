@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Account } from 'src/app/core/models/account';
 import { AccountService } from 'src/app/core/services/account.service';
 import { first } from 'rxjs/operators';
@@ -15,7 +16,8 @@ export class LoginComponent implements OnInit {
   password!:string; 
 
   constructor(
-    private accountservice:AccountService
+    private accountservice:AccountService,
+    private router:Router
   ) { }
 
   ngOnInit(): void {
@@ -26,7 +28,11 @@ export class LoginComponent implements OnInit {
       if(account==null||account==undefined){
         console.log("no such user!")
       } else {
-        console.log("Hello " + account.username);
+        console.log(account)
+        console.log("Hello " + account);
+        sessionStorage.setItem('role', account.role);
+        console.log(account.role)
+        this.router.navigate(['/account/create'])
       }
     })
   }

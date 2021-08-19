@@ -52,6 +52,7 @@ import {HeaderComponent} from './shared/components/header/header.component';
 import { CardsComponent } from './shared/components/cards/cards/cards.component';
 import { LoginComponent } from './ui/home/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HeaderComponent,
     AccountCreateComponent,
     CardsComponent,
-    LoginComponent
+    LoginComponent,
+    AccountDeleteComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
