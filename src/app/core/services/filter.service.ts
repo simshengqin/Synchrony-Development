@@ -22,7 +22,7 @@ export class FilterService {
       sortColumn = '', isAsc = false): Observable<any[]> {
     // Cannot use === as filterValue1 etc can be a number
     // tslint:disable-next-line:triple-equals
-    console.log(filterValue1 + ',' + filterValue2 + ',' + filterValue3 + ',' + filterValue4 + ',');
+    // console.log(filterValue1 + ',' + filterValue2 + ',' + filterValue3 + ',' + filterValue4 + ',');
     // tslint:disable-next-line:triple-equals
     if (filterValue1 == '' && filterValue2 == '' && filterValue3 == '' && filterValue4 == '') {
       return this.fs.col$(collection, ref => {
@@ -30,6 +30,7 @@ export class FilterService {
         // .orderBy('createdDatetime', 'desc');
       });
     }
+    // @ts-ignore
     return this.fs.col$(collection, ref => {
       let result;
       if (filterValue1 !== '') {result = ref.where(filterName1, filterOp1, filterValue1); }
@@ -39,16 +40,18 @@ export class FilterService {
       for (let i = 1; i <= 4; i++) {
         switch (i) {
           case 1:
-            if (filterValue1 !== '') {result = result.where(filterName1, filterOp1, filterValue1); }
+            if (filterValue1 !== '') {
+              result = result?.where(filterName1, filterOp1, filterValue1); }
             break;
           case 2:
-            if (filterValue2 !== '') {result = result.where(filterName2, filterOp2, filterValue2); }
+            if (filterValue2 !== '') {
+              result = result?.where(filterName2, filterOp2, filterValue2); }
             break;
           case 3:
-            if (filterValue3 !== '') {result = result.where(filterName3, filterOp3, filterValue3); }
+            if (filterValue3 !== '') {result = result?.where(filterName3, filterOp3, filterValue3); }
             break;
           case 4:
-            if (filterValue4 !== '') {result = result.where(filterName4, filterOp4, filterValue4); }
+            if (filterValue4 !== '') {result = result?.where(filterName4, filterOp4, filterValue4); }
             break;
         }
       }

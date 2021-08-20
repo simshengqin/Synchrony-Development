@@ -38,11 +38,13 @@ export class FirestoreService {
   }
 
   doc$<T>(ref: DocPredicate<T>): Observable<T> {
+    // @ts-ignore
     return this.doc(ref)
       .snapshotChanges()
       .pipe(
         map((doc: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
           if (doc.payload.data()) {
+            // @ts-ignore
             return {...doc.payload.data(), docId: doc.payload.id} as T;
           }
           return null;
@@ -64,19 +66,20 @@ export class FirestoreService {
       );
   }
 
-  colGroup$<T>(collectionId: string, queryGroupFn?: QueryGroupFn): Observable<T[]> {
-    return this.colGroup(collectionId, queryGroupFn)
-      .snapshotChanges()
-      .pipe(
-        map((docs: DocumentChangeAction<T>[]) => {
-          return docs.map((a: DocumentChangeAction<T>) => {
-            const data = a.payload.doc.data() as T;
-            const docId = a.payload.doc.id;
-            return {...data, docId};
-          }) as T[];
-        }),
-      );
-  }
+  // colGroup$<T>(collectionId: string, queryGroupFn?: QueryGroupFn): Observable<T[]> {
+  //   // @ts-ignore
+  //   return this.colGroup(collectionId, queryGroupFn)
+  //     .snapshotChanges()
+  //     .pipe(
+  //       map((docs: DocumentChangeAction<T>[]) => {
+  //         return docs.map((a: DocumentChangeAction<T>) => {
+  //           const data = a.payload.doc.data() as T;
+  //           const docId = a.payload.doc.id;
+  //           return {...data, docId};
+  //         }) as T[];
+  //       }),
+  //     );
+  // }
 
   get timestamp() {
     return firebase.firestore.FieldValue.serverTimestamp();
