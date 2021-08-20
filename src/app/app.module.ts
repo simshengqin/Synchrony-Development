@@ -55,6 +55,8 @@ import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete
 
 // Form modules 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {ToastrModule} from "ngx-toastr";
+import { NgxCsvParserModule } from 'ngx-csv-parser';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AccountDeleteComponent
   ],
   imports: [
-    MDBBootstrapModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -107,7 +108,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
     AngularFireStorageModule,  // Only required for storage features
-    NgbModule,
+    MDBBootstrapModule.forRoot(), // MDBootstrap
+    NgbModule, // Bootstrap
+    BrowserModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot({
+      timeOut: 3500,
+      positionClass: 'toast-top-center',
+      preventDuplicates: true,
+    }),
+    NgxCsvParserModule
   ],
   providers: [],
   bootstrap: [AppComponent]
