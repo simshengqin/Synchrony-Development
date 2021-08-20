@@ -1,5 +1,5 @@
 export interface Account {
-  doc_id?: string;
+  docId?: string;
   username: string;
   password: string;
   first_name: string;
