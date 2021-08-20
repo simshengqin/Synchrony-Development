@@ -72,6 +72,7 @@ export class AccountCreateComponent implements OnInit {
             first_name: csvRecord.first_name,
             last_name: csvRecord.last_name,
             password: csvRecord.password,
+            first_login: true
           };
           if (accounts.length === 0) {
             console.log(account);

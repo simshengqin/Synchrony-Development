@@ -7,6 +7,7 @@ export interface Account {
   school: string;
   school_group: string;
   role: Role;
+  first_login: boolean;
 }
 export enum Role {
   admin = 'admin',
