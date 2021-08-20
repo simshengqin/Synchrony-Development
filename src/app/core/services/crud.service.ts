@@ -15,13 +15,14 @@ export class CrudService {
   create(collection: string, data: any): Promise<string> {
     return this.fs.add(collection, data);
   }
-  update(collection: string, docId: string, data: any): Promise<void> {
+  update(collection: string, docId: string| undefined, data: any): Promise<void> {
     return this.fs.update(collection + '/' + docId, data);
   }
-  delete(collection: string, docId: string): Promise<void> {
+
+  delete(collection: string, docId: string | undefined): Promise<void> {
     return this.fs.delete(collection + '/' + docId);
   }
-  readByDocId(collection: string, docId: string): Observable<any> {
+  readByDocId(collection: string, docId: string| undefined): Observable<any> {
     return this.fs.doc$(collection + '/' + docId);
   }
   read(collection: string, filterName1: string = '', filterOp1: any = '', filterValue1: any = '',

@@ -23,7 +23,7 @@ export class AccountCreateComponent implements OnInit {
     private crudService: CrudService,
   ) {}
   async ngOnInit(): Promise<void> {
-    const singleAccount = await this.crudService.readByDocId('accounts', '7hQyZTken7p6eSAR8MQB')
+    const singleAccount: Account = await this.crudService.readByDocId('accounts', '7hQyZTken7p6eSAR8MQB')
       .pipe(first())
       .toPromise();
     console.log(singleAccount);
@@ -43,7 +43,13 @@ export class AccountCreateComponent implements OnInit {
       'first_name', '==', 'Carecci',
     ).pipe(first()).toPromise();
     console.log(testAccounts2);
-    // await this.crudService.delete('accounts', '1cYAFiJIUln7hRJKxBKS');
+    const deleteAccount: Account[] = await this.crudService.read('accounts',
+      'username', '==', 'student4'
+    ).pipe(first()).toPromise();
+    if (deleteAccount.length > 0) {
+      await this.crudService.delete('accounts', deleteAccount[0].docId);
+    }
+
   }
   onCloseModal(response: string): void {
     console.log(response);
@@ -66,6 +72,7 @@ export class AccountCreateComponent implements OnInit {
             first_name: csvRecord.first_name,
             last_name: csvRecord.last_name,
             password: csvRecord.password,
+            first_login: true
           };
           if (accounts.length === 0) {
             console.log(account);
