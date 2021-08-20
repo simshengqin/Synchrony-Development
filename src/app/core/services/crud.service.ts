@@ -6,20 +6,29 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 
-export class FilterService {
+export class CrudService {
 
   constructor(
     private fs: FirestoreService
   ) {
   }
-  getByDocId(collection: string, docId: string): Observable<any> {
+  create(collection: string, data: any): Promise<string> {
+    return this.fs.add(collection, data);
+  }
+  update(collection: string, docId: string, data: any): Promise<void> {
+    return this.fs.update(collection + '/' + docId, data);
+  }
+  delete(collection: string, docId: string): Promise<void> {
+    return this.fs.delete(collection + '/' + docId);
+  }
+  readByDocId(collection: string, docId: string): Observable<any> {
     return this.fs.doc$(collection + '/' + docId);
   }
-  get(collection: string, filterName1: string = '', filterOp1: any = '', filterValue1: any = '',
-      filterName2: string = '', filterOp2: any = '', filterValue2: any = '',
-      filterName3: string = '', filterOp3: any = '', filterValue3: any = '',
-      filterName4: string = '', filterOp4: any = '', filterValue4: any = '',
-      sortColumn = '', isAsc = false): Observable<any[]> {
+  read(collection: string, filterName1: string = '', filterOp1: any = '', filterValue1: any = '',
+       filterName2: string = '', filterOp2: any = '', filterValue2: any = '',
+       filterName3: string = '', filterOp3: any = '', filterValue3: any = '',
+       filterName4: string = '', filterOp4: any = '', filterValue4: any = '',
+       sortColumn = '', isAsc = false): Observable<any[]> {
     // Cannot use === as filterValue1 etc can be a number
     // tslint:disable-next-line:triple-equals
     // console.log(filterValue1 + ',' + filterValue2 + ',' + filterValue3 + ',' + filterValue4 + ',');
