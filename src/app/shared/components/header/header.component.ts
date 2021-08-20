@@ -18,13 +18,14 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.validate_session();
+    this.validate_session();
     this.url = this.router.url;
   }
 
   validate_session(){
-      if(sessionStorage.getItem('role') != null || sessionStorage.getItem('role') != undefined){
+      if(sessionStorage.getItem('role') != undefined || sessionStorage.getItem('role') != null){
         this.userRole = sessionStorage.getItem('role')
+        console.log(this.userRole)
     } else {
         this.router.navigate(['/login'])
     }

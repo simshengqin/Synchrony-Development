@@ -100,7 +100,7 @@ import { NgxCsvParserModule } from 'ngx-csv-parser';
     MatDialogModule,
     MatTooltipModule,
     MatSnackBarModule,
-    MatTableModule,
+    MatTableModule, 
     MatSortModule,
     MatPaginatorModule,
     FormsModule,
