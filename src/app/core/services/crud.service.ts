@@ -64,7 +64,7 @@ export class CrudService {
             break;
         }
       }
-      return result;
+      return result; // ?.orderBy('school', 'asc');
     });
   }
 

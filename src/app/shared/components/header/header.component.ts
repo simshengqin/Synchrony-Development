@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.validate_session();
+    // this.validate_session();
     this.url = this.router.url;
   }
 

@@ -1,0 +1,9 @@
+username,role,school,school_group,first_name,last_name,password
+admin1,admin,-,-,Tan,Thomas,1
+freelancer1,freelancer,NUS,NUS-G1,Sheng Qin!,Sim,1
+instructor1,instructor,"SMU,NTU,NUS","SMU-G1,NTU-G1,NUS-G1,NUS-G2",Tan,Matthew,1
+student1,student,NUS,NTU-G1,Carecci,Vittorio,1
+student2,student,SMU,SMU-G1,Tan,Charmaine,1
+student3,student,"SMU,NTU","SMU-G2,NTU-G2",Sheng Qin,Sim,1
+student4,student,NTU,NTU-G1,Carecci,Mike,1
+student5,student,NTU,NTU-G1,Carecci,Johnson,1
