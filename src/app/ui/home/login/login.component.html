@@ -1,32 +1,51 @@
 <div class = "account-create-wrapper">
     <img src="../../../../assets/images/logo.png" width = "400" height = "400" class="center">
 
+    <h1 *ngIf="loginPage"> Synchrony Login Page </h1>
+
+    <h1 *ngIf="updatePasswordPage">Update Password Page</h1>
+
     <div class="container">
-      <div ></div>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
             <label for="username"> Username: </label>
             <input type="text" formControlName="username"/>
 
             <mat-error *ngIf="isSubmitClicked && username.errors?.required">
-              Please enter a username
-            </mat-error><br/>
+              Username cannot be blank!
+            </mat-error>
+
+            <br/>
 
             <label for="password"> Password: </label>
             <input type="password" formControlName="password"/>
 
             <mat-error *ngIf="isSubmitClicked && password.errors?.required">
-              Please enter a password
-            </mat-error><br/>
+              Password cannot be blank!
+              <br/>
+            </mat-error>
 
-            <!-- <p>Complete the form to enable button.</p> -->
             <mat-error *ngIf="isSubmitClicked && !isValidUsernamePasswordCombi">
-              Wrong username/password combination!
-            </mat-error><br/>
+              Incorrect Username or Password!
+            </mat-error>
+
+            <div *ngIf="updatePasswordPage">
+            <label for="newPassword">New Password: </label>
+            <input type="password" formControlName="newPassword"/>
+
+            <br/>
+              <label for="confirmPassword">Confirm Password:</label>
+              <input type="password" formControlName="confirmPassword"/>
+            </div>
+
+            <mat-error *ngIf="isSubmitClicked && loginForm.hasError('notSame')">
+              Passwords do not match!
+            </mat-error>
+
             <button type="submit">Login</button>
 
-            <!-- <p>Form Value: {{ loginForm.value | json }}</p>
-            <p>Form status: {{ loginForm.status | json }}</p> -->
+            <p>Form Value: {{ loginForm.value | json }}</p>
+            <p>Form status: {{ loginForm.status | json }}</p>
 
         </form>
     </div>

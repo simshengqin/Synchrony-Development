@@ -12,9 +12,17 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  // Variables only for update password page that are not applicable here
+  updatePasswordPage = false;
+  passwordMatch = true;
+
+  loginPage = true;
   loginForm!: FormGroup;
   isSubmitClicked = false;
-  isValidUsernamePasswordCombi = true;
+  isValidUsernamePasswordCombi: any;
+  role!: String;
+
+
   constructor(
     private fb: FormBuilder,
     private crudservice: CrudService,
@@ -31,7 +39,7 @@ export class LoginComponent implements OnInit {
       username:["",Validators.required],
       password:["",Validators.required]
     })
-    console.log(this.loginForm);
+    // console.log(this.loginForm);
   }
 
   // Retrieve username
@@ -44,37 +52,58 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password') as FormControl;
   }
 
-  checkUsernamePasswordCombi(): void{
-    
-    // Ping Database to see if passwords and username matches
+  // Functions
 
-    // Dummy test
-    // this.isValidUsernamePasswordCombi = this.username.value == 'user' && this.password.value == '1';
-    // if (this.isValidUsernamePasswordCombi) { alert('Login successful!')}
-  }
   onSubmit(){
+
+    // Submit was clicked. Form validation will take place
     this.isSubmitClicked = true;
+
     // Validate account and password
-    this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).subscribe(async (account:any) => {
-      if(account==null||account==undefined){
-        console.log("No such user")
-      } else {
-        sessionStorage.setItem('role', account[0].role);
-        this.router.navigate(['/account/delete'])
-      }
-    })
-    // End of vidation 
-
-
     if (this.loginForm.valid) {
-      this.checkUsernamePasswordCombi();
-    }
-    console.log(this.loginForm);
-    console.log(this.username.hasError('usernameInvalid'));
-    console.log(this.username);
-    // console.log("Working!!");
-    // console.log("Username: ", this.username?.value);
-    // console.log("Password:", this.password);
-  }
 
+      // Calling firebase service
+      this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).subscribe(async (account:any) => {
+        console.log(account);
+
+        if (account.length==0){
+          // username and password does not exist on the database
+          console.log("Login denied");
+          this.isValidUsernamePasswordCombi = false;
+        } else {
+          // Login is successful
+          console.log("Login successful");
+
+          // Remove password from object
+          delete account[0].password;
+
+          // Store account details as session
+          console.log(account[0]);
+          sessionStorage.setItem('account',account[0]);
+
+          // Check if user has logged in for the first time. If so, redirect to update password
+          if (account[0].first_login){
+            // If user has logged in for the first time, redirect to update password page
+            alert("You have logged in for the first time. You will be redirected to change your password");
+            this.router.navigate(["/update_password"]);
+          } else {
+            // If user has logged in before, direct to web page based on role
+            this.role = account[0].role;
+            console.log(this.role);
+
+            if (this.role=="instructor" || this.role =="freelancer"){
+                // Redirect to instructor page
+                console.log("teacher's page");
+              } else if (this.role == "student"){
+                // Redirect to student page
+                console.log("student's page")
+              } else if (this.role == "admin"){
+                // Redirect to admin page
+                console.log("admin page");
+            }
+          }
+        }
+      })
+    }
+  }
 }

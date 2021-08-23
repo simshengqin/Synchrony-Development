@@ -19,4 +19,29 @@
     .container {
       padding: 16px;
     }
+
+    h1 {
+      text-align: center;
+      font-size: 40px;
+    }
+
+    label{
+      font-size: 20px;
+      padding-top: 10px;
+    }
+
+    button {
+      background-color: blue;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* Add a hover effect for buttons */
+    button:hover {
+      opacity: 0.8;
+    }
 }
