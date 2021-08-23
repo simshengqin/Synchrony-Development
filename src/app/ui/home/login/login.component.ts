@@ -12,10 +12,17 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  // Variables only for update password page that are not applicable here
+  updatePasswordPage = false;
+  passwordMatch = true;
+
+  loginPage = true;
   loginForm!: FormGroup;
   isSubmitClicked = false;
-  isValidUsernamePasswordCombi = true;
+  isValidUsernamePasswordCombi: any;
   role!: String;
+
+
   constructor(
     private fb: FormBuilder,
     private crudservice: CrudService,
@@ -45,6 +52,8 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password') as FormControl;
   }
 
+  // Functions
+
   onSubmit(){
 
     // Submit was clicked. Form validation will take place
@@ -60,7 +69,9 @@ export class LoginComponent implements OnInit {
         if (account.length==0){
           // username and password does not exist on the database
           console.log("Login denied");
+          this.isValidUsernamePasswordCombi = true;
         } else {
+          // Login is successful
           console.log("Login successful");
 
           // Remove password from object
@@ -70,21 +81,27 @@ export class LoginComponent implements OnInit {
           console.log(account[0]);
           sessionStorage.setItem('account',account[0]);
 
-          // Direct to web page based on role
-          this.role = account[0].role;
-          console.log(this.role);
+          // Check if user has logged in for the first time. If so, redirect to update password
+          if (account[0].first_login){
+            // If user has logged in for the first time, redirect to update password page
+            alert("You have logged in for the first time. You will be redirected to change your password");
+            this.router.navigate(["/update_password"]);
+          } else {
+            // If user has logged in before, direct to web page based on role
+            this.role = account[0].role;
+            console.log(this.role);
 
-          if (this.role=="instructor" || this.role =="freelancer"){
-            // Redirect to instructor page
-            console.log("teacher's page");
-          } else if (this.role == "student"){
-            // Redirect to student page
-            console.log("student's page")
-          } else if (this.role == "admin"){
-            // Redirect to admin page
-            console.log("admin page");
+            if (this.role=="instructor" || this.role =="freelancer"){
+                // Redirect to instructor page
+                console.log("teacher's page");
+              } else if (this.role == "student"){
+                // Redirect to student page
+                console.log("student's page")
+              } else if (this.role == "admin"){
+                // Redirect to admin page
+                console.log("admin page");
+            }
           }
-
         }
       })
     }

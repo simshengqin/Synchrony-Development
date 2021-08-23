@@ -2,11 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccountCreateComponent} from './ui/admin/account-create/account-create.component';
 import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';
-import {LoginComponent} from './ui/home/login/login.component';
+import { LoginComponent} from './ui/home/login/login.component';
+import { UpdatePasswordComponent } from './ui/home/update_password/update-password/update-password.component';
 
 const routes: Routes = [{
   path: '',
   children: [
+    {
+      path:'update_password',
+      pathMatch: 'full',
+      component: UpdatePasswordComponent
+    },
     {
       path: 'login',
       pathMatch: 'full',

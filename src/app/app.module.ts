@@ -57,6 +57,7 @@ import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {ToastrModule} from "ngx-toastr";
 import { NgxCsvParserModule } from 'ngx-csv-parser';
+import { UpdatePasswordComponent } from './ui/home/update_password/update-password/update-password.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { NgxCsvParserModule } from 'ngx-csv-parser';
     AccountCreateComponent,
     CardsComponent,
     LoginComponent,
-    AccountDeleteComponent
+    AccountDeleteComponent,
+    UpdatePasswordComponent
   ],
   imports: [
     BrowserModule,
