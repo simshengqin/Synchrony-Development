@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
         if (account.length==0){
           // username and password does not exist on the database
           console.log("Login denied");
-          this.isValidUsernamePasswordCombi = true;
+          this.isValidUsernamePasswordCombi = false;
         } else {
           // Login is successful
           console.log("Login successful");
