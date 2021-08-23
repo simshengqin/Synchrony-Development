@@ -44,15 +44,15 @@ const routes: Routes = [{
       component: FreelanceWageComponent
     },
     {
-      path: '**',
-      pathMatch: 'full',
-      component: AdminHomeComponent
-    },
-    {
       path: 'test/cards',
       pathMatch: 'full',
       component: CardsComponent
     },
+    {
+      path: '**',
+      pathMatch: 'full',
+      component: AdminHomeComponent
+    }
   ]
 }
 
