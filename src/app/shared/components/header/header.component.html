@@ -3,8 +3,8 @@
 
     <!-- Navbar brand -->
     <mdb-navbar-brand>
-        <a class="navbar-brand" href="#">
-            <img src="../../../../../assets/images/logo.png" height="40" alt="">
+        <a class="navbar-brand" *ngIf="userRole=='admin'">
+            <img src="../../../../../assets/images/logo.png" routerLink="/admin/home" height="40" alt="">
         </a>
     </mdb-navbar-brand>
 
@@ -19,23 +19,23 @@
 
         <!-- ADMIN -->
         <ul class="navbar-nav mr-auto" *ngIf="userRole=='admin'">
-            <li class="nav-item" [ngClass]="{'active': url == '/account/create'}">
-                <a class="nav-link waves-light"  routerLink="/account/create" mdbWavesEffect> Account & Grouping Creation </a>
+            <li class="nav-item" [ngClass]="{'active': url == '/admin/account/create'}">
+                <a class="nav-link waves-light"  routerLink="/admin/account/create" mdbWavesEffect> Account & Grouping Creation </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link waves-light" mdbWavesEffect> Edit Account & Grouping </a>
             </li>
-            <li class="nav-item" [ngClass]="{'active': url == '/account/delete'}">
-                <a class="nav-link waves-light" routerLink="/account/delete" mdbWavesEffect> Delete Account </a>
+            <li class="nav-item" [ngClass]="{'active': url == '/admin/account/delete'}">
+                <a class="nav-link waves-light" routerLink="/admin/account/delete" mdbWavesEffect> Delete Account </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link waves-light" mdbWavesEffect> Calculate Freelance Wages </a>
+            <li class="nav-item" [ngClass]="{'active': url == '/admin/freelance'}">
+                <a class="nav-link waves-light" routerLink="/admin/freelance" mdbWavesEffect> Calculate Freelance Wages </a>
             </li>
         </ul>
         <!-- END OF ADMIN -->
 
         <!-- INSTRUCTOR -->
-        <ul class="navbar-nav mr-auto" *ngIf="userRole=='instructor'">
+        <ul class="navbar-nav mr-auto" *ngIf="userRole=='instructor' || userRole=='freelancer'">
             <li class="nav-item active">
                 <a class="nav-link waves-light" mdbWavesEffect> New Assignment </a>
             </li>

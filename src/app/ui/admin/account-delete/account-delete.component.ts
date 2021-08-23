@@ -12,26 +12,24 @@ import { MatSort } from '@angular/material/sort';
 })
 export class AccountDeleteComponent implements OnInit, AfterViewInit {
 
-  /*
   accounts:any[] = [];
   dataSource!:any;
   displayedColumns: string[] = ['username', 'role', 'school', 'group', 'action'];
   @ViewChild(MatPaginator) paginator!:MatPaginator;
   @ViewChild(MatSort) sort!:MatSort;
-  */
+  
   constructor(
     private crudservice:CrudService
   ) { }
 
   ngOnInit(): void {
-    //this.retrieve_all_accounts();
+    this.retrieve_all_accounts();
   }
 
   ngAfterViewInit(){
 
   }
 
-  /*
   retrieve_all_accounts(){
     this.crudservice.read('accounts').subscribe(async (data:any) => {
       if(data!=undefined||data!=null){
@@ -58,6 +56,6 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   delete(data:string){
     console.log(data)
   }
-  */
+
 
 }

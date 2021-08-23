@@ -79,7 +79,8 @@ export class LoginComponent implements OnInit {
 
           // Store account details as session
           console.log(account[0]);
-          sessionStorage.setItem('account',account[0]);
+          //sessionStorage.setItem('account',account[0]);
+          sessionStorage.setItem('account', JSON.stringify(account[0]))
 
           // Check if user has logged in for the first time. If so, redirect to update password
           if (account[0].first_login){
@@ -98,8 +99,8 @@ export class LoginComponent implements OnInit {
                 // Redirect to student page
                 console.log("student's page")
               } else if (this.role == "admin"){
-                // Redirect to admin page
                 console.log("admin page");
+                this.router.navigate(["/admin/account/delete"]);
             }
           }
         }

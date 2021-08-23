@@ -43,21 +43,25 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
-// MDB Bootstrap
+// MDB / NGD Bootstrap
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-
-import {AccountCreateComponent} from './ui/admin/account-create/account-create.component';
-import {HeaderComponent} from './shared/components/header/header.component';
-import { CardsComponent } from './shared/components/cards/cards/cards.component';
-import { LoginComponent } from './ui/home/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+// Shared Components
+import { HeaderComponent} from './shared/components/header/header.component';
+import { CardsComponent } from './shared/components/cards/cards/cards.component';
+import { UpdatePasswordComponent } from './ui/home/update_password/update-password/update-password.component';
+import { LoginComponent } from './ui/home/login/login.component';
+// Admin's Components
+import { AccountCreateComponent} from './ui/admin/account-create/account-create.component';
 import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';
-
+import { AdminHomeComponent } from './ui/admin/admin-home/admin-home.component';
+import { FreelanceWageComponent } from './ui/admin/freelance-wage/freelance-wage.component';
 // Form modules 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {ToastrModule} from "ngx-toastr";
+import { ToastrModule} from "ngx-toastr";
 import { NgxCsvParserModule } from 'ngx-csv-parser';
-import { UpdatePasswordComponent } from './ui/home/update_password/update-password/update-password.component';
+
+
 
 @NgModule({
   declarations: [
@@ -67,7 +71,9 @@ import { UpdatePasswordComponent } from './ui/home/update_password/update-passwo
     CardsComponent,
     LoginComponent,
     AccountDeleteComponent,
-    UpdatePasswordComponent
+    UpdatePasswordComponent,
+    AdminHomeComponent,
+    FreelanceWageComponent
   ],
   imports: [
     BrowserModule,

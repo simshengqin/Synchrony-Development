@@ -10,37 +10,36 @@ export class HeaderComponent implements OnInit {
 
   url!: string;
   userRole!: any;
-  // user_doc_id!:any;
-  // username!:any;
+  accountDetail!:any;
 
   constructor(
     private router:Router
   ) { }
 
   ngOnInit(): void {
-    this.validate_session();
+    //this.validate_session();
     this.url = this.router.url;
+    this.userRole =  "admin"
   }
 
   validate_session(){
-      if(sessionStorage.getItem('role') != undefined || sessionStorage.getItem('role') != null){
+    /* 
+    if(sessionStorage.getItem("account")!=null){
+      this.accountDetail = JSON.parse(sessionStorage.getItem("account")!);
+      this.userRole = this.accountDetail['role'];
+      console.log(this.accountDetail);
+    }else {
+      this.router.navigate(['/login'])
+    }
+    */
+    /* // === to be deleted (KIV) === // 
+    if(sessionStorage.getItem('role') != undefined || sessionStorage.getItem('role') != null){
         this.userRole = sessionStorage.getItem('role')
         console.log(this.userRole)
     } else {
         this.router.navigate(['/login'])
     }
+    */
   }
-
-  // async onSubmitClick() {
-  //   if (!this.scoresheetFile.nativeElement.files.item(0) && !this.recordingFile.nativeElement.files.item(0)) {
-  //     this.toastrService.error('Please upload a file!', '',{positionClass: 'toast-top-center'}); this.toastrService.error('Please upload a file!', '',{positionClass: 'toast-top-center'});
-  //   }
-  //   else {
-  //     if (this.scoresheetFile.nativeElement.files.item(0)) { await this.uploadFile(this.scoresheetFile, 'scoresheet'); }
-  //     if (this.recordingFile.nativeElement.files.item(0)) { await this.uploadFile(this.recordingFile, 'recording'); }
-  //     this.router.navigate(['assignment/view']);
-  //   }
-  // }
-  // END OF validate_session()
 
 }
