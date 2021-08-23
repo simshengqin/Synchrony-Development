@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountCreateComponent} from './ui/admin/account-create/account-create.component';
 import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';
 import {LoginComponent} from './ui/home/login/login.component';
+import { CardsComponent } from './shared/components/cards/cards/cards.component';
+
 
 const routes: Routes = [{
   path: '',
@@ -26,6 +28,11 @@ const routes: Routes = [{
       path: '**',
       pathMatch: 'full',
       component: LoginComponent
+    },
+    {
+      path: 'test/cards',
+      pathMatch: 'full',
+      component: CardsComponent
     },
   ]
 }
