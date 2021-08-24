@@ -6,6 +6,12 @@
         <a class="navbar-brand" *ngIf="userRole=='admin'">
             <img src="../../../../../assets/images/logo.png" routerLink="/admin/home" height="40" alt="">
         </a>
+        <a class="navbar-brand" *ngIf="userRole=='instructor' || userRole=='freelancer'">
+            <img src="../../../../../assets/images/logo.png" routerLink="/instructor/home" height="40" alt="">
+        </a>
+        <a class="navbar-brand" *ngIf="userRole=='student'">
+            <img src="../../../../../assets/images/logo.png" routerLink="/student/home" height="40" alt="">
+        </a>
     </mdb-navbar-brand>
 
     <!-- Collapsible content -->
@@ -36,15 +42,17 @@
 
         <!-- INSTRUCTOR -->
         <ul class="navbar-nav mr-auto" *ngIf="userRole=='instructor' || userRole=='freelancer'">
-            <li class="nav-item active">
-                <a class="nav-link waves-light" mdbWavesEffect> New Assignment </a>
+            
+            <li class="nav-item active" [ngClass]="{'active': url == '/instructor/assignment/create'}">
+                <a class="nav-link waves-light" routerLink="/instructor/assignment/create" mdbWavesEffect> Create Assignment </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link waves-light" mdbWavesEffect> Edit Assignment </a>
+            <li class="nav-item" [ngClass]="{'active': url == '/instructor/assignment/edit'}">
+                <a class="nav-link waves-light" routerLink="/instructor/assignment/edit" mdbWavesEffect> Edit Assignment </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link waves-light" mdbWavesEffect> Mark Assignement </a>
+            <li class="nav-item" [ngClass]="{'active': url == '/instructor/assignment/mark'}">
+                <a class="nav-link waves-light" routerLink="/instructor/assignment/mark" mdbWavesEffect> Mark Assignement </a>
             </li>
+
         </ul>
         <!-- END OF INSTRUCTOR -->
 
