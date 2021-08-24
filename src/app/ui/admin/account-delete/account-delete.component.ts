@@ -1,9 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
 //import { Account } from 'src/app/core/models/account';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { TableComponent } from 'src/app/shared/components/table/table.component';
 
 @Component({
   selector: 'app-account-delete',
@@ -14,9 +15,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
 
   accounts:any[] = [];
   dataSource!:any;
-  displayedColumns: string[] = ['username', 'role', 'school', 'group', 'action'];
-  @ViewChild(MatPaginator) paginator!:MatPaginator;
-  @ViewChild(MatSort) sort!:MatSort;
+  displayedColumns:string[] = ['username', 'role', 'school', 'group', 'action'];
   
   constructor(
     private crudservice:CrudService
@@ -27,7 +26,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(){
-
+    // empty
   }
 
   retrieve_all_accounts(){
@@ -36,26 +35,10 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
         for(let ele of data){
           this.accounts.push(ele)
         }
-        console.log(this.accounts);
-        this.dataSource = new MatTableDataSource(this.accounts);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        //console.log(this.accounts);
+        this.dataSource = this.accounts
       }
     })
   }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  delete(data:string){
-    console.log(data)
-  }
-
-
+  
 }

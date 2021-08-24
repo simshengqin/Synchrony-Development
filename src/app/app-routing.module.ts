@@ -88,7 +88,7 @@ const routes: Routes = [{
     {
       path: '**',
       pathMatch: 'full',
-      component: AdminHomeComponent
+      component: LoginComponent
     }
   ]
 }

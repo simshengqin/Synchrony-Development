@@ -65,6 +65,7 @@ import { AssignmentCreateComponent } from './ui/instructor/assignment-create/ass
 import { AssignmentEditComponent } from './ui/instructor/assignment-edit/assignment-edit.component';
 import { AssignmentMarkComponent } from './ui/instructor/assignment-mark/assignment-mark.component';
 import { StudentHomeComponent } from './ui/student/student-home/student-home.component';
+import { TableComponent } from './shared/components/table/table.component';
 
 
 
@@ -83,7 +84,8 @@ import { StudentHomeComponent } from './ui/student/student-home/student-home.com
     AssignmentCreateComponent,
     AssignmentEditComponent,
     AssignmentMarkComponent,
-    StudentHomeComponent
+    StudentHomeComponent,
+    TableComponent
   ],
   imports: [
     BrowserModule,
