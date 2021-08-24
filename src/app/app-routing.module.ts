@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent} from './ui/home/login/login.component';
 import { UpdatePasswordComponent } from './ui/home/update_password/update-password/update-password.component';
-import { CardsComponent } from './shared/components/cards/cards/cards.component';
+import { CardsComponent } from './shared/components/cards/cards.component';
 
 import { AccountCreateComponent} from './ui/admin/account-create/account-create.component';
 import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';

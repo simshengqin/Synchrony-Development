@@ -48,7 +48,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Shared Components
 import { HeaderComponent} from './shared/components/header/header.component';
-import { CardsComponent } from './shared/components/cards/cards/cards.component';
+import { CardsComponent } from './shared/components/cards/cards.component';
 import { UpdatePasswordComponent } from './ui/home/update_password/update-password/update-password.component';
 import { LoginComponent } from './ui/home/login/login.component';
 // Admin's Components
