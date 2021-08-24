@@ -60,6 +60,11 @@ import { FreelanceWageComponent } from './ui/admin/freelance-wage/freelance-wage
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule} from "ngx-toastr";
 import { NgxCsvParserModule } from 'ngx-csv-parser';
+import { InstructorHomeComponent } from './ui/instructor/instructor-home/instructor-home.component';
+import { AssignmentCreateComponent } from './ui/instructor/assignment-create/assignment-create.component';
+import { AssignmentEditComponent } from './ui/instructor/assignment-edit/assignment-edit.component';
+import { AssignmentMarkComponent } from './ui/instructor/assignment-mark/assignment-mark.component';
+import { StudentHomeComponent } from './ui/student/student-home/student-home.component';
 
 
 
@@ -73,7 +78,12 @@ import { NgxCsvParserModule } from 'ngx-csv-parser';
     AccountDeleteComponent,
     UpdatePasswordComponent,
     AdminHomeComponent,
-    FreelanceWageComponent
+    FreelanceWageComponent,
+    InstructorHomeComponent,
+    AssignmentCreateComponent,
+    AssignmentEditComponent,
+    AssignmentMarkComponent,
+    StudentHomeComponent
   ],
   imports: [
     BrowserModule,
