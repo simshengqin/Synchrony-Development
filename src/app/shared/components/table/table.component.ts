@@ -18,11 +18,11 @@ export class TableComponent implements OnInit {
   constructor() { }
   
   ngOnChanges(): void {
-    this.populateTable()
+    this.populateTable();
   }
 
   ngOnInit(): void {
-    
+    this.populateTable();
   }
 
   populateTable(){
@@ -41,8 +41,8 @@ export class TableComponent implements OnInit {
     }
   }
 
-  delete(data:string){
-    console.log(data)
+  onOpen(event: any) {
+    console.log(event);
   }
 
 }

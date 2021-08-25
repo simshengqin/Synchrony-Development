@@ -26,7 +26,7 @@ const routes: Routes = [{
       component: LoginComponent
     },
     {
-      path:'update_password',
+      path:'update_password', 
       pathMatch: 'full',
       component: UpdatePasswordComponent
     },

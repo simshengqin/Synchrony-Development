@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.validate_session();
     this.url = this.router.url;
-    //this.userRole =  "admin"
   }
 
   validate_session(){

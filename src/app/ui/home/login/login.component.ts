@@ -100,7 +100,7 @@ export class LoginComponent implements OnInit {
                 console.log("student's page")
               } else if (this.role == "admin"){
                 console.log("admin page");
-                this.router.navigate(["/admin/account/create"]);
+                this.router.navigate(["admin/home"]);
             }
           }
         }
