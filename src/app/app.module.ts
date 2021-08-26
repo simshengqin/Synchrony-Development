@@ -67,6 +67,7 @@ import { AssignmentMarkComponent } from './ui/instructor/assignment-mark/assignm
 import { StudentHomeComponent } from './ui/student/student-home/student-home.component';
 import { TableComponent } from './shared/components/table/table.component';
 import { InputDropdownSelectComponent } from './shared/components/input-dropdown-select/input-dropdown-select.component';
+import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
 
 
 
@@ -87,7 +88,8 @@ import { InputDropdownSelectComponent } from './shared/components/input-dropdown
     AssignmentMarkComponent,
     StudentHomeComponent,
     TableComponent,
-    InputDropdownSelectComponent
+    InputDropdownSelectComponent,
+    AccountEditComponent
   ],
   imports: [
     BrowserModule,
