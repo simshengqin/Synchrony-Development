@@ -15,12 +15,12 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   accounts:any[] = [];
   dataSource!:any;
   displayedColumns:string[] = ['username', 'role', 'school', 'group', 'action'];
-  
+
   schools:string[] = [];
   groups:string[] = [];
-  roles:string[] = ["admin","instructor","freelancer","student"];
+  roles:string[] = ["admin","instructor","student"];
 
-  
+
   constructor(
     private crudservice:CrudService
   ) { }
@@ -46,7 +46,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
           var school = ele["school"].split(",")
           // get distint school groups
           this.get_distint_school_group(schoolgrp);
-          // get distint school 
+          // get distint school
           this.get_distint_school(school);
         }
         //console.log(this.groups)
@@ -65,7 +65,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Method: 
+  // Method:
   get_distint_school(data:string[]){
     for(var dataSchool of data){
       if(this.schools.indexOf(dataSchool)==-1){

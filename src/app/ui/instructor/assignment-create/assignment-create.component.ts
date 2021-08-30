@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { InputDropdownSelectComponent } from 'src/app/shared/components/input-dropdown-select/input-dropdown-select.component';
 
 @Component({
   selector: 'app-assignment-create',
@@ -25,6 +26,9 @@ export class AssignmentCreateComponent implements OnInit {
   classGroups : String[] = [];
   levelSelected : any;
   levelOptions : String[] = [];
+  buttonTexts: String[]= [];
+  buttonText: String = "";
+  buttonRepeat = false;
 
   constructor(
     private fb: FormBuilder,
@@ -49,16 +53,17 @@ export class AssignmentCreateComponent implements OnInit {
     // console.log(this.loginForm);
   }
 
-  onSubmit(){
-    console.log(this.event?.getDay);
-  }
-
   captureEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     this.event = event.value;
   }
 
   populateInstrumentOptions(){
     console.log("Instrument Function Triggered");
+    // Clear all subsequent options
+    this.instrumentOptions = [];
+    this.classGroups = [];
+    this.levelOptions = [];
+
     for (var classGroup of this.schoolInstrumentLevel){
       // Split classgroup to find school
       this.school = classGroup.split("_")[0];
@@ -70,9 +75,30 @@ export class AssignmentCreateComponent implements OnInit {
   }
 
   populateLevelOptions(){
+    // Clear levelOptions
+    this.levelOptions = [];
     for (var classGroup of this.classGroups){
       this.levelOptions.push(classGroup.split("_")[2])
     }
   }
 
+  onSubmit(){
+    // Capture the school,instrument,levels details
+    this.buttonText = this.schoolSelected + "_" + this.instrumentSelected + "_" + this.levelSelected;
+
+    // Validate if the same text has been put before
+    console.log(this.buttonText);
+
+    if (this.buttonTexts.includes(this.buttonText)){
+      this.buttonRepeat = true;
+    } else {
+      this.buttonTexts.push(this.buttonText)
+    }
+
+  }
+
+  removeButton(i:number){
+    delete this.buttonTexts[i];
+  }
 }
+

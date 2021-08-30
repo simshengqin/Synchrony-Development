@@ -76,6 +76,8 @@
       <br>
 
       <label for = "select_instrument"> Select An Instrument </label>
+
+      <!-- <app-input-dropdown-select [instrumentOptions]="instrumentOptions" (outputData)="getInstrumentOptions($event)"></app-input-dropdown-select> -->
       <mat-form-field appearance="fill">
         <mat-label>Select an instrument:</mat-label>
         <mat-select [(value)]="instrumentSelected" (selectionChange) = "populateLevelOptions()">
@@ -98,8 +100,14 @@
       <br>
 
       <br>
-      <button type="submit">Submit</button>
+      <button type="submit">Add Class</button>
     </form>
+
+    <mat-error *ngIf="buttonRepeat">
+      Don't repeat the same class twice!
+    </mat-error>
+
+    <button class="badge" *ngFor="let buttonText of buttonTexts; let i = index;" (click)="removeButton(i)">{{buttonText}}</button>
 
     <p>Date day: {{event?.getDate()}}</p>
     <!-- There is a bug in the calendar, be sure to add +1 later on  -->
@@ -107,6 +115,8 @@
     <p>Date year: {{event?.getUTCFullYear()}}</p>
     <p>Time selected: {{timeSelected}}</p>
     <p>School selected: {{schoolSelected}}</p>
+    <p>Instrument selected: {{instrumentSelected}}</p>
+    <p>Level selected: {{levelSelected}}</p>
     <p>Form Value: {{ newAssignmentForm.value | json }}</p>
     <p>Form status: {{ newAssignmentForm.status | json }}</p>
 
