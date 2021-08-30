@@ -6,7 +6,7 @@
         <a class="navbar-brand" *ngIf="userRole=='admin'">
             <img src="../../../../../assets/images/logo.png" routerLink="/admin/home" height="40" alt="">
         </a>
-        <a class="navbar-brand" *ngIf="userRole=='instructor' || userRole=='freelancer'">
+        <a class="navbar-brand" *ngIf="userRole=='instructor'">
             <img src="../../../../../assets/images/logo.png" routerLink="/instructor/home" height="40" alt="">
         </a>
         <a class="navbar-brand" *ngIf="userRole=='student'">
@@ -35,16 +35,16 @@
                 <a class="nav-link waves-light" routerLink="/admin/account/delete" mdbWavesEffect> Delete Account </a>
             </li>
             <li class="nav-item" [ngClass]="{'active': url == '/admin/freelance'}">
-                <a class="nav-link waves-light" routerLink="/admin/freelance" mdbWavesEffect> Calculate Freelance Wages </a>
+                <a class="nav-link waves-light" routerLink="/admin/freelance" mdbWavesEffect> Calculate Wages </a>
             </li>
         </ul>
         <!-- END OF ADMIN -->
 
         <!-- INSTRUCTOR -->
-        <ul class="navbar-nav mr-auto" *ngIf="userRole=='instructor' || userRole=='freelancer'">
-            
+        <ul class="navbar-nav mr-auto" *ngIf="userRole=='instructor'">
+
             <li class="nav-item active" [ngClass]="{'active': url == '/instructor/assignment/create'}">
-                <a class="nav-link waves-light" routerLink="/instructor/assignment/create" mdbWavesEffect> Create Assignment </a>
+                <a class="nav-link waves-light" routerLink="/instructor/assignment/create" mdbWavesEffect> New Assignment </a>
             </li>
             <li class="nav-item" [ngClass]="{'active': url == '/instructor/assignment/edit'}">
                 <a class="nav-link waves-light" routerLink="/instructor/assignment/edit" mdbWavesEffect> Edit Assignment </a>
