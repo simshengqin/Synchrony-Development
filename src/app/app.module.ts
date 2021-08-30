@@ -56,7 +56,7 @@ import { AccountCreateComponent} from './ui/admin/account-create/account-create.
 import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';
 import { AdminHomeComponent } from './ui/admin/admin-home/admin-home.component';
 import { FreelanceWageComponent } from './ui/admin/freelance-wage/freelance-wage.component';
-// Form modules 
+// Form modules
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule} from "ngx-toastr";
 import { NgxCsvParserModule } from 'ngx-csv-parser';
@@ -68,6 +68,7 @@ import { StudentHomeComponent } from './ui/student/student-home/student-home.com
 import { TableComponent } from './shared/components/table/table.component';
 import { InputDropdownSelectComponent } from './shared/components/input-dropdown-select/input-dropdown-select.component';
 import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -97,6 +98,7 @@ import { AccountEditComponent } from './ui/admin/account-edit/account-edit.compo
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
+    MatNativeDateModule,
     MatCheckboxModule,
     MatButtonModule,
     MatInputModule,
@@ -124,7 +126,7 @@ import { AccountEditComponent } from './ui/admin/account-edit/account-edit.compo
     MatDialogModule,
     MatTooltipModule,
     MatSnackBarModule,
-    MatTableModule, 
+    MatTableModule,
     MatSortModule,
     MatPaginatorModule,
     FormsModule,

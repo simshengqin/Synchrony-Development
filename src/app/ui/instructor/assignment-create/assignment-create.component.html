@@ -1,2 +1,99 @@
 <app-header></app-header>
-<p>assignment-create works!</p>
+
+<div class = assignment_create_wrapper>
+  <div class="container">
+    <br>
+    <h1>New Assignment</h1>
+    <br>
+    <form [formGroup]="newAssignmentForm" (ngSubmit)="onSubmit()">
+
+      <label for="title"> Title: </label> <br>
+      <input type="text" formControlName="title"/>
+
+      <br>
+
+      <label for="due_date"> Due Date: </label>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Date"
+              (dateInput)="captureEvent('input', $event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <br>
+
+      <label for="due_time"> Due Time: </label>
+      <mat-form-field appearance="fill">
+        <mat-label>Select an option</mat-label>
+        <mat-select [(value)]="timeSelected">
+          <mat-option>None</mat-option>
+          <mat-option value="0800">8:00am</mat-option>
+          <mat-option value="0830">8:30am</mat-option>
+          <mat-option value="0900">9:00am</mat-option>
+          <mat-option value="0930">9:30am</mat-option>
+          <mat-option value="1000">10:00am</mat-option>
+          <mat-option value="1030">10:30am</mat-option>
+          <mat-option value="1100">11:00am</mat-option>
+          <mat-option value="1130">11:30am</mat-option>
+          <mat-option value="1200">12:00am</mat-option>
+          <mat-option value="1230">12:30am</mat-option>
+          <mat-option value="1300">1:00pm</mat-option>
+          <mat-option value="1330">1:30pm</mat-option>
+          <mat-option value="1400">2:00pm</mat-option>
+          <mat-option value="1430">2:30pm</mat-option>
+          <mat-option value="1500">3:00pm</mat-option>
+          <mat-option value="1530">3:30pm</mat-option>
+          <mat-option value="1600">4:00pm</mat-option>
+          <mat-option value="1630">4:30pm</mat-option>
+          <mat-option value="1700">5:00pm</mat-option>
+          <mat-option value="1730">5:30pm</mat-option>
+          <mat-option value="1800">6:00pm</mat-option>
+          <mat-option value="1830">6:30pm</mat-option>
+          <mat-option value="1900">7:00pm</mat-option>
+          <mat-option value="1930">7:30pm</mat-option>
+          <mat-option value="2000">8:00pm</mat-option>
+          <mat-option value="2030">8:30pm</mat-option>
+          <mat-option value="2100">9:00pm</mat-option>
+          <mat-option value="2130">9:30pm</mat-option>
+          <mat-option value="2200">10:00pm</mat-option>
+          <mat-option value="2230">10:30pm</mat-option>
+          <mat-option value="2300">11:00pm</mat-option>
+          <mat-option value="2330">11:30pm</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <br>
+      <label for="select_school"> Select School: </label>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Select an option:</mat-label>
+        <mat-select [(value)]="schoolSelected">
+          <mat-option *ngFor="let schoolOption of schoolOptions; let i = index" [value]="i">
+            {{schoolOption}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <button class = "filter_button" (click)="filterInstruments()">Filter Instruments</button>
+
+      <br>
+      <label for = "select_instrument"> Select Instrument </label>
+      <br>
+
+      <label for = "select_level"> Select Level </label>
+
+      <br>
+      <button type="submit">Submit</button>
+    </form>
+
+    <p>Date day: {{event?.getDate()}}</p>
+    <!-- There is a bug in the calendar, be sure to add +1 later on  -->
+    <p>Date month: {{event?.getMonth()}}</p>
+    <p>Date year: {{event?.getUTCFullYear()}}</p>
+    <p>Time selected: {{timeSelected}}</p>
+    <p>School selected: {{schoolSelected}}</p>
+    <p>Form Value: {{ newAssignmentForm.value | json }}</p>
+    <p>Form status: {{ newAssignmentForm.status | json }}</p>
+
+  </div>
+</div>

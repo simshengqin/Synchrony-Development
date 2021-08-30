@@ -1,0 +1,56 @@
+.assignment_create_wrapper{
+
+  .filter_button{
+    background-color: grey;
+    color: white;
+    margin-bottom: 20px;
+    border: none;
+    width: 20%;
+  }
+
+  .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: auto;
+    }
+
+  input[type=text], input[type=password] {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  .container {
+    padding: 16px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 40px;
+  }
+
+  label{
+    font-size: 20px;
+    padding-top: 10px;
+    padding-right: 20px;
+  }
+
+  button {
+    background-color: blue;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+  }
+
+  /* Add a hover effect for buttons */
+  button:hover {
+    opacity: 0.8;
+  }
+}
