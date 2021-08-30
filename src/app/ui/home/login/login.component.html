@@ -30,12 +30,15 @@
             </mat-error>
 
             <div *ngIf="updatePasswordPage">
-            <label for="newPassword">New Password: </label>
-            <input type="password" formControlName="newPassword"/>
+              <label for="newPassword">New Password: </label>
+              <input type="password" formControlName="newPassword"/>
+              <mat-error *ngIf="isSubmitClicked && newPassword.errors?.minlength">
+                Password must be at least 5 characters long!
+              </mat-error>
 
-            <br/>
-              <label for="confirmPassword">Confirm Password:</label>
-              <input type="password" formControlName="confirmPassword"/>
+              <br/>
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" formControlName="confirmPassword"/>
             </div>
 
             <mat-error *ngIf="isSubmitClicked && loginForm.hasError('notSame')">

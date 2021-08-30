@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   loginPage = true;
   loginForm!: FormGroup;
   isSubmitClicked = false;
-  isValidUsernamePasswordCombi: any;
+  isValidUsernamePasswordCombi = true;
   role!: String;
 
 
@@ -37,7 +37,9 @@ export class LoginComponent implements OnInit {
   initForm(): void{
     this.loginForm = this.fb.group({
       username:["",Validators.required],
-      password:["",Validators.required]
+      password:["",Validators.required],
+      //Added to avoid error
+      newPassword:[""]
     })
     // console.log(this.loginForm);
   }
@@ -45,6 +47,11 @@ export class LoginComponent implements OnInit {
   // Retrieve username
   get username(): FormControl{
     return this.loginForm.get('username') as FormControl;
+  }
+
+  //Added to avoid error
+  get newPassword():FormControl{
+    return this.loginForm.get('newPassword') as FormControl;
   }
 
   // Retrieve password
@@ -92,12 +99,14 @@ export class LoginComponent implements OnInit {
             this.role = account[0].role;
             console.log(this.role);
 
-            if (this.role=="instructor" || this.role =="freelancer"){
+            if (this.role=="instructor"){
                 // Redirect to instructor page
                 console.log("teacher's page");
+                this.router.navigate(["instructor/home"]);
               } else if (this.role == "student"){
                 // Redirect to student page
                 console.log("student's page")
+                this.router.navigate(["student/home"]);
               } else if (this.role == "admin"){
                 console.log("admin page");
                 this.router.navigate(["admin/home"]);

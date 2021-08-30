@@ -21,11 +21,12 @@ export class UpdatePasswordComponent implements OnInit {
   updatePasswordPage = true;
   loginForm!: FormGroup;
   isSubmitClicked = false;
-  isValidUsernamePasswordCombi:any;
+  isValidUsernamePasswordCombi = true;
   passwordMatch = false;
   role!: String;
   matcher = new MyErrorStateMatcher();
   account: any;
+  firstTime = true;
 
   constructor(
     private fb: FormBuilder,
@@ -42,7 +43,7 @@ export class UpdatePasswordComponent implements OnInit {
     this.loginForm = this.fb.group({
       username:["",Validators.required],
       password:["",Validators.required],
-      newPassword:["",Validators.required],
+      newPassword:["",[Validators.required,Validators.minLength(5)]],
       confirmPassword:["",Validators.required]
     }, { validators: this.checkPasswords });
     // console.log(this.loginForm);
@@ -56,6 +57,10 @@ export class UpdatePasswordComponent implements OnInit {
   // Retrieve password
   get password(): FormControl{
     return this.loginForm.get('password') as FormControl;
+  }
+
+  get newPassword(): FormControl{
+    return this.loginForm.get('newPassword') as FormControl;
   }
 
   get confirmPassword(): FormControl{
@@ -79,8 +84,12 @@ export class UpdatePasswordComponent implements OnInit {
       // Form validation complete. Update password
       console.log("Form Validated ");
 
-      // Validate login
-      this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).subscribe(async (account:any) => {
+      // Login Validation only happens once
+      if (this.firstTime){
+        console.log("Login Validation triggered!");
+        this.firstTime = false;
+        // Validate login
+        this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).subscribe(async (account:any) => {
         console.log(account);
 
         if (account.length==0){
@@ -103,16 +112,10 @@ export class UpdatePasswordComponent implements OnInit {
           return;
         }
       })
-
-      // this.account.password = this.loginForm.value.newPassword;
-      // this.account.first_login = false;
-      // console.log(this.account);
-
-
     } else {
       console.log("Update rejected");
+      }
     }
-
   }
 }
 
