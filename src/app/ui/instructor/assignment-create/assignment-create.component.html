@@ -14,7 +14,7 @@
 
       <label for="due_date"> Due Date: </label>
       <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Date"
+        <input matInput [matDatepicker]="picker" placeholder="Select a Date:"
               (dateInput)="captureEvent('input', $event)">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -24,7 +24,7 @@
 
       <label for="due_time"> Due Time: </label>
       <mat-form-field appearance="fill">
-        <mat-label>Select an option</mat-label>
+        <mat-label>Select a time slot: </mat-label>
         <mat-select [(value)]="timeSelected">
           <mat-option>None</mat-option>
           <mat-option value="0800">8:00am</mat-option>
@@ -63,24 +63,39 @@
       </mat-form-field>
 
       <br>
-      <label for="select_school"> Select School: </label>
+      <label for="select_school"> Select A School: </label>
 
       <mat-form-field appearance="fill">
-        <mat-label>Select an option:</mat-label>
-        <mat-select [(value)]="schoolSelected">
-          <mat-option *ngFor="let schoolOption of schoolOptions; let i = index" [value]="i">
+        <mat-label> Select a school: </mat-label>
+        <mat-select [(value)]="schoolSelected" (selectionChange) = "populateInstrumentOptions()">
+          <mat-option *ngFor="let schoolOption of schoolOptions" [value]="schoolOption">
             {{schoolOption}}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <br>
-      <button class = "filter_button" (click)="filterInstruments()">Filter Instruments</button>
 
-      <br>
-      <label for = "select_instrument"> Select Instrument </label>
+      <label for = "select_instrument"> Select An Instrument </label>
+      <mat-form-field appearance="fill">
+        <mat-label>Select an instrument:</mat-label>
+        <mat-select [(value)]="instrumentSelected" (selectionChange) = "populateLevelOptions()">
+          <mat-option *ngFor="let instrumentOption of instrumentOptions" [value]="instrumentOption">
+            {{instrumentOption}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <br>
 
       <label for = "select_level"> Select Level </label>
+      <mat-form-field appearance="fill">
+        <mat-label>Select A Level:</mat-label>
+        <mat-select [(value)]="levelSelected">
+          <mat-option *ngFor="let levelOption of levelOptions" [value]="levelOption">
+            {{levelOption}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
 
       <br>
       <button type="submit">Submit</button>

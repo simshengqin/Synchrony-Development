@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Classes, School } from 'src/app/core/models/classes';
 
 @Component({
   selector: 'app-assignment-create',
@@ -12,32 +11,20 @@ import { Classes, School } from 'src/app/core/models/classes';
 
 export class AssignmentCreateComponent implements OnInit {
 
-
-  // Substantiate array to take in class permissions
-  permissions: School[] = [];
-
   // Substantiate array to take in available schools:
-  schoolOptions: String[] = [];
-
-
-  // Hardcoded data: Pending CRUD Operation update
-  // User has access to school SJIJ, teaches in Bass P3, P5, and Flute P1
-  SJIJ_Class1 = new Classes("Bass",["P3","P5"]);
-  SJIJ_Class2 = new Classes("Flute",["P1"]);
-
-  // SJII = new School("SJIJ",[this.SJIJ_Class1, this.SJIJ_Class2]);
-
-  // User has access to school ACS, teaches in Drums P6, P2, and Piano P5, P4
-  ACS_Class1 = new Classes("Drums",["P6","P2"]);
-  ACS_Class2 = new Classes("Piano",["P5","P4"]);
-  // ACS = new School("ACS", [this.ACS_Class1, this.ACS_Class2]);
-
   event!: Date | null;
   newAssignmentForm!:FormGroup;
   timeSelected!: any ;
-  schoolSelected!: any; // This is an index
-  instrumentOptions: String[] = [];
-
+  schoolSelected!: String;
+  instrumentSelected!: any;
+  instrumentOptions :String[] = [];
+  schoolOptions!: String[];
+  sessionAccount!: any;
+  schoolInstrumentLevel!: String[];
+  school:any;
+  classGroups : String[] = [];
+  levelSelected : any;
+  levelOptions : String[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -47,17 +34,12 @@ export class AssignmentCreateComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
 
-    // Hardcoding data, pending CRUD Operation update
-    this.permissions.push(new School("SJIJ",[this.SJIJ_Class1, this.SJIJ_Class2]));
-    this.permissions.push(new School("ACS", [this.ACS_Class1, this.ACS_Class2]))
-    console.log(this.permissions);
-
     // Populate school dropdown list
-    for (var sch of this.permissions ){
-      this.schoolOptions.push(sch.getSchoolName());
-    }
-
-    console.log(this.schoolOptions);
+    this.sessionAccount = JSON.parse(sessionStorage.getItem("account")!);
+    this.schoolOptions = this.sessionAccount['school'];
+    console.log(this.schoolOptions)
+    this.schoolInstrumentLevel = this.sessionAccount['school_instrument_level'];
+    console.log(this.schoolInstrumentLevel)
   }
 
   initForm(): void{
@@ -75,5 +57,22 @@ export class AssignmentCreateComponent implements OnInit {
     this.event = event.value;
   }
 
-  filterInstruments(){}
+  populateInstrumentOptions(){
+    console.log("Instrument Function Triggered");
+    for (var classGroup of this.schoolInstrumentLevel){
+      // Split classgroup to find school
+      this.school = classGroup.split("_")[0];
+      if(this.school == this.schoolSelected){
+        this.classGroups.push(classGroup);
+        this.instrumentOptions.push(classGroup.split("_")[1]);
+      }
+    }
+  }
+
+  populateLevelOptions(){
+    for (var classGroup of this.classGroups){
+      this.levelOptions.push(classGroup.split("_")[2])
+    }
+  }
+
 }
