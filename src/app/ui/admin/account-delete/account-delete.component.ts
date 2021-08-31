@@ -18,6 +18,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   // set table data
   dataSource!:any;
   displayedColumns:string[] = ['username', 'role', 'school', 'group', 'action'];
+  actionType:string = "accountDelete";
 
   // set filter data
   schools:string[] = [];
@@ -49,7 +50,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   async retrieve_all_accounts(){
     const data = await this.crudservice.read('accounts').pipe(first()).toPromise();
     if(data!=undefined||data!=null){
-      this.dataSource = data
+      //this.dataSource = data
       for(var ele of data){
         try{
           this.create_account(ele)
@@ -65,6 +66,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
           console.log("something wrong with the data! check the database!")
         }
       }
+      this.dataSource = this.accounts
     }
   }
 
@@ -209,5 +211,23 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     }
     return filterResult
   } // End of Method
+
+  delete_doc_id($event:any):void{
+    if($event!=""||$event!=null){
+      console.log($event)
+      this.crudservice.delete("accounts",$event)
+      var result:Account[] = []
+      for(var ele of this.dataSource){
+        if(ele.docId != $event){
+          result.push(ele)
+        }
+      }
+      this.dataSource = result;
+    } else {
+      console.log("There is no account to delete!")
+    }
+  }
+
+
 
 }

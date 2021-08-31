@@ -69,6 +69,7 @@ import { TableComponent } from './shared/components/table/table.component';
 import { InputDropdownSelectComponent } from './shared/components/input-dropdown-select/input-dropdown-select.component';
 import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { InputSelectComponent } from './shared/components/input-select/input-select.component';
 
 
 
@@ -90,7 +91,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     StudentHomeComponent,
     TableComponent,
     InputDropdownSelectComponent,
-    AccountEditComponent
+    AccountEditComponent,
+    InputSelectComponent
   ],
   imports: [
     BrowserModule,

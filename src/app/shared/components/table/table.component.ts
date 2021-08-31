@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input} from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,8 +12,14 @@ export class TableComponent implements OnInit {
 
   @Input('dataSource') public dataSource:any;
   @Input('displayedColumns') public displayedColumns:any;
+  @Input('actionType') public actionType:any;
   @ViewChild(MatPaginator) paginator!:MatPaginator;
   @ViewChild(MatSort) sort!:MatSort;
+
+  deleteDataDocId!:string;
+  editDataDocId!:string;
+
+  @Output() public outputData = new EventEmitter<any>()
 
   constructor() { }
   
@@ -41,9 +47,31 @@ export class TableComponent implements OnInit {
     }
   }
 
+  deleteDocId(data:string){
+    this.deleteDataDocId = data
+    this.sentToParent();
+  }
+
+  editDocId(data:string){
+    this.editDataDocId = data;
+    this.sentToParent();
+  }
+
+  // Method: sent data to the parent 
+  sentToParent(){
+    if(this.deleteDataDocId!=null){
+      this.outputData.emit(this.deleteDataDocId)
+    }
+    if(this.editDataDocId!=null){
+      this.outputData.emit(this.editDataDocId)
+    }
+  }
+
   // Modal //
-  onOpen(event: any) {
+  onOpen(event:any) {
     console.log(event);
   }
+
+
 
 }

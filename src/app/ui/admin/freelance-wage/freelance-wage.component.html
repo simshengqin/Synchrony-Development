@@ -1,2 +1,8 @@
 <app-header></app-header>
-<p>freelance-wage works!</p>
+<div class="account-create-wrapper wrapper-padding">
+  <h1 class="mb-3"> Calculate Wages </h1>
+  <app-input-select [inputDataList]="schools" [name]="nameSchool" (outputData)="get_querry_data_schools($event)"></app-input-select>
+  <app-input-dropdown-select [inputDataList]="groups" [name]="nameGroup" (outputData)="get_querry_data_groups($event)"></app-input-dropdown-select>
+  <br>
+  <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType" (outputData)="edit_doc_id($event)"></app-table>
+</div>

@@ -9,8 +9,10 @@
   <app-input-dropdown-select [inputDataList]="roles" [name]="nameRole"  (outputData)="get_querry_data_roles($event)"></app-input-dropdown-select>
   <app-input-dropdown-select [inputDataList]="schools" [name]="nameSchool" (outputData)="get_querry_data_schools($event)"></app-input-dropdown-select>
   <app-input-dropdown-select [inputDataList]="groups" [name]="nameGroup" (outputData)="get_querry_data_groups($event)"></app-input-dropdown-select>
-<br>
-  <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" ></app-table>
+  <br>
+  <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType" (outputData)="delete_doc_id($event)"></app-table>
 </div>
+
+
 
 
