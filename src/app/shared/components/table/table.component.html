@@ -28,6 +28,11 @@
       <td mat-cell *matCellDef="let element"> {{element.school_group}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="last_name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> last_name </th>
+      <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
+    </ng-container>
+
     
     <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> action </th>

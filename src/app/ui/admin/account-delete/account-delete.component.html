@@ -1,9 +1,14 @@
 <app-header></app-header>
 <div class="account-create-wrapper wrapper-padding">
   <h1 class="mb-3">Delete Accounts</h1>
+  <!-- 
   <app-input-dropdown-select [roles]="roles" (outputData)="get_querry_data_roles($event)"></app-input-dropdown-select>
   <app-input-dropdown-select [schools]="schools" (outputData)="get_querry_data_schools($event)"></app-input-dropdown-select>
-  <app-input-dropdown-select [groups]="groups" (outputData)="get_querry_data_groups($event)"></app-input-dropdown-select>
+  <app-input-dropdown-select [groups]="groups" (outputData)="get_querry_data_groups($event)"></app-input-dropdown-select> -->
+  
+  <app-input-dropdown-select [inputDataList]="roles" [name]="nameRole"  (outputData)="get_querry_data_roles($event)"></app-input-dropdown-select>
+  <app-input-dropdown-select [inputDataList]="schools" [name]="nameSchool" (outputData)="get_querry_data_schools($event)"></app-input-dropdown-select>
+  <app-input-dropdown-select [inputDataList]="groups" [name]="nameGroup" (outputData)="get_querry_data_groups($event)"></app-input-dropdown-select>
 <br>
   <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" ></app-table>
 </div>

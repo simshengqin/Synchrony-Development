@@ -41,6 +41,7 @@ export class TableComponent implements OnInit {
     }
   }
 
+  // Modal //
   onOpen(event: any) {
     console.log(event);
   }
