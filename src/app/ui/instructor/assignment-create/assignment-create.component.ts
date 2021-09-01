@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { InputDropdownSelectComponent } from 'src/app/shared/components/input-dropdown-select/input-dropdown-select.component';
 
 @Component({
   selector: 'app-assignment-create',
@@ -29,6 +28,8 @@ export class AssignmentCreateComponent implements OnInit {
   buttonTexts: String[]= [];
   buttonText: String = "";
   buttonRepeat = false;
+  description!: any;
+  files: File[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -48,7 +49,8 @@ export class AssignmentCreateComponent implements OnInit {
 
   initForm(): void{
     this.newAssignmentForm = this.fb.group({
-      title:["",Validators.required]
+      title:["",Validators.required],
+      description: [""]
     })
     // console.log(this.loginForm);
   }
@@ -100,5 +102,7 @@ export class AssignmentCreateComponent implements OnInit {
   removeButton(i:number){
     delete this.buttonTexts[i];
   }
+
+  createAssignment(){}
 }
 

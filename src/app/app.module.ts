@@ -71,8 +71,6 @@ import { AccountEditComponent } from './ui/admin/account-edit/account-edit.compo
 import { MatNativeDateModule } from '@angular/material/core';
 import { InputSelectComponent } from './shared/components/input-select/input-select.component';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
