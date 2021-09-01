@@ -1,5 +1,10 @@
 .assignment_create_wrapper{
 
+
+  .create_assignment{
+    background-color:darkmagenta;
+  }
+
   .badge{
     background: green;
     color: white;
@@ -45,7 +50,7 @@
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 50%;
+    width: 30%;
   }
 
   /* Add a hover effect for buttons */
