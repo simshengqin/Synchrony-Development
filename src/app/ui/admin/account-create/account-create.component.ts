@@ -3,7 +3,7 @@ import {first} from 'rxjs/operators';
 import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
 import {ToastrService} from 'ngx-toastr';
 import {CrudService} from '../../../core/services/crud.service';
-import {Account} from '../../../core/models/Account';
+import {Account} from '../../../../app/core/models/account';
 
 @Component({
   selector: 'app-account-create',
@@ -68,7 +68,7 @@ export class AccountCreateComponent implements OnInit {
             username: csvRecord.username,
             role: csvRecord.role,
             school: csvRecord.school,
-            school_group: csvRecord.school_group,
+            school_instrument_level: csvRecord.school_instrument_level,
             first_name: csvRecord.first_name,
             last_name: csvRecord.last_name,
             password: csvRecord.password,

@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
 import { CrudService } from 'src/app/core/services/crud.service';
-import { Account } from 'src/app/core/models/Account';
+import { Account } from '../../../core/models/account';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -63,7 +63,7 @@ export class FreelanceWageComponent implements OnInit {
       username: data.username,
       role: data.role,
       school: data.school,
-      school_group: data.school_group,
+      school_instrument_level: data.school_instrument_level,
       first_name: data.first_name,
       last_name: data.last_name,
       password: data.password,

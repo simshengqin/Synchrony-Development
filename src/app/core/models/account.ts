@@ -4,8 +4,8 @@ export interface Account {
   password: string;
   first_name: string;
   last_name: string;
-  school: string;
-  school_group: string;
+  school: string[];
+  school_instrument_level: string[];
   role: Role;
   first_login: boolean;
 }

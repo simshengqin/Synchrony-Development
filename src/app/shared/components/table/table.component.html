@@ -19,13 +19,28 @@
     
     <ng-container matColumnDef="school">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> school </th>
-      <td mat-cell *matCellDef="let element"> {{element.school}} </td>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngFor="let tag of element.school; let i = index">
+          <span *ngIf="tag =='NA'">
+            {{tag}}
+          </span>
+          <span *ngIf="tag!='NA'">
+            ({{i+1}}) {{tag}}
+          </span>
+        </ng-container>
+      </td>
     </ng-container>
   
-    
+    <!-- 
     <ng-container matColumnDef="group">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> group </th>
       <td mat-cell *matCellDef="let element"> {{element.school_group}} </td>
+    </ng-container>
+    -->
+
+    <ng-container matColumnDef="school_instrument_level">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> school_instrument_level </th>
+      <td mat-cell *matCellDef="let element"> {{element.school_instrument_level}} </td>
     </ng-container>
 
     <ng-container matColumnDef="last_name">
