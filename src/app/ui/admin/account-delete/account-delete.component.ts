@@ -15,6 +15,8 @@ import { first } from 'rxjs/operators';
 export class AccountDeleteComponent implements OnInit, AfterViewInit {
 
   accounts:Account[] = [];
+  accountDetail!:Account;
+  accountUsername!:string;
   // set table data
   dataSource!:any;
   displayedColumns:string[] = ['username', 'role', 'school', 'school_instrument_level', 'action'];
@@ -60,6 +62,8 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.retrieve_all_accounts();
+    this.accountDetail = JSON.parse(sessionStorage.getItem("account")!);
+    this.accountUsername = this.accountDetail.username
   }
 
   ngAfterViewInit(){

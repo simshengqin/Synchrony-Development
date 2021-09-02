@@ -13,6 +13,7 @@ export class TableComponent implements OnInit {
   @Input('dataSource') public dataSource:any;
   @Input('displayedColumns') public displayedColumns:any;
   @Input('actionType') public actionType:any;
+  @Input('accountUsername') public accountUsername:any; // for admin to not allow to delete his/her own account
   @ViewChild(MatPaginator) paginator!:MatPaginator;
   @ViewChild(MatSort) sort!:MatSort;
 
