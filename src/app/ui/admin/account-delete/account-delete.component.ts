@@ -23,11 +23,11 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   actionType:string = "accountDelete";
 
   // === set filter data === //
-  schools:string[] = [];
+  //schools:string[] = [];
   school_instrument_levels:string[] = [];
   //groups:string[] = [];
-  instruments:string[] = [];
-  levels:string[] = [];
+  //instruments:string[] = [];
+  //levels:string[] = [];
   roles:string[] = ["admin","instructor","student"];
 
   sub_schools:string[] = [];
@@ -50,7 +50,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   selectSchools:string[] = [];
   //selectGroups:string[] = [];
   selectGroups:string[] = [];
-  selectSchoolInstrumentLevels:string[] = [];
+  //selectSchoolInstrumentLevels:string[] = [];
   select_Combine_SchoolInstrumentLevels:string[] = [];
   selectSubSchools:string[] = [];
   selectSubInstruments:string[] = [];
@@ -79,14 +79,14 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
           this.create_account(ele)
           //var schoolgrp = ele["school_group"].split(",")
           //var school = ele["school"].split(",")
-          var school = ele["school"]
+          //var school = ele["school"]
           var school_instrument_level = ele["school_instrument_level"]
           //this.set_distint_school_levels(ele["levels"])
           //this.set_distint_school_instruments(ele["instruments"])
           // get distint school groups
           //this.set_distint_school_group(schoolgrp);
           // get distint school 
-          this.set_distint_school(school);
+          //this.set_distint_school(school);
           this.set_distint_school_instrument_level(school_instrument_level);
         } catch(e){
           console.log("something wrong with the data! check the database!")
@@ -173,6 +173,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   }
   */
   // Method: 
+  /*
   set_distint_school(data:string[]){
     for(var dataSchool of data){
       if(this.schools.indexOf(dataSchool)==-1){
@@ -180,6 +181,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       }
     }
   }
+  */
   // Method: 
   set_distint_school_instrument_level(data:string[]){
     for(var dataSchoolInstrumentLevel of data){
