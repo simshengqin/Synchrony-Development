@@ -76,6 +76,7 @@ import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 import {VideojsRecordComponent} from "./shared/components/videojs-record/videojs-record.component";
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { AngularFireStorage } from '@angular/fire/storage';
+import {AssignmentViewComponent} from "./ui/student/assignment-view/assignment-view.component";
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { AngularFireStorage } from '@angular/fire/storage';
     InputDropdownSelectComponent,
     AccountEditComponent,
     InputSelectComponent,
-    VideojsRecordComponent
+    VideojsRecordComponent,
+    AssignmentViewComponent
   ],
   imports: [
     BrowserModule,
@@ -140,7 +142,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
     MatPaginatorModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase, 'Synchrony'),
-    AngularFireStorage, // Required for everything
+
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
     AngularFireStorageModule,  // Only required for storage features
@@ -155,7 +157,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
     }),
     NgxCsvParserModule,
     FlexLayoutModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

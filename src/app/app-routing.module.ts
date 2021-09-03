@@ -17,6 +17,7 @@ import { AssignmentEditComponent } from './ui/instructor/assignment-edit/assignm
 import { AssignmentMarkComponent } from './ui/instructor/assignment-mark/assignment-mark.component';
 // Student
 import { StudentHomeComponent } from './ui/student/student-home/student-home.component';
+import {AssignmentViewComponent} from "./ui/student/assignment-view/assignment-view.component";
 
 const routes: Routes = [{
   path: '',
@@ -88,6 +89,11 @@ const routes: Routes = [{
       path: 'student/home',
       pathMatch: 'full',
       component: StudentHomeComponent
+    },
+    {
+      path: 'student/assignment/view',
+      pathMatch: 'full',
+      component: AssignmentViewComponent
     },
     // Shared
     {

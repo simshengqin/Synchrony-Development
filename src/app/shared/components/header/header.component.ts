@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
   accountDetail!:any;
 
   constructor(
-    private router:Router
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -21,15 +21,15 @@ export class HeaderComponent implements OnInit {
     this.url = this.router.url;
   }
 
-  validate_session(){
-    if(sessionStorage.getItem("account")!=null){
-      this.accountDetail = JSON.parse(sessionStorage.getItem("account")!);
-      this.userRole = this.accountDetail['role'];
-      console.log(this.accountDetail);
+  validate_session(): void {
+    if(sessionStorage.getItem('account') != null){
+      this.accountDetail = JSON.parse(sessionStorage.getItem('account'));
+      this.userRole = this.accountDetail.role;
+      // console.log(this.accountDetail);
     }else {
-      this.router.navigate(['/login'])
+      this.router.navigate(['/login']);
     }
-    /* // === to be deleted (KIV) === // 
+    /* // === to be deleted (KIV) === //
     if(sessionStorage.getItem('role') != undefined || sessionStorage.getItem('role') != null){
         this.userRole = sessionStorage.getItem('role')
         console.log(this.userRole)
