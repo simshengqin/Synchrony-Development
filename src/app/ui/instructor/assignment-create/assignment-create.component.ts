@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-assignment-create',
@@ -33,6 +34,7 @@ export class AssignmentCreateComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private afStorage: AngularFireStorage
   ) {
   }
 
@@ -103,6 +105,36 @@ export class AssignmentCreateComponent implements OnInit {
     delete this.buttonTexts[i];
   }
 
-  createAssignment(){}
+  // Dropzone upload functions
+
+  onSelect(event:any) {
+    this.files.push(...event.addedFiles);
+  }
+
+  onRemove(event: any) {
+    this.files.splice(this.files.indexOf(event), 1);
+  }
+
+  upload(){
+    for(var ele of this.files){
+      console.log(ele);
+      var location:string = "assignment/test";
+      this.afStorage.upload( location, ele);
+      // /* Notes: file directory, create if does not exist:
+      // under assignments/assignmentDocid*/
+      // var location:string = "assignments/" + this.assignment.assignmentid + "/" + this.assignment.student + "/"
+      // this.afStorage.upload( location + file_name, ele)
+      // .then(()=>this.updateAssignment())
+      // .catch(()=>this.toastr.error("Unable to Upload Assignment!"))
+    }
+  }
+
+  createAssignment(){
+    this.upload();
+    // Create assignment 
+    // Retrieve assignment docID 
+    // Upload file based on assignment docID
+
+  }
 }
 

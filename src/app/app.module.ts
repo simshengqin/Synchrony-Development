@@ -74,6 +74,8 @@ import {AssignmentMarkIndividualComponent} from "./ui/instructor/assignment-mark
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 import {VideojsRecordComponent} from "./shared/components/videojs-record/videojs-record.component";
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -101,6 +103,7 @@ import {VideojsRecordComponent} from "./shared/components/videojs-record/videojs
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgxDropzoneModule,
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -136,7 +139,8 @@ import {VideojsRecordComponent} from "./shared/components/videojs-record/videojs
     MatSortModule,
     MatPaginatorModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebase, 'Synchrony'), // Required for everything
+    AngularFireModule.initializeApp(environment.firebase, 'Synchrony'),
+    AngularFireStorage, // Required for everything
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
     AngularFireStorageModule,  // Only required for storage features

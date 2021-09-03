@@ -114,6 +114,15 @@
       <button type="submit">Add Class</button> <button class="create_assignment" (click)="createAssignment()">Create Assignment</button>
     </form>
 
+    <!-- Dropzone -->
+
+    <div class="custom-dropzone" ngx-dropzone (change)="onSelect($event)" [accept]="'.pdf,.mp4'">
+      <ngx-dropzone-label> please upload your assignment here!</ngx-dropzone-label>
+      <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+        <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+      </ngx-dropzone-preview>
+    </div>
+
     <p>Date day: {{event?.getDate()}}</p>
     <!-- There is a bug in the calendar, be sure to add +1 later on  -->
     <p>Date month: {{event?.getMonth()}}</p>
