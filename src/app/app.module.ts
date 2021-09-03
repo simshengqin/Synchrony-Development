@@ -70,6 +70,9 @@ import { InputDropdownSelectComponent } from './shared/components/input-dropdown
 import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { InputSelectComponent } from './shared/components/input-select/input-select.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { AngularFireStorage } from '@angular/fire/storage';
+
 
 @NgModule({
   declarations: [
@@ -90,11 +93,12 @@ import { InputSelectComponent } from './shared/components/input-select/input-sel
     TableComponent,
     InputDropdownSelectComponent,
     AccountEditComponent,
-    InputSelectComponent
+    InputSelectComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgxDropzoneModule,
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -130,7 +134,8 @@ import { InputSelectComponent } from './shared/components/input-select/input-sel
     MatSortModule,
     MatPaginatorModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebase, 'Synchrony'), // Required for everything
+    AngularFireModule.initializeApp(environment.firebase, 'Synchrony'),
+    // AngularFireStorage, // Required for everything
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
     AngularFireStorageModule,  // Only required for storage features
