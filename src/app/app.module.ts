@@ -140,7 +140,6 @@ import { AngularFireStorage } from '@angular/fire/storage';
     MatPaginatorModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase, 'Synchrony'),
-    AngularFireStorage, // Required for everything
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
     AngularFireStorageModule,  // Only required for storage features
