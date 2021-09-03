@@ -4,6 +4,10 @@ import { Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormControl } from '@angular/forms';
+import { exit } from 'process';
+import { Assignment } from 'src/app/core/models/assignment';
+import { CrudService } from 'src/app/core/services/crud.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assignment-create',
@@ -30,15 +34,23 @@ export class AssignmentCreateComponent implements OnInit {
   buttonText: String = "";
   buttonRepeat = false;
   files: File[] = [];
-  isUndefined = false;
+  classUndefined = false;
   assignmentDocID: String; 
   assignmentCreateDate: Date;
   assignmentDueDate: Date;
   schools: String[] = [];
+  timeUndefined = false;
+  isSubmitClicked = false;
+  fileNames : String[] = [];
+  dueDateError = false;
+  createAssignmentButtonClickable = false;
+  docIdAfterUpload = "";
 
   constructor(
     private fb: FormBuilder,
-    private afStorage: AngularFireStorage
+    private afStorage: AngularFireStorage,
+    private crudService: CrudService,
+    private router:Router
   ) {
   }
 
@@ -99,11 +111,12 @@ export class AssignmentCreateComponent implements OnInit {
   }
 
   onSubmit(){
+
     // Check if any of the parameters are undefined. If undefined, show error and no action is taken
     if (this.schoolSelected === undefined|| this.instrumentOptions === undefined || this.levelSelected === undefined){
-      this.isUndefined = true;
+      this.classUndefined = true;
     } else {
-      this.isUndefined = false;
+      this.classUndefined = false;
       // Capture the school,instrument,levels details
       this.buttonText = this.schoolSelected + "_" + this.instrumentSelected + "_" + this.levelSelected;
 
@@ -114,14 +127,30 @@ export class AssignmentCreateComponent implements OnInit {
         this.buttonRepeat = true;
       } else {
         this.buttonTexts.push(this.buttonText)
+        
+        // Submit button is unclickable if there are no classes 
+        if (this.buttonTexts.length > 0){
+          this.createAssignmentButtonClickable = true;
+        } else {
+          this.createAssignmentButtonClickable = false;
+        }
       }
     }
     
   }
 
   removeButton(i:number){
-    delete this.buttonTexts[i];
+    this.buttonTexts.shift();
     this.buttonRepeat = false;
+
+    console.log(this.buttonTexts.length);
+    // Submit button is unclickable if there are no classes 
+    if (this.buttonTexts.length == 0){
+      this.createAssignmentButtonClickable = false;
+    } else {
+      this.createAssignmentButtonClickable = true;
+    }
+
   }
 
   // Dropzone upload functions
@@ -134,11 +163,14 @@ export class AssignmentCreateComponent implements OnInit {
     this.files.splice(this.files.indexOf(event), 1);
   }
 
-  upload(docID: String){
+  upload(){
+    this.docIdAfterUpload = sessionStorage.getItem("assignment_docId");
+    var index = 0;
     for(var ele of this.files){
       console.log(ele);
-      var location:string = "assignment/test";
-      this.afStorage.upload( location, ele);
+      var location:string = "assignment/" + this.docIdAfterUpload+ "/" + this.fileNames[index];
+      this.afStorage.upload(location, ele);
+      index += 1;
       // /* Notes: file directory, create if does not exist:
       // under assignments/assignmentDocid*/
       // var location:string = "assignments/" + this.assignment.assignmentid + "/" + this.assignment.student + "/"
@@ -146,9 +178,15 @@ export class AssignmentCreateComponent implements OnInit {
       // .then(()=>this.updateAssignment())
       // .catch(()=>this.toastr.error("Unable to Upload Assignment!"))
     }
+    alert("Assignment has been created!");
+    this.router.navigate(["/instructor/home"]);
   }
 
+
   createAssignment(){
+
+    // To trigger title check validation 
+    this.isSubmitClicked = true;
 
     // Retrieving Necessary information
     // Creating assignment Create Time 
@@ -156,37 +194,84 @@ export class AssignmentCreateComponent implements OnInit {
     console.log("Assignment Time: ", this.assignmentCreateDate);
 
     // Retrieve Assignment Due date 
-    // new Date ( year, month, date[, hour, minute, second, millisecond ]):
+    // Validation check for due date: Cannot be undefined 
+    if (this.event == null){
+      this.timeUndefined = true;
+      return;
+    }
     this.assignmentDueDate = new Date(this.event.getUTCFullYear(), this.event?.getMonth(),this.event.getDate(),this.timeSelected.substring(0,2), this.timeSelected.substring(2,4));
     console.log("Assignment Due Time:", this.assignmentDueDate);
 
-    // Retrieve instructor Account DocID
-    console.log("DocID:", this.sessionAccount['docId']);
 
-    // Retrieve description
-    console.log("description:", this.newAssignmentForm.value.description);
+    // Due date validation
+    // Assignment cannot be due before current date 
 
-    // Retrieve assignment name
-    console.log("title:", this.newAssignmentForm.value.title);
-
-    // Retrieve schools 
-    
-    for (let buttonText of this.buttonTexts){
-      // Retrieve schools and put in schools array 
-      if (!this.schools.includes(buttonText.split("_")[0])){
-        this.schools.push(buttonText.split("_")[0]);
-      }
+    if (this.assignmentCreateDate > this.assignmentDueDate){
+      this.dueDateError = true;
+      return;
+    } else {
+      this.dueDateError = false;
     }
 
-    console.log("Schools:", this.schools);
+    console.log(this.dueDateError)
 
+    if (this.newAssignmentForm.status){
 
+      // Retrieve instructor Account DocID
+      console.log("DocID:", this.sessionAccount['docId']);
 
-    // Upload file based on assignment docID
+      // Retrieve description
+      console.log("description:", this.newAssignmentForm.value.description);
 
-    // this.upload();
-    
+      // Retrieve assignment name
+      console.log("title:", this.newAssignmentForm.value.title);
 
+      // Retrieve schools 
+      console.log(this.buttonTexts);
+      for (let buttonText of this.buttonTexts){
+        // Retrieve schools and put in schools array 
+        if (!this.schools.includes(buttonText.split("_")[0])){
+          this.schools.push(buttonText.split("_")[0]);
+        }
+      }
+
+      console.log("Schools:", this.schools);
+
+      // Get schoolInstrumentLevel
+      console.log("schoolInstrumentLevel", this.buttonTexts);
+
+      // get file names
+      var i = 0;
+      for (let i = 0; i < this.files.length; i++){
+        this.fileNames.push(this.files[i].name);
+      }
+      console.log("file names:",  this.fileNames);
+
+      // Pack all information into assignment class:
+
+      var finalAssignmentSubmission: Assignment = {
+        instructor_account_doc_id: this.sessionAccount['docId'],
+        created_datetime: this.assignmentCreateDate,
+        description: this.newAssignmentForm.value.description,
+        due_datetime: this.assignmentDueDate,
+        name: this.newAssignmentForm.value.title,
+        school: this.school,
+        school_instrument_level: this.buttonTexts,
+        file_names: this.fileNames
+      };
+
+      this.crudService.create('assignments', finalAssignmentSubmission)
+      .then(function(docRef) {
+        console.log("Document: ", docRef);
+        console.log("Document", typeof(docRef));
+        sessionStorage.setItem("assignment_docId",docRef);
+      }).catch(()=>console.log("Unable to Upload Assignment!"));
+      
+      console.log("no man's land")
+      
+      this.upload();
+
+    }
   }
 }
 

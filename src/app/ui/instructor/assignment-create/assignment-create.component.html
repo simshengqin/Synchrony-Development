@@ -101,12 +101,24 @@
 
       <button class="badge" *ngFor="let buttonText of buttonTexts; let i = index;" (click)="removeButton(i)">{{buttonText}}</button>
 
-      <mat-error *ngIf="buttonRepeat">
+      <mat-error *ngIf="buttonRepeat && !isSubmitClicked">
         Don't repeat the same class twice!
       </mat-error>
 
-      <mat-error *ngIf="isUndefined">
-        You must specify a school, instrument and level to add a class.
+      <mat-error *ngIf="classUndefined">
+        You must specify a school, instrument and level to add a class!
+      </mat-error>
+
+      <mat-error *ngIf="timeUndefined">
+        Due date or due time has not been specified!
+      </mat-error>
+
+      <mat-error *ngIf="dueDateError">
+        Your due date is set before today!
+      </mat-error>
+
+      <mat-error *ngIf="title.errors?.required && isSubmitClicked">
+        Please insert an assignment title!
       </mat-error>
 
       <br>
@@ -115,7 +127,7 @@
       <textarea rows="4" cols="80" formControlName="description"></textarea>
 
       <br>
-      <button type="submit">Add Class</button> <button class="create_assignment" (click)="createAssignment()">Create Assignment</button>
+      <button type="submit">Add Class</button> <button [disabled]="!createAssignmentButtonClickable" class="create_assignment" (click)="createAssignment()">Create Assignment</button>
     </form>
 
     <!-- Dropzone -->
