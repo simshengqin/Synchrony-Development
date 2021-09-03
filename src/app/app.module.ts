@@ -70,9 +70,12 @@ import { InputDropdownSelectComponent } from './shared/components/input-dropdown
 import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { InputSelectComponent } from './shared/components/input-select/input-select.component';
+import {AssignmentMarkIndividualComponent} from "./ui/instructor/assignment-mark-individual/assignment-mark-individual.component";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
+import {VideojsRecordComponent} from "./shared/components/videojs-record/videojs-record.component";
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { AngularFireStorage } from '@angular/fire/storage';
-
 
 @NgModule({
   declarations: [
@@ -89,11 +92,13 @@ import { AngularFireStorage } from '@angular/fire/storage';
     AssignmentCreateComponent,
     AssignmentEditComponent,
     AssignmentMarkComponent,
+    AssignmentMarkIndividualComponent,
     StudentHomeComponent,
     TableComponent,
     InputDropdownSelectComponent,
     AccountEditComponent,
     InputSelectComponent,
+    VideojsRecordComponent
   ],
   imports: [
     BrowserModule,
@@ -135,7 +140,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
     MatPaginatorModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase, 'Synchrony'),
-    // AngularFireStorage, // Required for everything
+    AngularFireStorage, // Required for everything
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
     AngularFireStorageModule,  // Only required for storage features
@@ -148,7 +153,9 @@ import { AngularFireStorage } from '@angular/fire/storage';
       positionClass: 'toast-top-center',
       preventDuplicates: true,
     }),
-    NgxCsvParserModule
+    NgxCsvParserModule,
+    FlexLayoutModule,
+    NgxExtendedPdfViewerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// Shared 
+// Shared
 import { LoginComponent} from './ui/home/login/login.component';
 import { UpdatePasswordComponent } from './ui/home/update_password/update-password/update-password.component';
 import { CardsComponent } from './shared/components/cards/cards.component';
@@ -15,7 +15,7 @@ import { InstructorHomeComponent } from './ui/instructor/instructor-home/instruc
 import { AssignmentCreateComponent } from './ui/instructor/assignment-create/assignment-create.component';
 import { AssignmentEditComponent } from './ui/instructor/assignment-edit/assignment-edit.component';
 import { AssignmentMarkComponent } from './ui/instructor/assignment-mark/assignment-mark.component';
-// Student 
+// Student
 import { StudentHomeComponent } from './ui/student/student-home/student-home.component';
 
 const routes: Routes = [{
@@ -27,7 +27,7 @@ const routes: Routes = [{
       component: LoginComponent
     },
     {
-      path:'update_password', 
+      path:'update_password',
       pathMatch: 'full',
       component: UpdatePasswordComponent
     },
@@ -74,6 +74,11 @@ const routes: Routes = [{
       component: AssignmentEditComponent
     },
     {
+      path: 'instructor/assignment/mark/individual',
+      pathMatch: 'full',
+      component: AssignmentMarkComponent
+    },
+    {
       path: 'instructor/assignment/mark',
       pathMatch: 'full',
       component: AssignmentMarkComponent
@@ -84,13 +89,13 @@ const routes: Routes = [{
       pathMatch: 'full',
       component: StudentHomeComponent
     },
-    // Shared 
+    // Shared
     {
       path: 'test/cards',
       pathMatch: 'full',
       component: CardsComponent
     },
-    // Default 
+    // Default
     {
       path: '**',
       pathMatch: 'full',

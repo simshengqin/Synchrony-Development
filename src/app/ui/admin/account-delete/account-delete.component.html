@@ -7,10 +7,16 @@
   <app-input-dropdown-select [groups]="groups" (outputData)="get_querry_data_groups($event)"></app-input-dropdown-select> -->
   
   <app-input-dropdown-select [inputDataList]="roles" [name]="nameRole"  (outputData)="get_querry_data_roles($event)"></app-input-dropdown-select>
-  <app-input-dropdown-select [inputDataList]="schools" [name]="nameSchool" (outputData)="get_querry_data_schools($event)"></app-input-dropdown-select>
-  <app-input-dropdown-select [inputDataList]="groups" [name]="nameGroup" (outputData)="get_querry_data_groups($event)"></app-input-dropdown-select>
   <br>
-  <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType" (outputData)="delete_doc_id($event)"></app-table>
+  <!-- <app-input-dropdown-select [inputDataList]="schools" [name]="nameSchool" (outputData)="get_querry_data_schools($event)"></app-input-dropdown-select> -->
+  <!-- <app-input-dropdown-select [inputDataList]="school_instrument_levels" [name]="nameSchoolInstrumentLevels" (outputData)="get_querry_data_school_instrument_level($event)"></app-input-dropdown-select> -->
+  <!-- <app-input-dropdown-select [inputDataList]="groups" [name]="nameGroup" (outputData)="get_querry_data_groups($event)"></app-input-dropdown-select> -->
+  <ng-container><app-input-dropdown-select [inputDataList]="sub_schools" [name]="nameSchool" (outputData)="get_querry_data_sub_schools($event)"></app-input-dropdown-select></ng-container>
+  <ng-container *ngIf="sub_display_instrument"><app-input-dropdown-select [inputDataList]="sub_instrument" [name]="nameInstrument" (outputData)="get_querry_data_sub_instruments($event)"></app-input-dropdown-select></ng-container>
+  <ng-container *ngIf="sub_display_levels"><app-input-dropdown-select [inputDataList]="sub_levels" [name]="nameLevels" (outputData)="get_querry_data_sub_levels($event)"></app-input-dropdown-select></ng-container>
+
+  <br>
+  <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType" [accountUsername]="accountUsername" (outputData)="delete_doc_id($event)"></app-table>
 </div>
 
 
