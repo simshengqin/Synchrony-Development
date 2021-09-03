@@ -70,6 +70,10 @@ import { InputDropdownSelectComponent } from './shared/components/input-dropdown
 import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { InputSelectComponent } from './shared/components/input-select/input-select.component';
+import {AssignmentMarkIndividualComponent} from "./ui/instructor/assignment-mark-individual/assignment-mark-individual.component";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
+import {VideojsRecordComponent} from "./shared/components/videojs-record/videojs-record.component";
 
 @NgModule({
   declarations: [
@@ -86,11 +90,13 @@ import { InputSelectComponent } from './shared/components/input-select/input-sel
     AssignmentCreateComponent,
     AssignmentEditComponent,
     AssignmentMarkComponent,
+    AssignmentMarkIndividualComponent,
     StudentHomeComponent,
     TableComponent,
     InputDropdownSelectComponent,
     AccountEditComponent,
-    InputSelectComponent
+    InputSelectComponent,
+    VideojsRecordComponent
   ],
   imports: [
     BrowserModule,
@@ -143,7 +149,9 @@ import { InputSelectComponent } from './shared/components/input-select/input-sel
       positionClass: 'toast-top-center',
       preventDuplicates: true,
     }),
-    NgxCsvParserModule
+    NgxCsvParserModule,
+    FlexLayoutModule,
+    NgxExtendedPdfViewerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
