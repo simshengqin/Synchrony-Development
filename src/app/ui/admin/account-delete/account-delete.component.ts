@@ -206,19 +206,21 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     this.selectRoles = $event.value
     this.query_table_with_filter()
   }
+  /*
   get_querry_data_schools($event:any):void{
     this.selectSchools = $event.value
     this.query_table_with_filter()
-  }
+  } */
   /*
   get_querry_data_groups($event:any):void{
     this.selectGroups = $event.value
     this.query_table_with_filter()
   } */
+  /*
   get_querry_data_school_instrument_level($event:any):void{
     this.selectSchools = $event.value
     this.query_table_with_filter()
-  }
+  } */
 
   get_querry_data_sub_schools($event:any):void{
     this.selectSubSchools = $event.value
@@ -229,8 +231,6 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       this.sub_display_instrument = true
       this.sub_display_levels = false
     }
-    //this.combine_querry_search_data()
-    //this.query_table_with_filter()
   }
   get_querry_data_sub_instruments($event:any):void{
     this.selectSubInstruments = $event.value
@@ -239,8 +239,6 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     } else {
       this.sub_display_levels = true
     }
-    //this.combine_querry_search_data()
-    //this.query_table_with_filter()
   }
   get_querry_data_sub_levels($event:any):void{
     this.selectSubLevels = $event.value
@@ -248,6 +246,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     this.query_table_with_filter()
   }
 
+  // Method: Combine all the permutation of the sub Strings of School, Instrument and levels
   combine_querry_search_data(){
     console.log(this.selectSubSchools)
     console.log(this.selectSubInstruments)
@@ -265,25 +264,25 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    console.log(this.select_Combine_SchoolInstrumentLevels)
+    //console.log(this.select_Combine_SchoolInstrumentLevels)
   }
 
   // Method: 
   query_table_with_filter(){
     var result:Account[] = [];
     result = this.accounts;
-    //console.log(this.selectRoles.length);
     if(this.selectRoles.length!=0){
       result = this.filtering_by_role(result, this.selectRoles)
+    }
+    if(this.select_Combine_SchoolInstrumentLevels.length!=0){
+      result = this.filtering_by_school_instrument_levels(result, this.select_Combine_SchoolInstrumentLevels)
     }
     /*
     if(this.selectSchools.length!=0){
       result = this.filtering_by_school(result, this.selectSchools)
     } */
-    if(this.select_Combine_SchoolInstrumentLevels.length!=0){
-      result = this.filtering_by_school_instrument_levels(result, this.select_Combine_SchoolInstrumentLevels)
-    }
-    console.log(result)
+
+    //console.log(result)
     /*
     if(this.selectSchoolInstrumentLevels.length!=0){
       result = this.filtering(result, this.selectSchoolInstrumentLevels)
@@ -363,6 +362,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   }
   */
 
+  // Brute force method
   filtering_by_school_instrument_levels(result:Account[], filter:string[]):Account[]{
     var filterResult:Account[] = [];
     var exist:boolean = false;
@@ -385,7 +385,21 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       }
     }
     return filterResult
+  } 
+
+  // Method: query database method 
+  /*
+  filtering_by_school_instrument_levels(result:Account[], filter:string[]):Account[]{
+    var filterResult:Account[] = [];
+    this.crudservice.read("accounts","school_instrument_level","array-contains-any",filter).pipe(first()).subscribe(async (data:any) => {
+      if(data!=null || data!=undefined){
+        filterResult = data
+        console.log(data)
+      } 
+    })
+    return filterResult
   }
+  */
 
   /*
   // Method: filtering function 

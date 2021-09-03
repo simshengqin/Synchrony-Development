@@ -142,7 +142,6 @@ import {AssignmentViewComponent} from "./ui/student/assignment-view/assignment-v
     MatPaginatorModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase, 'Synchrony'),
-
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
     AngularFireStorageModule,  // Only required for storage features

@@ -105,6 +105,10 @@
         Don't repeat the same class twice!
       </mat-error>
 
+      <mat-error *ngIf="isUndefined">
+        You must specify a school, instrument and level to add a class.
+      </mat-error>
+
       <br>
       <label for = "description"> Assignment Description: </label>
       <br>
@@ -133,7 +137,6 @@
     <p>Level selected: {{levelSelected}}</p>
     <p>Form Value: {{ newAssignmentForm.value | json }}</p>
     <p>Form status: {{ newAssignmentForm.status | json }}</p>
-    <p>Assignment Description {{description}}</p>
 
   </div>
 </div>

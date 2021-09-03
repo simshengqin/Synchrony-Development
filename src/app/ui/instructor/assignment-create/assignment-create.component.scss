@@ -1,6 +1,5 @@
 .assignment_create_wrapper{
 
-
   .create_assignment{
     background-color:darkmagenta;
   }
@@ -10,6 +9,7 @@
     color: white;
     width: auto;
     margin: 10px;
+    font-size: 20px;
   }
 
   .center {
@@ -46,8 +46,10 @@
   button {
     background-color: blue;
     color: white;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-right: 15px; 
     padding: 14px 20px;
-    margin: 8px 0;
     border: none;
     cursor: pointer;
     width: 30%;
