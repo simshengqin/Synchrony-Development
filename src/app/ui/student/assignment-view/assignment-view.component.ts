@@ -3,6 +3,9 @@ import {first} from 'rxjs/operators';
 import {Assignment} from '../../../core/models/assignment';
 import {ActivatedRoute} from '@angular/router';
 import {CrudService} from "../../../core/services/crud.service";
+import {AssignmentsSubmissionsAndFeedback} from "../../../core/models/assignments_submissions_and_feedback";
+import {DatePipe} from "@angular/common";
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-assignment-view',
@@ -30,12 +33,35 @@ export class AssignmentViewComponent implements OnInit {
     // private assignmentSubmissionService: AssignmentSubmissionService,
     private activatedRoute: ActivatedRoute,
     private crudservice: CrudService,
+    private translateService: TranslateService,
     // private filterService: FilterService,
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.dataSource = await this.crudservice.read('assignments').pipe(first()).toPromise();
-    console.log(this.dataSource);
+    const loggedInUser = JSON.parse(sessionStorage.getItem('account'));
+    // console.log(loggedInUser);
+    const assignments = await this.crudservice.read('assignments',
+    'school_instrument_level', 'array-contains-any', loggedInUser.school_instrument_level).pipe(first()).toPromise();
+    this.translateService.use('en');
+    const datePipe = new DatePipe(this.translateService.currentLang);
+    for (const assignment of assignments) {
+      assignment.instructor =  await this.crudservice.readByDocId(
+        'accounts', assignment.instructor_account_doc_id).pipe(first()).toPromise();
+      assignment.submission_status = 'Pending Submission';
+      const assignmentSubmission: Array<AssignmentsSubmissionsAndFeedback> =
+        await this.crudservice.read('assignments_submissions_and_feedback',
+          'student_doc_id', '==', loggedInUser.docId,
+          'assignment_doc_id', '==', assignment.docId).pipe(first()).toPromise();
+      // console.log(assignmentSubmission);
+      if (assignmentSubmission.length > 0) {
+        assignment.submission_status = 'Last submitted on ' + datePipe.transform(assignmentSubmission[0].submitted_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
+      }
+      else {
+        assignment.submission_status = 'Pending Submission';
+      }
+    }
+    this.dataSource = assignments;
+    // console.log(this.dataSource);
     // const student = await this.studentService.getStudent(localStorage.getItem('activeDocId'))
     //   .pipe(first())
     //   .toPromise();

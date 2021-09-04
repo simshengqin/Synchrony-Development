@@ -20,28 +20,28 @@ export class AssignmentCreateComponent implements OnInit {
   event!: Date | null;
   newAssignmentForm!:FormGroup;
   timeSelected!: any ;
-  schoolSelected!: String;
+  schoolSelected!: string;
   instrumentSelected!: any;
-  instrumentOptions :String[] = [];
-  schoolOptions!: String[];
+  instrumentOptions :string[] = [];
+  schoolOptions!: string[];
   sessionAccount!: any;
-  schoolInstrumentLevel!: String[];
+  schoolInstrumentLevel!: string[];
   school:any;
-  classGroups : String[] = [];
+  classGroups : string[] = [];
   levelSelected : any;
-  levelOptions : String[] = [];
-  buttonTexts: String[]= [];
-  buttonText: String = "";
+  levelOptions : string[] = [];
+  buttonTexts: string[]= [];
+  buttonText: string = "";
   buttonRepeat = false;
   files: File[] = [];
   classUndefined = false;
-  assignmentDocID: String; 
+  assignmentDocID: string;
   assignmentCreateDate: Date;
   assignmentDueDate: Date;
-  schools: String[] = [];
+  schools: string[] = [];
   timeUndefined = false;
   isSubmitClicked = false;
-  fileNames : String[] = [];
+  fileNames : string[] = [];
   dueDateError = false;
   createAssignmentButtonClickable = false;
   docIdAfterUpload = "";
@@ -127,8 +127,8 @@ export class AssignmentCreateComponent implements OnInit {
         this.buttonRepeat = true;
       } else {
         this.buttonTexts.push(this.buttonText)
-        
-        // Submit button is unclickable if there are no classes 
+
+        // Submit button is unclickable if there are no classes
         if (this.buttonTexts.length > 0){
           this.createAssignmentButtonClickable = true;
         } else {
@@ -136,7 +136,7 @@ export class AssignmentCreateComponent implements OnInit {
         }
       }
     }
-    
+
   }
 
   removeButton(i:number){
@@ -144,7 +144,7 @@ export class AssignmentCreateComponent implements OnInit {
     this.buttonRepeat = false;
 
     console.log(this.buttonTexts.length);
-    // Submit button is unclickable if there are no classes 
+    // Submit button is unclickable if there are no classes
     if (this.buttonTexts.length == 0){
       this.createAssignmentButtonClickable = false;
     } else {
@@ -185,16 +185,16 @@ export class AssignmentCreateComponent implements OnInit {
 
   createAssignment(){
 
-    // To trigger title check validation 
+    // To trigger title check validation
     this.isSubmitClicked = true;
 
     // Retrieving Necessary information
-    // Creating assignment Create Time 
+    // Creating assignment Create Time
     this.assignmentCreateDate = new Date();
     console.log("Assignment Time: ", this.assignmentCreateDate);
 
-    // Retrieve Assignment Due date 
-    // Validation check for due date: Cannot be undefined 
+    // Retrieve Assignment Due date
+    // Validation check for due date: Cannot be undefined
     if (this.event == null){
       this.timeUndefined = true;
       return;
@@ -204,7 +204,7 @@ export class AssignmentCreateComponent implements OnInit {
 
 
     // Due date validation
-    // Assignment cannot be due before current date 
+    // Assignment cannot be due before current date
 
     if (this.assignmentCreateDate > this.assignmentDueDate){
       this.dueDateError = true;
@@ -226,10 +226,10 @@ export class AssignmentCreateComponent implements OnInit {
       // Retrieve assignment name
       console.log("title:", this.newAssignmentForm.value.title);
 
-      // Retrieve schools 
+      // Retrieve schools
       console.log(this.buttonTexts);
       for (let buttonText of this.buttonTexts){
-        // Retrieve schools and put in schools array 
+        // Retrieve schools and put in schools array
         if (!this.schools.includes(buttonText.split("_")[0])){
           this.schools.push(buttonText.split("_")[0]);
         }
@@ -266,9 +266,9 @@ export class AssignmentCreateComponent implements OnInit {
         console.log("Document", typeof(docRef));
         sessionStorage.setItem("assignment_docId",docRef);
       }).catch(()=>console.log("Unable to Upload Assignment!"));
-      
+
       console.log("no man's land")
-      
+
       this.upload();
 
     }

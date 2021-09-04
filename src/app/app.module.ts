@@ -77,6 +77,7 @@ import {VideojsRecordComponent} from "./shared/components/videojs-record/videojs
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { AngularFireStorage } from '@angular/fire/storage';
 import {AssignmentViewComponent} from "./ui/student/assignment-view/assignment-view.component";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -157,6 +158,7 @@ import {AssignmentViewComponent} from "./ui/student/assignment-view/assignment-v
     NgxCsvParserModule,
     FlexLayoutModule,
     NgxExtendedPdfViewerModule,
+    TranslateModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

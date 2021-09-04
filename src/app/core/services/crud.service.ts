@@ -44,15 +44,16 @@ export class CrudService {
     return this.fs.col$(collection, ref => {
       let result;
       if (filterValue1 !== '') {result = ref.where(filterName1, filterOp1, filterValue1); }
-      else if (filterValue2 !== '') {result = ref.where(filterName2, filterOp2, filterValue2); }
-      else if (filterValue3 !== '') {result = ref.where(filterName3, filterOp3, filterValue3); }
-      else if (filterValue4 !== '') {result = ref.where(filterName4, filterOp4, filterValue4); }
-      for (let i = 1; i <= 4; i++) {
+      // else if (filterValue2 !== '') {result = ref.where(filterName2, filterOp2, filterValue2); }
+      // else if (filterValue3 !== '') {result = ref.where(filterName3, filterOp3, filterValue3); }
+      // else if (filterValue4 !== '') {result = ref.where(filterName4, filterOp4, filterValue4); }
+      for (let i = 2; i <= 4; i++) {
         switch (i) {
-          case 1:
-            if (filterValue1 !== '') {
-              result = result?.where(filterName1, filterOp1, filterValue1); }
-            break;
+          // case 1:
+          //   if (filterValue1 !== '') {
+          //     console.log('First filter op only');
+          //     result = result?.where(filterName1, filterOp1, filterValue1); }
+          //   break;
           case 2:
             if (filterValue2 !== '') {
               result = result?.where(filterName2, filterOp2, filterValue2); }
