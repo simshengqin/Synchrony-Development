@@ -255,7 +255,7 @@ export class AssignmentCreateComponent implements OnInit {
         description: this.newAssignmentForm.value.description,
         due_datetime: this.assignmentDueDate,
         name: this.newAssignmentForm.value.title,
-        school: this.school,
+        school: this.schools,
         school_instrument_level: this.buttonTexts,
         file_names: this.fileNames
       };
