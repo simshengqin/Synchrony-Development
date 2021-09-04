@@ -1,3 +1,6 @@
+import firebase from "firebase";
+import Timestamp = firebase.firestore.Timestamp;
+
 export interface Assignment {
   docId?: string;
   instructor_account_doc_id: string;
