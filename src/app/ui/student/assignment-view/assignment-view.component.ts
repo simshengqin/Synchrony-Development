@@ -14,7 +14,7 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class AssignmentViewComponent implements OnInit {
   assignments!: Array<Assignment>;
-  dataSource: Array<Assignment> = [];
+  dataSource: Array<Assignment>;
   displayedColumns: string[] = ['assignment_name',  'assignment_due_datetime', 'assignment_submission_status', 'assignment_instructor', 'action'];
   actionType = 'assignmentView';
   completionStatusOptions: string[] = ['Ongoing', 'Completed'];
@@ -81,6 +81,21 @@ export class AssignmentViewComponent implements OnInit {
       }
     }
     this.dataSource = filteredAssignments;
-
+    // const filteredAssignmentSubmissions: Array<AssignmentSubmission> = [];
+    // for (const assignmentSubmission of this.assignmentSubmissions) {
+    //   for (const schoolInstrumentLevel of assignmentSubmission.school_instrument_level) {
+    //     const schoolInstrumentLevelArr = schoolInstrumentLevel.split('_');
+    //     const school = schoolInstrumentLevelArr[0];
+    //     const instrument = schoolInstrumentLevelArr[1];
+    //     const level = schoolInstrumentLevelArr[2];
+    //     if (
+    // (this.selectedSchoolOptions.length === 0 || this.selectedSchoolOptions.includes(school)) &&
+    // (this.selectedInstrumentOptions.length === 0 || this.selectedInstrumentOptions.includes(instrument)) &&
+    // (this.selectedLevelOptions.length === 0 ||this.selectedLevelOptions.includes(level))
+    //     ) {
+    //       filteredAssignmentSubmissions.push(assignmentSubmission);
+    //     }
+    //   }
+    //   this.dataSource = filteredAssignmentSubmissions;
   }
 }

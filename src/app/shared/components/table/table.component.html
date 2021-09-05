@@ -1,107 +1,108 @@
-<mat-form-field appearance="standard">
+<div class="table-wrapper">
+  <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-</mat-form-field>
+  </mat-form-field>
 
   <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="matTableDataSource" striped="true" matSort>
-    <!------ Start of Admin's Account Delete Page -------->
-    <ng-container matColumnDef="username">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> username </th>
-      <td mat-cell *matCellDef="let element"> {{element.username}} </td>
-    </ng-container>
+    <table mat-table [dataSource]="matTableDataSource" striped="true" matSort>
+      <!------ Start of Admin's Account Delete Page -------->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> username </th>
+        <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="role">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> role </th>
-      <td mat-cell *matCellDef="let element"> {{element.role}} </td>
-    </ng-container>
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> role </th>
+        <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+      </ng-container>
 
 
-    <ng-container matColumnDef="school">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> school </th>
-      <td mat-cell *matCellDef="let element">
-        <ng-container *ngFor="let tag of element.school; let i = index">
+      <ng-container matColumnDef="school">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> school </th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngFor="let tag of element.school; let i = index">
           <span *ngIf="tag =='NA'">
             {{tag}}
           </span>
-          <span *ngIf="tag!='NA'">
+            <span *ngIf="tag!='NA'">
             ({{i+1}}) {{tag}}
           </span>
-        </ng-container>
-      </td>
-    </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
 
 
-    <ng-container matColumnDef="school_instrument_level">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> school_instrument_level </th>
-      <td mat-cell *matCellDef="let element">
-        <ng-container *ngFor="let tag of element.school_instrument_level; let i = index">
+      <ng-container matColumnDef="school_instrument_level">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> school_instrument_level </th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngFor="let tag of element.school_instrument_level; let i = index">
           <span *ngIf="tag =='NA'">
             {{tag}}
           </span>
-          <span *ngIf="tag!='NA'">
+            <span *ngIf="tag!='NA'">
             ({{i+1}}) {{tag}}
           </span>
-        </ng-container>
-      </td>
-    </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="last_name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> last_name </th>
-      <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
-    </ng-container>
-    <!------ End of Admin's Account Delete Page -------->
+      <ng-container matColumnDef="last_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> last_name </th>
+        <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
+      </ng-container>
+      <!------ End of Admin's Account Delete Page -------->
 
-    <!------ Start of Student's View Assignment Page -------->
-    <!-- Assignment name and submission status is reused for instructor's mark assignment -->
-    <ng-container matColumnDef="assignment_name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Assignment Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.assignment_name}} </td>
-    </ng-container>
+      <!------ Start of Student's View Assignment Page -------->
+      <!-- Assignment name and submission status is reused for instructor's mark assignment -->
+      <ng-container matColumnDef="assignment_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Assignment Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.assignment_name}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="assignment_due_datetime">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Due Date </th>
-      <td mat-cell *matCellDef="let element"> {{element.due_datetime.toDate() | date:'EEEE, MMMM d, y, h:mm:ss a'}} </td>
-    </ng-container>
+      <ng-container matColumnDef="assignment_due_datetime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Due Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.due_datetime.toDate() | date:'EEEE, MMMM d, y, h:mm:ss a'}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="assignment_submission_status">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Submission Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.submission_status}} </td>
-    </ng-container>
+      <ng-container matColumnDef="assignment_submission_status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Submission Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.submission_status}} </td>
+      </ng-container>
 
 
-    <ng-container matColumnDef="assignment_instructor">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Instructor </th>
-      <td mat-cell *matCellDef="let element"> {{element.instructor.first_name + " " + element.instructor.last_name | titlecase}} </td>
-    </ng-container>
+      <ng-container matColumnDef="assignment_instructor">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Instructor </th>
+        <td mat-cell *matCellDef="let element"> {{element.instructor.first_name + " " + element.instructor.last_name | titlecase}} </td>
+      </ng-container>
 
-    <!------ End of Student's View Assignment Page -------->
+      <!------ End of Student's View Assignment Page -------->
 
-    <!------ Start of Instructor's Mark Assignment Page -------->
-    <ng-container matColumnDef="assignment_school">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> School </th>
-      <td mat-cell *matCellDef="let element"> {{element.school}} </td>
-    </ng-container>
-    <ng-container matColumnDef="assignment_school_instrument_level">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> School_Instrument_Level </th>
-      <td mat-cell *matCellDef="let element"> {{element.school_instrument_level}} </td>
-    </ng-container>
-    <ng-container matColumnDef="assignment_student_name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Student's Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.student_name}} </td>
-    </ng-container>
-    <ng-container matColumnDef="assignment_feedback_status">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Feedback Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.feedback_status}} </td>
-    </ng-container>
-    <!------ End of Instructor's Mark Assignment Page -------->
-    <ng-container matColumnDef="action">
+      <!------ Start of Instructor's Mark Assignment Page -------->
+      <ng-container matColumnDef="assignment_school">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> School </th>
+        <td mat-cell *matCellDef="let element"> {{element.school}} </td>
+      </ng-container>
+      <ng-container matColumnDef="assignment_school_instrument_level">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> School_Instrument_Level </th>
+        <td mat-cell *matCellDef="let element"> {{element.school_instrument_level.join(", ")}} </td>
+      </ng-container>
+      <ng-container matColumnDef="assignment_student_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Student's Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.student_name}} </td>
+      </ng-container>
+      <ng-container matColumnDef="assignment_feedback_status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Feedback Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.feedback_status}} </td>
+      </ng-container>
+      <!------ End of Instructor's Mark Assignment Page -------->
+      <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> action </th>
         <td mat-cell *matCellDef="let element">
-            <!-- <button type="button" mdbBtn color="danger" value="{{element.username}}" (click)="delete(element.username)" mdbWavesEffect> Delete </button> -->
-            <!-- <button type="button" mdbBtn color="danger" value="{{element.username}}" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()" mdbWavesEffect> Delete </button> -->
-            <ng-container *ngIf="accountUsername!=element.username"><button *ngIf="actionType=='accountDelete'" type="button" mdbBtn color="danger" value="{{element.docId}}" rounded="true" (click)="deleteDocId(element.docId)" mdbWavesEffect> Delete </button></ng-container>
-            <button *ngIf="actionType=='wage'" type="button" mdbBtn color="info" value="{{element.docId}}" rounded="true" (click)="editDocId(element.docId)" mdbWavesEffect> View Hours </button>
+          <!-- <button type="button" mdbBtn color="danger" value="{{element.username}}" (click)="delete(element.username)" mdbWavesEffect> Delete </button> -->
+          <!-- <button type="button" mdbBtn color="danger" value="{{element.username}}" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()" mdbWavesEffect> Delete </button> -->
+          <ng-container *ngIf="accountUsername!=element.username"><button *ngIf="actionType=='accountDelete'" type="button" mdbBtn color="danger" value="{{element.docId}}" rounded="true" (click)="deleteDocId(element.docId)" mdbWavesEffect> Delete </button></ng-container>
+          <button *ngIf="actionType=='wage'" type="button" mdbBtn color="info" value="{{element.docId}}" rounded="true" (click)="editDocId(element.docId)" mdbWavesEffect> View Hours </button>
           <ng-container *ngIf="actionType=='assignmentView'">
             <button *ngIf="!element.isOverDueDate" type="button" mdbBtn color="info" rounded="true" (click)="onSubmitClick(element.docId)" mdbWavesEffect>
               {{element.submission_status == 'Pending Submission' ? "Submit" : "Resubmit"}} </button>
@@ -112,55 +113,60 @@
             {{element.feedback_datetime == null ? "Mark" : "Re-mark"}} </button>
 
         </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-    </tr>
-
-  </table>
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
-</div>
+      </ng-container>
+      <ng-container *ngIf="dataSource && dataSource.length > 0">
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </ng-container>
 
 
+      <tr  class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No results</td>
+      </tr>
+
+    </table>
+    <div *ngIf="!dataSource || dataSource == []" class="spinner-container">
+      <mat-progress-spinner class="mt-2 mb-2" mode="indeterminate" [diameter]="40"></mat-progress-spinner>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>
 
 
-<!--
-<div mdbModal #frame="mdbModal" class="modal fade" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" (open)="onOpen($event)">
-  <div class="modal-dialog modal-notify modal-danger" role="document">
-
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <p class="heading lead"> Delete User ? </p>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
-          <span aria-hidden="true" class="white-text">&times;</span>
-        </button>
-      </div>
 
 
-      <div class="modal-body">
-        <div class="text-center">
-          <mdb-icon fas icon="user-alt-slash" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
-          <p>Are you sure you would want to delete this user ?</p>
+  <!--
+  <div mdbModal #frame="mdbModal" class="modal fade" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" (open)="onOpen($event)">
+    <div class="modal-dialog modal-notify modal-danger" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <p class="heading lead"> Delete User ? </p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="modal-body">
+          <div class="text-center">
+            <mdb-icon fas icon="user-alt-slash" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
+            <p>Are you sure you would want to delete this user ?</p>
+          </div>
+        </div>
+
+
+        <div class="modal-footer justify-content-center">
+          <a type="button" mdbBtn color="danger" class="waves-light" mdbWavesEffect> Delete
+            <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>
+          </a>
+          <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
+            data-dismiss="modal"> No </a>
         </div>
       </div>
 
-
-      <div class="modal-footer justify-content-center">
-        <a type="button" mdbBtn color="danger" class="waves-light" mdbWavesEffect> Delete
-          <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>
-        </a>
-        <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
-          data-dismiss="modal"> No </a>
-      </div>
     </div>
-
   </div>
+  -->
+
 </div>
--->

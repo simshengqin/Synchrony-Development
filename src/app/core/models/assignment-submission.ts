@@ -8,8 +8,8 @@ export interface AssignmentSubmission {
   assignment_doc_id?: string;
   instructor_doc_id?: string;
   student_doc_id?: string;
-  school?: string;
-  school_instrument_level?: string;
+  school?: Array<string>;
+  school_instrument_level?: Array<string>;
   submitted_datetime?: Timestamp;
   student_attachment_scoresheet?: string;
   student_attachment_scoresheet_name?: string;

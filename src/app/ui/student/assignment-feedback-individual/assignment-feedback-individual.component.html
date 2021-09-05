@@ -3,6 +3,7 @@
   <h1 *ngIf="assignment" class="mb-3">{{assignment.name}}'s Feedback</h1>
   <h3 class="mb-3">Instructor's feedback</h3>
   <p *ngIf="assignmentSubmission"class="mb-3">{{assignmentSubmission.feedback | titlecase}}</p>
+  <h4>Grade: {{assignmentSubmission.grade}}/100</h4>
   <h3 class="mb-3">Attachments</h3>
   <video controls [src]="videoUrl" class="instructor-feedback-video"></video>
   <div *ngIf="assignmentSubmission && assignmentSubmission.instructor_feedback_attachment" class="form-text mb-3" >
