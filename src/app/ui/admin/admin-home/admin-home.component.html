@@ -2,4 +2,19 @@
 
 <br>
 
-<app-cards></app-cards>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <app-cards [title]="createTitle" [description]="createDescription" [href]="createLink"></app-cards>
+        </div>
+        <div class="col">
+            <app-cards [title]="editTitle" [description]="editDescription" [href]="editLink"></app-cards>
+        </div>
+        <div class="col">
+            <app-cards [title]="deleteTitle" [description]="deleteDescription" [href]="deleteLink"></app-cards>
+        </div>
+        <div class="col">
+            <app-cards [title]="freelanceTitle" [description]="freelanceDescription" [href]="freelanceLink"></app-cards>
+        </div>
+    </div>
+</div>

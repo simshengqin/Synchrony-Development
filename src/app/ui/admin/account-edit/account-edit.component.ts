@@ -57,6 +57,8 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   selectSubInstruments:string[] = [];
   selectSubLevels:string[] = [];
 
+  contenteditable: string = "false";
+
   constructor(
     private crudservice:CrudService
   ) { }
@@ -311,8 +313,12 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // test():void {
-  //   console.log("test function activated");
-  // }
+  test():void {
+    if(this.contenteditable == "true") {
+      this.contenteditable = "false";
+    } else {
+      this.contenteditable = "true";
+    }
+  }
 
 }
