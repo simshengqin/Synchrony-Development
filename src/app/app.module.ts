@@ -86,6 +86,7 @@ import {VgCoreModule} from '@videogular/ngx-videogular/core';
 import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
 import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 import {VgControlsModule} from '@videogular/ngx-videogular/controls';
+import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.component';
 
 
 @NgModule({
@@ -113,6 +114,7 @@ import {VgControlsModule} from '@videogular/ngx-videogular/controls';
     AssignmentViewComponent,
     AssignmentSubmitIndividualComponent,
     AssignmentFeedbackIndividualComponent,
+    DialogBoxComponent,
     // ConfirmModalComponent,
     // VideoPlayerComponent
   ],
