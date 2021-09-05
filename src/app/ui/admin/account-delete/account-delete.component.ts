@@ -73,7 +73,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   async retrieve_all_accounts(){
     const data = await this.crudservice.read('accounts').pipe(first()).toPromise();
     if(data!=undefined||data!=null){
-      //this.dataSource = data
+      this.dataSource = data
       for(var ele of data){
         try{
           this.create_account(ele)
