@@ -1,9 +1,9 @@
 /* Structure */
 table {
-    width: 80%;
+    width: 100%;
     margin: 20px auto;
 }
-  
+
 .mat-form-field {
     padding-left: 10%;
     font-size: 16px;
@@ -14,7 +14,7 @@ table {
 .mat-row:nth-child(even){
     background-color:#A9A9A9;
 }
-        
+
 .mat-row:nth-child(odd){
     background-color:#DCDCDC;
 }

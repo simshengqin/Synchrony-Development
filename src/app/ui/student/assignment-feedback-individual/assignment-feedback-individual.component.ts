@@ -36,7 +36,7 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
       this.assignmentSubmission = await this.crudService.readByDocId(
         'assignment_submissions', this.assignmentSubmissionDocId).pipe(first()).toPromise();
       this.assignment = await this.crudService.readByDocId(
-        'assignment_submissions', this.assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
+        'assignments', this.assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
       this.videoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.assignmentSubmission.instructor_feedback_attachment);
       console.log(this.videoUrl);
       // this.assignmentSubmission = await this.assignmentSubmissionService.getAssignmentSubmission(this.assignmentSubmissionDocId)

@@ -67,8 +67,8 @@ export class AccountCreateComponent implements OnInit {
           const account: Account = {
             username: csvRecord.username,
             role: csvRecord.role,
-            school: csvRecord.school,
-            school_instrument_level: csvRecord.school_instrument_level,
+            school: csvRecord.school.split(','),
+            school_instrument_level: csvRecord.school_instrument_level.split(','),
             first_name: csvRecord.first_name,
             last_name: csvRecord.last_name,
             password: csvRecord.password,

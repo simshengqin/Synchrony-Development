@@ -1,5 +1,6 @@
 import firebase from "firebase";
 import Timestamp = firebase.firestore.Timestamp;
+import {AssignmentSubmission} from "./assignment-submission";
 
 export interface Assignment {
   docId?: string;
@@ -15,4 +16,7 @@ export interface Assignment {
   // Not in database, manually created
   assignment_name?: string; // same as name, created for table component
   instructor?: Account;
+  submission_status?: string;
+  isOverDueDate?: boolean;
+  assignmentSubmission?: AssignmentSubmission;
 }
