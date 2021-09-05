@@ -87,6 +87,9 @@ import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
 import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 import {VgControlsModule} from '@videogular/ngx-videogular/controls';
 import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.component';
+import {ConfirmModalComponent} from "./shared/components/confirm-modal/confirm-modal.component";
+import {VideoPlayerComponent} from "./shared/components/video-player/video-player.component";
+import {DropzoneComponent} from "./shared/components/dropzone/dropzone.component";
 
 
 @NgModule({
@@ -115,8 +118,7 @@ import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.co
     AssignmentSubmitIndividualComponent,
     AssignmentFeedbackIndividualComponent,
     DialogBoxComponent,
-    // ConfirmModalComponent,
-    // VideoPlayerComponent
+    DropzoneComponent,
   ],
   imports: [
     BrowserModule,

@@ -32,8 +32,8 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
   assignmentSubmission: AssignmentSubmission = null;
   newAssignmentSubmission: AssignmentSubmission;
   // @ViewChild(ConfirmModalComponent) confirmModalComponent: ConfirmModalComponent;
-  @ViewChild('scoresheetFile') scoresheetFile: ElementRef;
-  @ViewChild('recordingFile') recordingFile: ElementRef;
+  scoresheetFile: File;
+  recordingFile: File;
   // progress: number;
   isUploading: boolean;
   constructor(
@@ -74,7 +74,7 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
     this.router.navigate(['student/assignment/view']);
   }
   async onSubmitClick(): Promise<void> {
-    if (!this.scoresheetFile.nativeElement.files.item(0) && !this.recordingFile.nativeElement.files.item(0)) {
+    if (!this.scoresheetFile && !this.recordingFile) {
       this.toastrService.error('Please upload a file!', '', {positionClass: 'toast-top-center'});
     }
     else {
@@ -95,8 +95,8 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
         feedback_datetime: null
       };
       this.isUploading = true;
-      if (this.scoresheetFile.nativeElement.files.item(0)) { await this.uploadFile(this.scoresheetFile, 'scoresheet'); }
-      if (this.recordingFile.nativeElement.files.item(0)) { await this.uploadFile(this.recordingFile, 'recording'); }
+      if (this.scoresheetFile) { await this.uploadFile(this.scoresheetFile, 'scoresheet'); }
+      if (this.recordingFile) { await this.uploadFile(this.recordingFile, 'recording'); }
       if (this.assignmentSubmission != null) {
         console.log('update');
         console.log(this.assignmentSubmission);
@@ -112,20 +112,20 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
 
     }
   }
-  async uploadFile(file, type): Promise<void> {
-    const path = 'assignment_submissions/' + file.nativeElement.files.item(0).name;
-    console.log(file.nativeElement.files.item(0));
-    const task = this.afStorage.upload(path, file.nativeElement.files.item(0));
+  async uploadFile(file: File, type): Promise<void> {
+    const path = 'assignment_submissions/' + file.name;
+    console.log(file);
+    const task = this.afStorage.upload(path, file);
     await task.then(async (result) => {
       await result.ref.getDownloadURL().then(
         async (downloadUrl) => {
           console.log(downloadUrl);
           if (type === 'scoresheet') {
             this.newAssignmentSubmission.student_attachment_scoresheet = downloadUrl;
-            this.newAssignmentSubmission.student_attachment_scoresheet_name = file.nativeElement.files.item(0).name;
+            this.newAssignmentSubmission.student_attachment_scoresheet_name = file.name;
           } else if (type === 'recording') {
             this.newAssignmentSubmission.student_attachment_recording = downloadUrl;
-            this.newAssignmentSubmission.student_attachment_recording_name = file.nativeElement.files.item(0).name;
+            this.newAssignmentSubmission.student_attachment_recording_name = file.name;
           }
 
         });

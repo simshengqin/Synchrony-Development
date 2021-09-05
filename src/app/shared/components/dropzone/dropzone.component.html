@@ -1,0 +1,8 @@
+<div class="dropzone-wrapper">
+  <ngx-dropzone [multiple]="acceptMultipleFiles" (change)="onChange($event)" [accept]="acceptedFileTypes">
+    <ngx-dropzone-label> {{label}}</ngx-dropzone-label>
+    <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+      <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+    </ngx-dropzone-preview>
+  </ngx-dropzone>
+</div>
