@@ -80,17 +80,14 @@ import {AssignmentViewComponent} from './ui/student/assignment-view/assignment-v
 import {TranslateModule} from '@ngx-translate/core';
 import {AssignmentSubmitIndividualComponent} from './ui/student/assignment-submit-individual/assignment-submit-individual.component';
 import {AssignmentFeedbackIndividualComponent} from './ui/student/assignment-feedback-individual/assignment-feedback-individual.component';
-// import {ConfirmModalComponent} from './shared/components/confirm-modal/confirm-modal.component';
-// import {VideoPlayerComponent} from './shared/components/video-player/video-player.component';
 import {VgCoreModule} from '@videogular/ngx-videogular/core';
 import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
 import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 import {VgControlsModule} from '@videogular/ngx-videogular/controls';
 import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.component';
-import {ConfirmModalComponent} from "./shared/components/confirm-modal/confirm-modal.component";
-import {VideoPlayerComponent} from "./shared/components/video-player/video-player.component";
 import {DropzoneComponent} from "./shared/components/dropzone/dropzone.component";
-
+// import {ConfirmModalComponent} from "./shared/components/confirm-modal/confirm-modal.component";
+// import {VideoPlayerComponent} from "./shared/components/video-player/video-player.component";
 
 @NgModule({
   declarations: [
@@ -118,7 +115,7 @@ import {DropzoneComponent} from "./shared/components/dropzone/dropzone.component
     AssignmentSubmitIndividualComponent,
     AssignmentFeedbackIndividualComponent,
     DialogBoxComponent,
-    DropzoneComponent,
+    DropzoneComponent
   ],
   imports: [
     BrowserModule,
