@@ -53,6 +53,7 @@ import { UpdatePasswordComponent } from './ui/home/update_password/update-passwo
 import { LoginComponent } from './ui/home/login/login.component';
 // Admin's Components
 import { AccountCreateComponent} from './ui/admin/account-create/account-create.component';
+import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
 import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';
 import { AdminHomeComponent } from './ui/admin/admin-home/admin-home.component';
 import { FreelanceWageComponent } from './ui/admin/freelance-wage/freelance-wage.component';
@@ -67,7 +68,6 @@ import { AssignmentMarkComponent } from './ui/instructor/assignment-mark/assignm
 import { StudentHomeComponent } from './ui/student/student-home/student-home.component';
 import { TableComponent } from './shared/components/table/table.component';
 import { InputDropdownSelectComponent } from './shared/components/input-dropdown-select/input-dropdown-select.component';
-import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { InputSelectComponent } from './shared/components/input-select/input-select.component';
 import {AssignmentMarkIndividualComponent} from './ui/instructor/assignment-mark-individual/assignment-mark-individual.component';
