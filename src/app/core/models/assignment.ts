@@ -13,5 +13,6 @@ export interface Assignment {
   file_names: Array<string>;
 
   // Not in database, manually created
+  assignment_name?: string; // same as name, created for table component
   instructor?: Account;
 }

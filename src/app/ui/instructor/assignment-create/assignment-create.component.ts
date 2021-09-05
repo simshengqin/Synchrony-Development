@@ -185,7 +185,7 @@ export class AssignmentCreateComponent implements OnInit {
   }
 
 
-  createAssignment(){
+  async createAssignment() {
 
     // To trigger title check validation
     this.isSubmitClicked = true;
@@ -197,7 +197,7 @@ export class AssignmentCreateComponent implements OnInit {
 
     // Retrieve Assignment Due date
     // Validation check for due date: Cannot be undefined
-    if (this.event == null){
+    if (this.event == null) {
       this.timeUndefined = true;
       return;
     }
@@ -209,7 +209,7 @@ export class AssignmentCreateComponent implements OnInit {
     // Due date validation
     // Assignment cannot be due before current date
 
-    if (this.assignmentCreateDate > this.assignmentDueDate){
+    if (this.assignmentCreateDate > this.assignmentDueDate) {
       this.dueDateError = true;
       return;
     } else {
@@ -218,7 +218,7 @@ export class AssignmentCreateComponent implements OnInit {
 
     console.log(this.dueDateError);
 
-    if (this.newAssignmentForm.status){
+    if (this.newAssignmentForm.status) {
 
       // Retrieve instructor Account DocID
       console.log('DocID:', this.sessionAccount.docId);
@@ -231,9 +231,9 @@ export class AssignmentCreateComponent implements OnInit {
 
       // Retrieve schools
       console.log(this.buttonTexts);
-      for (const buttonText of this.buttonTexts){
+      for (const buttonText of this.buttonTexts) {
         // Retrieve schools and put in schools array
-        if (!this.schools.includes(buttonText.split('_')[0])){
+        if (!this.schools.includes(buttonText.split('_')[0])) {
           this.schools.push(buttonText.split('_')[0]);
         }
       }
@@ -245,10 +245,10 @@ export class AssignmentCreateComponent implements OnInit {
 
       // get file names
       const i = 0;
-      for (let i = 0; i < this.files.length; i++){
+      for (let i = 0; i < this.files.length; i++) {
         this.fileNames.push(this.files[i].name);
       }
-      console.log('file names:',  this.fileNames);
+      console.log('file names:', this.fileNames);
 
       // Pack all information into assignment class:
 
@@ -263,12 +263,12 @@ export class AssignmentCreateComponent implements OnInit {
         file_names: this.fileNames
       };
 
-      this.crudService.create('assignments', finalAssignmentSubmission)
-      .then(function(docRef) {
-        console.log('Document: ', docRef);
-        console.log('Document', typeof(docRef));
-        sessionStorage.setItem('assignment_docId', docRef);
-      }).catch(() => console.log('Unable to Upload Assignment!'));
+      await this.crudService.create('assignments', finalAssignmentSubmission)
+        .then(function (docRef) {
+          console.log('Document: ', docRef);
+          console.log('Document', typeof (docRef));
+          sessionStorage.setItem('assignment_docId', docRef);
+        }).catch(() => console.log('Unable to Upload Assignment!'));
 
       console.log('no man\'s land');
 
