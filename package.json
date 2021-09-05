@@ -30,7 +30,7 @@
     "@types/chart.js": "^2.9.34",
     "@types/video.js": "^7.3.26",
     "@videogular/ngx-videogular": "^4.1.0",
-    "all": "0.0.0",
+    "all": "^0.0.0",
     "angular-bootstrap-md": "^11.1.0",
     "animate.css": "^4.1.1",
     "bootstrap": "^4.6.0",
