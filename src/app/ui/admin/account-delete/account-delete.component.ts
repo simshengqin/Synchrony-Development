@@ -85,7 +85,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
           //this.set_distint_school_instruments(ele["instruments"])
           // get distint school groups
           //this.set_distint_school_group(schoolgrp);
-          // get distint school 
+          // get distint school
           //this.set_distint_school(school);
           this.set_distint_school_instrument_level(school_instrument_level);
         } catch(e){
@@ -142,7 +142,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     })
   }
   */
-  
+
   // == set filter results == //
   // Method:
   /*
@@ -172,7 +172,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     }
   }
   */
-  // Method: 
+  // Method:
   /*
   set_distint_school(data:string[]){
     for(var dataSchool of data){
@@ -182,7 +182,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     }
   }
   */
-  // Method: 
+  // Method:
   set_distint_school_instrument_level(data:string[]){
     for(var dataSchoolInstrumentLevel of data){
       var sub_query = dataSchoolInstrumentLevel.split("_")
@@ -202,27 +202,27 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   }
 
   // == get filter == //
-  get_querry_data_roles($event:any):void{
+  get_query_data_roles($event:any):void{
     this.selectRoles = $event.value
     this.query_table_with_filter()
   }
   /*
-  get_querry_data_schools($event:any):void{
+  get_query_data_schools($event:any):void{
     this.selectSchools = $event.value
     this.query_table_with_filter()
   } */
   /*
-  get_querry_data_groups($event:any):void{
+  get_query_data_groups($event:any):void{
     this.selectGroups = $event.value
     this.query_table_with_filter()
   } */
   /*
-  get_querry_data_school_instrument_level($event:any):void{
+  get_query_data_school_instrument_level($event:any):void{
     this.selectSchools = $event.value
     this.query_table_with_filter()
   } */
 
-  get_querry_data_sub_schools($event:any):void{
+  get_query_data_sub_schools($event:any):void{
     this.selectSubSchools = $event.value
     if(this.selectSubSchools.length == 0){
       this.sub_display_instrument = false
@@ -232,7 +232,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       this.sub_display_levels = false
     }
   }
-  get_querry_data_sub_instruments($event:any):void{
+  get_query_data_sub_instruments($event:any):void{
     this.selectSubInstruments = $event.value
     if(this.selectSubInstruments.length == 0){
       this.sub_display_levels = false
@@ -240,7 +240,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       this.sub_display_levels = true
     }
   }
-  get_querry_data_sub_levels($event:any):void{
+  get_query_data_sub_levels($event:any):void{
     this.selectSubLevels = $event.value
     this.combine_querry_search_data()
     this.query_table_with_filter()
@@ -267,7 +267,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     //console.log(this.select_Combine_SchoolInstrumentLevels)
   }
 
-  // Method: 
+  // Method:
   query_table_with_filter(){
     var result:Account[] = [];
     result = this.accounts;
@@ -385,9 +385,9 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       }
     }
     return filterResult
-  } 
+  }
 
-  // Method: query database method 
+  // Method: query database method
   /*
   filtering_by_school_instrument_levels(result:Account[], filter:string[]):Account[]{
     var filterResult:Account[] = [];
@@ -395,14 +395,14 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       if(data!=null || data!=undefined){
         filterResult = data
         console.log(data)
-      } 
+      }
     })
     return filterResult
   }
   */
 
   /*
-  // Method: filtering function 
+  // Method: filtering function
   filtering(result:Account[], filter:string[]):Account[]{
     var filterResult:Account[] = [];
     var exist:boolean = false;
