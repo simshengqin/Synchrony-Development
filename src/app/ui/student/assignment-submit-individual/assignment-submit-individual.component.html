@@ -30,10 +30,12 @@
       Previous Submission: <a [href]="assignmentSubmission.student_attachment_recording">{{assignmentSubmission.student_attachment_recording_name}}</a>
     </div>
   </div>
-
-  <div class="go-back-section" (click)="onGoBackClick(assignment)">
-    <mat-icon class="mr-1 mt-1">arrow_back</mat-icon>
-    <span class="go-back-text mr-3 mt-1">Back</span>
+  <div *ngIf="isUploading">
+    Uploading in process: <mat-progress-bar id="progress-bar" mode="indeterminate" class="mt-3 mb-3"></mat-progress-bar>
+  </div>
+  <div class="go-back-section" >
+    <mat-icon class="mr-1 mt-1" (click)="onGoBackClick(assignment)">arrow_back</mat-icon>
+    <span class="go-back-text mr-3 mt-1" (click)="onGoBackClick(assignment)">Back</span>
     <button *ngIf="assignment" class="btn btn-info submit-btn" (click)="onSubmitClick()">Submit</button>
   </div>
 

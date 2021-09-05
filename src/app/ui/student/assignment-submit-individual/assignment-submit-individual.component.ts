@@ -35,6 +35,7 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
   @ViewChild('scoresheetFile') scoresheetFile: ElementRef;
   @ViewChild('recordingFile') recordingFile: ElementRef;
   // progress: number;
+  isUploading: boolean;
   constructor(
     private activatedRoute: ActivatedRoute,
     private crudService: CrudService,
@@ -77,18 +78,23 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
       this.toastrService.error('Please upload a file!', '', {positionClass: 'toast-top-center'});
     }
     else {
+      // Students can have multiple school instrument levels, assignments can also have multiple school instrument level
+      // Hence, need to find a list of school instrument level(s) that both the currently logged in student
+      // and the selected assignment have! This also explains why assignmentSubmission can have multiple school instrument level
       this.newAssignmentSubmission = {
         assignment_doc_id: this.assignmentDocId,
         instructor_doc_id: this.assignment.instructor_account_doc_id,
         student_doc_id: this.loggedInAccount.docId,
-        school: this.loggedInAccount.school[0],
-        school_instrument_level: this.loggedInAccount.school_instrument_level[0],
+        school: [this.loggedInAccount.school[0]],
+        school_instrument_level: this.loggedInAccount.school_instrument_level.filter(
+          value => this.assignment.school_instrument_level.includes(value)),
         submitted_datetime: Timestamp.fromDate(new Date()),
         feedback: '',
         instructor_feedback_attachment_name: '',
         instructor_feedback_attachment: '',
         feedback_datetime: null
       };
+      this.isUploading = true;
       if (this.scoresheetFile.nativeElement.files.item(0)) { await this.uploadFile(this.scoresheetFile, 'scoresheet'); }
       if (this.recordingFile.nativeElement.files.item(0)) { await this.uploadFile(this.recordingFile, 'recording'); }
       if (this.assignmentSubmission != null) {
