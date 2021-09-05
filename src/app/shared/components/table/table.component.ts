@@ -81,7 +81,9 @@ export class TableComponent implements OnInit, OnChanges {
   onSubmitClick(assignmentDocId: string): void {
     this.router.navigate(['student/assignment/submit'], { queryParams: { assignmentDocId }});
   }
-
+  onFeedbackClick(assignmentSubmissionDocId: string): void {
+    this.router.navigate(['student/assignment/feedback'], { queryParams: { assignmentSubmissionDocId }});
+  }
   onMarkClick(assignmentSubmissionDocId: string): void {
     this.router.navigate(['instructor/assignment/mark'], { queryParams: { assignmentSubmissionDocId }});
   }
