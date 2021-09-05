@@ -104,9 +104,9 @@
           <ng-container *ngIf="accountUsername!=element.username">
             <app-dialog-box *ngIf="actionType=='accountDelete'" [actionType]="actionType" [docid]="element.docId" [username]="element.username"></app-dialog-box>
           </ng-container>
-          
+
           <app-dialog-box *ngIf="actionType=='wage'" [actionType]="actionType"></app-dialog-box>
-          
+
           <button *ngIf="actionType=='assignmentSubmit'" type="button" mdbBtn color="info" rounded="true" (click)="onSubmitClick(element.docId)" mdbWavesEffect>
             {{element.submission_status == 'Pending Submission' ? "Submit" : "Resubmit"}} </button>
 
@@ -116,25 +116,24 @@
             <button *ngIf="element.isOverDueDate && element.assignmentSubmission" type="button" mdbBtn color="info" rounded="true" (click)="onFeedbackClick(element.assignmentSubmission.docId)" mdbWavesEffect>
               View Feedback </button>
           </ng-container>
-          
+
           <button *ngIf="actionType=='assignmentMark'" type="button" mdbBtn color="info" rounded="true" (click)="onMarkClick(element.docId)" mdbWavesEffect>
             {{element.feedback_datetime == null ? "Mark" : "Re-mark"}} </button>
 
         </td>
       </ng-container>
-      <ng-container *ngIf="dataSource && dataSource.length > 0">
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </ng-container>
-
-
-      <tr  class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No results</td>
-      </tr>
-
+<!--      <ng-container *ngIf="dataSource">-->
+<!--        <tr class="mat-row text-center" *matNoDataRow>-->
+<!--          <h3>No results</h3>-->
+<!--        </tr>-->
+<!--      </ng-container>-->
     </table>
-    <div *ngIf="!dataSource || dataSource == []" class="spinner-container">
-      <mat-progress-spinner class="mt-2 mb-2" mode="indeterminate" [diameter]="40"></mat-progress-spinner>
+    <div class="spinner-container">
+      <mat-progress-spinner *ngIf="!dataSource" class="mt-2 mb-2" mode="indeterminate" [diameter]="40"></mat-progress-spinner>
+      <div *ngIf="dataSource && dataSource.length === 0" class="no-results-message">No search results</div>
     </div>
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
   </div>
@@ -170,7 +169,6 @@
           </a>
           <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
             data-dismiss="modal"> No </a>
-<!-- 
 <div mdbModal #frame="mdbModal" class="modal fade" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" (open)="onOpen($event)">
     <div class="modal-dialog modal-notify modal-danger" role="document">
 
@@ -195,18 +193,18 @@
   </div>
 -->
 
-</div>
+<!--</div>-->
 
-        <div class="modal-footer justify-content-center">
-          <a type="button" mdbBtn color="danger" class="waves-light" mdbWavesEffect> Delete
-            <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>
-          </a>
-          <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
-            data-dismiss="modal"> No </a>
-        </div>
-      </div>
+<!--        <div class="modal-footer justify-content-center">-->
+<!--          <a type="button" mdbBtn color="danger" class="waves-light" mdbWavesEffect> Delete-->
+<!--            <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>-->
+<!--          </a>-->
+<!--          <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect-->
+<!--            data-dismiss="modal"> No </a>-->
+<!--        </div>-->
+<!--      </div>-->
 
-    </div>
+<!--    </div>-->
 </div>
 
 
