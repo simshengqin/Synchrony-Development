@@ -10,4 +10,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .wrapper-padding {
   padding: 32px;
 }
+.go-back-text {
+  position: relative;
+  top: -5px;
+}
+.go-back-section {
+  cursor: pointer;
+}
+.go-back-section:hover {
+  color: #FD6642;
+}
+.go-back-section:active {
+  color: orangered;
+}
+
 

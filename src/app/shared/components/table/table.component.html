@@ -122,7 +122,7 @@
           <ng-container *ngIf="actionType=='assignmentView'">
             <button *ngIf="!element.isOverDueDate" type="button" mdbBtn color="info" rounded="true" (click)="onSubmitClick(element.docId)" mdbWavesEffect>
               {{element.submission_status == 'Pending Submission' ? "Submit" : "Resubmit"}} </button>
-            <button *ngIf="element.isOverDueDate && element.assignmentSubmission" type="button" mdbBtn color="info" rounded="true" (click)="onFeedbackClick(element.assignmentSubmission.docId)" mdbWavesEffect>
+            <button *ngIf="element.assignmentSubmission" type="button" mdbBtn color="info" rounded="true" (click)="onFeedbackClick(element.assignmentSubmission.docId)" mdbWavesEffect>
               View Feedback </button>
           </ng-container>
 
