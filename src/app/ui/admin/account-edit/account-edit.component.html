@@ -1,2 +1,25 @@
 <app-header></app-header>
-<p>account-edit works!</p>
+<div class="account-create-wrapper wrapper-padding">
+    <h1 class="mb-3">Edit Accounts</h1>
+    <!-- 
+    <app-input-dropdown-select [roles]="roles" (outputData)="get_querry_data_roles($event)"></app-input-dropdown-select>
+    <app-input-dropdown-select [schools]="schools" (outputData)="get_querry_data_schools($event)"></app-input-dropdown-select>
+    <app-input-dropdown-select [groups]="groups" (outputData)="get_querry_data_groups($event)"></app-input-dropdown-select> -->
+    
+    <app-input-dropdown-select [inputDataList]="roles" [name]="nameRole"  (outputData)="get_querry_data_roles($event)"></app-input-dropdown-select>
+    <app-input-dropdown-select [inputDataList]="schools" [name]="nameSchool" (outputData)="get_querry_data_schools($event)"></app-input-dropdown-select>
+    <app-input-dropdown-select [inputDataList]="groups" [name]="nameGroup" (outputData)="get_querry_data_groups($event)"></app-input-dropdown-select>
+    <br>
+    <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType" (outputData)="edit_doc_id($event)"></app-table>
+
+    <table>
+        <tr>
+            <td>
+                <span contenteditable="true">
+                    test
+                </span>
+            </td>
+        </tr>
+    </table>
+
+  </div>
