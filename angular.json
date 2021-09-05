@@ -31,7 +31,12 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss",
@@ -50,7 +55,9 @@
               "node_modules/chart.js/dist/Chart.js",
               "node_modules/hammerjs/hammer.min.js",
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.js"
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "./node_modules/wavesurfer.js/dist/wavesurfer.js",
+              "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.regions.js"
             ]
           },
           "configurations": {
@@ -118,8 +125,12 @@
               "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
+              "node_modules/chart.js/dist/Chart.js",
+              "node_modules/hammerjs/hammer.min.js",
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.js"
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "./node_modules/wavesurfer.js/dist/wavesurfer.js",
+              "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.regions.js"
             ]
           }
         },

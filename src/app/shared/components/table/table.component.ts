@@ -1,28 +1,32 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, ViewChild, Input, Output, EventEmitter, OnChanges} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, OnChanges {
 
-  @Input('dataSource') public dataSource:any;
-  @Input('displayedColumns') public displayedColumns:any;
-  @Input('actionType') public actionType:any;
-  @ViewChild(MatPaginator) paginator!:MatPaginator;
-  @ViewChild(MatSort) sort!:MatSort;
+  @Input('dataSource') public dataSource: any;
+  @Input('displayedColumns') public displayedColumns: any;
+  @Input('actionType') public actionType: any;
+  @Input('accountUsername') public accountUsername: any; // for admin to not allow to delete his/her own account
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  matTableDataSource: any;
+  deleteDataDocId!: string;
+  editDataDocId!: string;
 
-  deleteDataDocId!:string;
-  editDataDocId!:string;
+  @Output() public outputData = new EventEmitter<any>();
 
-  @Output() public outputData = new EventEmitter<any>()
+  constructor(
+    private router: Router,
+  ) { }
 
-  constructor() { }
-  
   ngOnChanges(): void {
     this.populateTable();
   }
@@ -31,47 +35,56 @@ export class TableComponent implements OnInit {
     this.populateTable();
   }
 
-  populateTable(){
-    console.log(this.dataSource)
-    this.dataSource = new MatTableDataSource(this.dataSource);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  populateTable(): void{
+    console.log(this.dataSource);
+    this.matTableDataSource = new MatTableDataSource(this.dataSource);
+    this.matTableDataSource.paginator = this.paginator;
+    this.matTableDataSource.sort = this.sort;
+    console.log(this.matTableDataSource);
   }
 
-  applyFilter(event: Event) {
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.matTableDataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (this.matTableDataSource.paginator) {
+      this.matTableDataSource.paginator.firstPage();
     }
   }
 
-  deleteDocId(data:string){
-    this.deleteDataDocId = data
+  deleteDocId(data: string): void{
+    this.deleteDataDocId = data;
     this.sentToParent();
   }
 
-  editDocId(data:string){
+  editDocId(data: string): void{
     this.editDataDocId = data;
     this.sentToParent();
   }
 
-  // Method: sent data to the parent 
-  sentToParent(){
-    if(this.deleteDataDocId!=null){
-      this.outputData.emit(this.deleteDataDocId)
+  // Method: sent data to the parent
+  sentToParent(): void{
+    if (this.deleteDataDocId != null){
+      this.outputData.emit(this.deleteDataDocId);
     }
-    if(this.editDataDocId!=null){
-      this.outputData.emit(this.editDataDocId)
+    if (this.editDataDocId != null){
+      this.outputData.emit(this.editDataDocId);
     }
   }
 
   // Modal //
-  onOpen(event:any) {
+  onOpen(event: any): void {
     console.log(event);
   }
 
 
-
+  onSubmitClick(assignmentDocId: string): void {
+    this.router.navigate(['student/assignment/submit'], { queryParams: { assignmentDocId }});
+  }
+  onFeedbackClick(assignmentSubmissionDocId: string): void {
+    this.router.navigate(['student/assignment/feedback'], { queryParams: { assignmentSubmissionDocId }});
+  }
+  onMarkClick(assignmentSubmissionDocId: string): void {
+    this.router.navigate(['instructor/assignment/mark'], { queryParams: { assignmentSubmissionDocId }});
+  }
 }

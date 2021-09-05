@@ -58,7 +58,7 @@ import { AdminHomeComponent } from './ui/admin/admin-home/admin-home.component';
 import { FreelanceWageComponent } from './ui/admin/freelance-wage/freelance-wage.component';
 // Form modules
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule} from "ngx-toastr";
+import { ToastrModule} from 'ngx-toastr';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 import { InstructorHomeComponent } from './ui/instructor/instructor-home/instructor-home.component';
 import { AssignmentCreateComponent } from './ui/instructor/assignment-create/assignment-create.component';
@@ -70,6 +70,24 @@ import { InputDropdownSelectComponent } from './shared/components/input-dropdown
 import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { InputSelectComponent } from './shared/components/input-select/input-select.component';
+import {AssignmentMarkIndividualComponent} from './ui/instructor/assignment-mark-individual/assignment-mark-individual.component';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {NgxExtendedPdfViewerModule} from 'ngx-extended-pdf-viewer';
+import {VideojsRecordComponent} from './shared/components/videojs-record/videojs-record.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { AngularFireStorage } from '@angular/fire/storage';
+import {AssignmentViewComponent} from './ui/student/assignment-view/assignment-view.component';
+import {TranslateModule} from '@ngx-translate/core';
+import {AssignmentSubmitIndividualComponent} from './ui/student/assignment-submit-individual/assignment-submit-individual.component';
+import {AssignmentFeedbackIndividualComponent} from './ui/student/assignment-feedback-individual/assignment-feedback-individual.component';
+// import {ConfirmModalComponent} from './shared/components/confirm-modal/confirm-modal.component';
+// import {VideoPlayerComponent} from './shared/components/video-player/video-player.component';
+import {VgCoreModule} from '@videogular/ngx-videogular/core';
+import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
+import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
+import {VgControlsModule} from '@videogular/ngx-videogular/controls';
+import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.component';
+
 
 @NgModule({
   declarations: [
@@ -86,15 +104,24 @@ import { InputSelectComponent } from './shared/components/input-select/input-sel
     AssignmentCreateComponent,
     AssignmentEditComponent,
     AssignmentMarkComponent,
+    AssignmentMarkIndividualComponent,
     StudentHomeComponent,
     TableComponent,
     InputDropdownSelectComponent,
     AccountEditComponent,
-    InputSelectComponent
+    InputSelectComponent,
+    VideojsRecordComponent,
+    AssignmentViewComponent,
+    AssignmentSubmitIndividualComponent,
+    AssignmentFeedbackIndividualComponent,
+    DialogBoxComponent,
+    // ConfirmModalComponent,
+    // VideoPlayerComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgxDropzoneModule,
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -130,7 +157,7 @@ import { InputSelectComponent } from './shared/components/input-select/input-sel
     MatSortModule,
     MatPaginatorModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebase, 'Synchrony'), // Required for everything
+    AngularFireModule.initializeApp(environment.firebase, 'Synchrony'),
     AngularFirestoreModule, // Only required for database features
     AngularFireAuthModule, // Only required for auth features
     AngularFireStorageModule,  // Only required for storage features
@@ -143,7 +170,14 @@ import { InputSelectComponent } from './shared/components/input-select/input-sel
       positionClass: 'toast-top-center',
       preventDuplicates: true,
     }),
-    NgxCsvParserModule
+    NgxCsvParserModule,
+    FlexLayoutModule,
+    NgxExtendedPdfViewerModule,
+    TranslateModule.forRoot(),
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
