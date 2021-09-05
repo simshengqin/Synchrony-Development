@@ -1,12 +1,18 @@
+import firebase from "firebase";
+import Timestamp = firebase.firestore.Timestamp;
+
 export interface Assignment {
-  docId?: String;
-  instructor_account_doc_id?: String;
-  created_datetime?: Date;
-  description?: String;
-  due_datetime?: Date;
-  name?: String;
-  school?: Array<String>;
-  school_instrument_level?: Array<String>;
-  instructor_assignment_brief_attachment?: String;
-  instructor_assignment_brief_attachment_name?: String;
+  docId?: string;
+  instructor_account_doc_id: string;
+  created_datetime: Timestamp;
+  description: string;
+  due_datetime: Timestamp;
+  name: string;
+  school: Array<string>;
+  school_instrument_level: Array<string>;
+  file_names: Array<string>;
+
+  // Not in database, manually created
+  assignment_name?: string; // same as name, created for table component
+  instructor?: Account;
 }

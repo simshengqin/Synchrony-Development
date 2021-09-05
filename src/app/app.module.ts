@@ -58,7 +58,7 @@ import { AdminHomeComponent } from './ui/admin/admin-home/admin-home.component';
 import { FreelanceWageComponent } from './ui/admin/freelance-wage/freelance-wage.component';
 // Form modules
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule} from "ngx-toastr";
+import { ToastrModule} from 'ngx-toastr';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 import { InstructorHomeComponent } from './ui/instructor/instructor-home/instructor-home.component';
 import { AssignmentCreateComponent } from './ui/instructor/assignment-create/assignment-create.component';
@@ -70,13 +70,23 @@ import { InputDropdownSelectComponent } from './shared/components/input-dropdown
 import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { InputSelectComponent } from './shared/components/input-select/input-select.component';
-import {AssignmentMarkIndividualComponent} from "./ui/instructor/assignment-mark-individual/assignment-mark-individual.component";
-import {FlexLayoutModule} from "@angular/flex-layout";
-import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
-import {VideojsRecordComponent} from "./shared/components/videojs-record/videojs-record.component";
+import {AssignmentMarkIndividualComponent} from './ui/instructor/assignment-mark-individual/assignment-mark-individual.component';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {NgxExtendedPdfViewerModule} from 'ngx-extended-pdf-viewer';
+import {VideojsRecordComponent} from './shared/components/videojs-record/videojs-record.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { AngularFireStorage } from '@angular/fire/storage';
-import {AssignmentViewComponent} from "./ui/student/assignment-view/assignment-view.component";
+import {AssignmentViewComponent} from './ui/student/assignment-view/assignment-view.component';
+import {TranslateModule} from '@ngx-translate/core';
+import {AssignmentSubmitIndividualComponent} from './ui/student/assignment-submit-individual/assignment-submit-individual.component';
+import {AssignmentFeedbackIndividualComponent} from './ui/student/assignment-feedback-individual/assignment-feedback-individual.component';
+// import {ConfirmModalComponent} from './shared/components/confirm-modal/confirm-modal.component';
+// import {VideoPlayerComponent} from './shared/components/video-player/video-player.component';
+import {VgCoreModule} from '@videogular/ngx-videogular/core';
+import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
+import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
+import {VgControlsModule} from '@videogular/ngx-videogular/controls';
+
 
 @NgModule({
   declarations: [
@@ -100,7 +110,11 @@ import {AssignmentViewComponent} from "./ui/student/assignment-view/assignment-v
     AccountEditComponent,
     InputSelectComponent,
     VideojsRecordComponent,
-    AssignmentViewComponent
+    AssignmentViewComponent,
+    AssignmentSubmitIndividualComponent,
+    AssignmentFeedbackIndividualComponent,
+    // ConfirmModalComponent,
+    // VideoPlayerComponent
   ],
   imports: [
     BrowserModule,
@@ -157,6 +171,11 @@ import {AssignmentViewComponent} from "./ui/student/assignment-view/assignment-v
     NgxCsvParserModule,
     FlexLayoutModule,
     NgxExtendedPdfViewerModule,
+    TranslateModule.forRoot(),
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

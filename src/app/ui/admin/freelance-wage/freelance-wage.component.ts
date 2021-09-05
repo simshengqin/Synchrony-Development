@@ -76,7 +76,7 @@ export class FreelanceWageComponent implements OnInit {
   }
 
   // == set filter results == //
-   // Method: 
+   // Method:
    set_distint_school_instrument_level(data:string[]){
     for(var dataSchoolInstrumentLevel of data){
       var sub_query = dataSchoolInstrumentLevel.split("_")
@@ -96,7 +96,7 @@ export class FreelanceWageComponent implements OnInit {
   }
 
   // == get filter == //
-  get_querry_data_sub_schools($event:any):void{
+  get_query_data_sub_schools($event:any):void{
     this.selectSubSchools = $event.value
     if(this.selectSubSchools.length == 0){
       this.sub_display_instrument = false
@@ -107,7 +107,7 @@ export class FreelanceWageComponent implements OnInit {
     }
   }
 
-  get_querry_data_sub_instruments($event:any):void{
+  get_query_data_sub_instruments($event:any):void{
     this.selectSubInstruments = $event.value
     if(this.selectSubInstruments.length == 0){
       this.sub_display_levels = false
@@ -116,7 +116,7 @@ export class FreelanceWageComponent implements OnInit {
     }
   }
 
-  get_querry_data_sub_levels($event:any):void{
+  get_query_data_sub_levels($event:any):void{
     this.selectSubLevels = $event.value
     this.combine_querry_search_data()
     this.query_table_with_filter()
@@ -142,7 +142,7 @@ export class FreelanceWageComponent implements OnInit {
     console.log(this.select_Combine_SchoolInstrumentLevels)
   }
 
-  // Method: 
+  // Method:
   query_table_with_filter(){
     var result:Account[] = [];
     result = this.accounts;

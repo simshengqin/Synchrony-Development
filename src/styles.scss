@@ -7,3 +7,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import '~bootstrap/scss/bootstrap';
 @import '~video.js/dist/video-js.css';
 @import '~videojs-record/dist/css/videojs.record.css';
+.wrapper-padding {
+  padding: 32px;
+}
+

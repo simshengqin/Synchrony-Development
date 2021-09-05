@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {first} from "rxjs/operators";
-import {AssignmentsSubmissionsAndFeedback} from "../../../core/models/assignments_submissions_and_feedback";
-import {CrudService} from "../../../core/services/crud.service";
-import {Account} from "../../../core/models/account";
+import {first} from 'rxjs/operators';
+import {AssignmentSubmission} from '../../../core/models/assignment-submission';
+import {CrudService} from '../../../core/services/crud.service';
+import {Account} from '../../../core/models/account';
 
 @Component({
   selector: 'app-assignment-mark',
@@ -12,7 +12,7 @@ import {Account} from "../../../core/models/account";
 })
 export class AssignmentMarkComponent implements OnInit {
   accountUsername!: '';
-  dataSource!: Array<AssignmentsSubmissionsAndFeedback>;
+  dataSource!: Array<AssignmentSubmission>;
   displayedColumns: string[] = ['student_name', 'submission_status', 'feedback_status', 'action'];
   actionType = 'assignment_mark';
   // tableActions?: Array<TableAction> = [TableAction.assignment_mark, TableAction.assignment_instructor_feedback];
