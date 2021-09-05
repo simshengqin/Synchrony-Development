@@ -3,7 +3,7 @@ import {first} from 'rxjs/operators';
 import {Assignment} from '../../../core/models/assignment';
 import {ActivatedRoute} from '@angular/router';
 import {CrudService} from "../../../core/services/crud.service";
-import {AssignmentsSubmissionsAndFeedback} from "../../../core/models/assignments_submissions_and_feedback";
+import {AssignmentSubmission} from "../../../core/models/assignment-submission";
 import {DatePipe} from "@angular/common";
 import {TranslateService} from '@ngx-translate/core';
 
@@ -38,19 +38,20 @@ export class AssignmentViewComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    const loggedInUser = JSON.parse(sessionStorage.getItem('account'));
-    // console.log(loggedInUser);
+    const loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
+    // console.log(loggedInAccount);
     const assignments = await this.crudservice.read('assignments',
-    'school_instrument_level', 'array-contains-any', loggedInUser.school_instrument_level).pipe(first()).toPromise();
+    'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();
     this.translateService.use('en');
     const datePipe = new DatePipe(this.translateService.currentLang);
     for (const assignment of assignments) {
+      assignment.assignment_name = assignment.name;
       assignment.instructor =  await this.crudservice.readByDocId(
         'accounts', assignment.instructor_account_doc_id).pipe(first()).toPromise();
       assignment.submission_status = 'Pending Submission';
-      const assignmentSubmission: Array<AssignmentsSubmissionsAndFeedback> =
-        await this.crudservice.read('assignments_submissions_and_feedback',
-          'student_doc_id', '==', loggedInUser.docId,
+      const assignmentSubmission: Array<AssignmentSubmission> =
+        await this.crudservice.read('assignment_submissions',
+          'student_doc_id', '==', loggedInAccount.docId,
           'assignment_doc_id', '==', assignment.docId).pipe(first()).toPromise();
       // console.log(assignmentSubmission);
       if (assignmentSubmission.length > 0) {

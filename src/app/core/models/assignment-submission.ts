@@ -1,7 +1,9 @@
-import firebase from "firebase";
+import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
+import {Account} from './account';
+import {Assignment} from './assignment';
 
-export interface AssignmentsSubmissionsAndFeedback {
+export interface AssignmentSubmission {
   docId?: string;
   assignment_doc_id?: string;
   instructor_doc_id?: string;
@@ -19,8 +21,15 @@ export interface AssignmentsSubmissionsAndFeedback {
   feedback_datetime?: Timestamp;
   grade?: number;
   // Not in database, manually created
+  assignment?: Assignment;
+  assignment_name?: string;
   student?: Account;
+  student_name?: string;
+  submission_status?: string;
+  feedback_status?: string;
   instructor?: Account;
+
+
 }
 export enum Role {
   admin = 'admin',
