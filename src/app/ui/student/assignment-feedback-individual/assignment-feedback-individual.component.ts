@@ -4,6 +4,7 @@ import {Assignment} from "../../../core/models/assignment";
 import {AssignmentSubmission} from "../../../core/models/assignment-submission";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CrudService} from "../../../core/services/crud.service";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 // import {AssignmentSubmission} from '../../../core/models/assignment-submission';
 // import {AssignmentSubmissionService} from '../../../core/services/assignment-submission.service';
 // import {ActivatedRoute, Router} from '@angular/router';
@@ -19,12 +20,14 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
   assignmentSubmission: AssignmentSubmission;
   assignmentSubmissionDocId: string;
   assignment: Assignment;
+  videoUrl: SafeResourceUrl;
   constructor(
     // private assignmentSubmissionService: AssignmentSubmissionService,
     // private assignmentService: AssignmentService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private crudService: CrudService,
+    private domSanitizer: DomSanitizer,
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -34,6 +37,8 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
         'assignment_submissions', this.assignmentSubmissionDocId).pipe(first()).toPromise();
       this.assignment = await this.crudService.readByDocId(
         'assignment_submissions', this.assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
+      this.videoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.assignmentSubmission.instructor_feedback_attachment);
+      console.log(this.videoUrl);
       // this.assignmentSubmission = await this.assignmentSubmissionService.getAssignmentSubmission(this.assignmentSubmissionDocId)
       //   .pipe(first())
       //   .toPromise();
