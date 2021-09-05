@@ -53,9 +53,10 @@
     <!------ End of Admin's Account Delete Page -------->
 
     <!------ Start of Student's View Assignment Page -------->
+    <!-- Assignment name and submission status is reused for instructor's mark assignment -->
     <ng-container matColumnDef="assignment_name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Assignment Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.assignment_name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="assignment_submission_status">
@@ -75,6 +76,24 @@
 
     <!------ End of Student's View Assignment Page -------->
 
+    <!------ Start of Instructor's Mark Assignment Page -------->
+    <ng-container matColumnDef="assignment_school">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> School </th>
+      <td mat-cell *matCellDef="let element"> {{element.school}} </td>
+    </ng-container>
+    <ng-container matColumnDef="assignment_school_instrument_level">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> School_Instrument_Level </th>
+      <td mat-cell *matCellDef="let element"> {{element.school_instrument_level}} </td>
+    </ng-container>
+    <ng-container matColumnDef="assignment_student_name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Student's Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.student_name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="assignment_feedback_status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Feedback Status </th>
+      <td mat-cell *matCellDef="let element"> {{element.feedback_status}} </td>
+    </ng-container>
+    <!------ End of Instructor's Mark Assignment Page -------->
     <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> action </th>
         <td mat-cell *matCellDef="let element">
@@ -82,8 +101,10 @@
             <!-- <button type="button" mdbBtn color="danger" value="{{element.username}}" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()" mdbWavesEffect> Delete </button> -->
             <ng-container *ngIf="accountUsername!=element.username"><button *ngIf="actionType=='accountDelete'" type="button" mdbBtn color="danger" value="{{element.docId}}" rounded="true" (click)="deleteDocId(element.docId)" mdbWavesEffect> Delete </button></ng-container>
             <button *ngIf="actionType=='wage'" type="button" mdbBtn color="info" value="{{element.docId}}" rounded="true" (click)="editDocId(element.docId)" mdbWavesEffect> View Hours </button>
-          <button *ngIf="actionType=='assignmentSubmit'" type="button" mdbBtn color="info" value="{{element.docId}}" rounded="true" (click)="editDocId(element.docId)" mdbWavesEffect>
+          <button *ngIf="actionType=='assignmentSubmit'" type="button" mdbBtn color="info" rounded="true" (click)="onSubmitClick(element.docId)" mdbWavesEffect>
             {{element.submission_status == 'Pending Submission' ? "Submit" : "Resubmit"}} </button>
+          <button *ngIf="actionType=='assignmentMark'" type="button" mdbBtn color="info" rounded="true" (click)="onMarkClick(element.docId)" mdbWavesEffect>
+            {{element.feedback_datetime == null ? "Mark" : "Re-mark"}} </button>
 
         </td>
     </ng-container>

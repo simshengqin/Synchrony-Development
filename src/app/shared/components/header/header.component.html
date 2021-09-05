@@ -58,7 +58,9 @@
 
         <!-- STUDENT -->
         <ul class="navbar-nav mr-auto" *ngIf="userRole=='student'">
-            <!-- Empty -->
+          <li class="nav-item active" [ngClass]="{'active': url == '/student/assignment/view'}">
+            <a class="nav-link waves-light" routerLink="/student/assignment/view" mdbWavesEffect> View Assignment </a>
+          </li>
         </ul>
         <!-- END OF INSTRUCTOR -->
 

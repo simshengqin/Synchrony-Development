@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild, Input, Output, EventEmitter, OnChanges} fr
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-table',
@@ -22,7 +23,9 @@ export class TableComponent implements OnInit, OnChanges {
 
   @Output() public outputData = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnChanges(): void {
     this.populateTable();
@@ -75,5 +78,11 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
 
+  onSubmitClick(assignmentDocId: string): void {
+    this.router.navigate(['student/assignment/submit'], { queryParams: { assignmentDocId }});
+  }
 
+  onMarkClick(assignmentSubmissionDocId: string): void {
+    this.router.navigate(['instructor/assignment/mark'], { queryParams: { assignmentSubmissionDocId }});
+  }
 }

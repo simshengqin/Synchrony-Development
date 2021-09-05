@@ -18,6 +18,8 @@ import { AssignmentMarkComponent } from './ui/instructor/assignment-mark/assignm
 // Student
 import { StudentHomeComponent } from './ui/student/student-home/student-home.component';
 import {AssignmentViewComponent} from "./ui/student/assignment-view/assignment-view.component";
+import {AssignmentSubmitIndividualComponent} from "./ui/student/assignment-submit-individual/assignment-submit-individual.component";
+import {AssignmentFeedbackIndividualComponent} from "./ui/student/assignment-feedback-individual/assignment-feedback-individual.component";
 
 const routes: Routes = [{
   path: '',
@@ -75,11 +77,6 @@ const routes: Routes = [{
       component: AssignmentEditComponent
     },
     {
-      path: 'instructor/assignment/mark/individual',
-      pathMatch: 'full',
-      component: AssignmentMarkComponent
-    },
-    {
       path: 'instructor/assignment/mark',
       pathMatch: 'full',
       component: AssignmentMarkComponent
@@ -94,6 +91,16 @@ const routes: Routes = [{
       path: 'student/assignment/view',
       pathMatch: 'full',
       component: AssignmentViewComponent
+    },
+    {
+      path: 'student/assignment/submit',
+      pathMatch: 'full',
+      component: AssignmentSubmitIndividualComponent
+    },
+    {
+      path: 'student/assignment/feedback',
+      pathMatch: 'full',
+      component: AssignmentFeedbackIndividualComponent
     },
     // Shared
     {
