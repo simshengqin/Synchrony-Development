@@ -113,7 +113,7 @@
           </ng-container>
 
           <ng-container>
-            <app-dialog-box *ngIf="actionType=='accountEdit'" [actionType]="actionType" [docid]="element.docId" [username]="element.username" [contenteditable]="contenteditable" (editEvent)="editTable($event)"></app-dialog-box>
+            <app-dialog-box *ngIf="actionType=='accountEdit'" [actionType]="actionType" [docid]="element.docId" [username]="element.username" [contenteditable]="contenteditable" (editEvent)="editTable($event)" (triggerUpdate)="update($event)"></app-dialog-box>
           </ng-container>
           
           <app-dialog-box *ngIf="actionType=='wage'" [actionType]="actionType"></app-dialog-box>

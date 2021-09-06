@@ -20,6 +20,7 @@ export class DialogBoxComponent implements OnInit {
   @Input('username') public username!: any;
 
   @Output() editEvent = new EventEmitter<string>();
+  @Output() triggerUpdate = new EventEmitter<string>();
   @Input() contenteditable = new Boolean;
 
   constructor(
@@ -51,7 +52,7 @@ export class DialogBoxComponent implements OnInit {
   }
 
   make_true($event) {
-
+    this.triggerUpdate.emit($event);
   }
   
   make_false($event) {

@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
+
 export class TableComponent implements OnInit, OnChanges {
 
   @Input('dataSource') public dataSource: any;
@@ -24,6 +25,7 @@ export class TableComponent implements OnInit, OnChanges {
   contenteditable:boolean = false;
 
   @Output() public outputData = new EventEmitter<any>();
+  @Output() triggerUpdate = new EventEmitter<string>();
 
   constructor(
     private router: Router,
@@ -72,6 +74,10 @@ export class TableComponent implements OnInit, OnChanges {
     if (this.editDataDocId != null){
       this.outputData.emit(this.editDataDocId);
     }
+  }
+
+  update($event): void {
+    this.triggerUpdate.emit($event);
   }
 
   // Modal //

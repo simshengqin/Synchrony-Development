@@ -299,7 +299,7 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
 
   edit_doc_id($event:any):void{
     if($event!=""||$event!=null){
-      console.log($event)
+      console.log(this.dataSource);
       this.crudservice.update("accounts", this.accounts[0].docId, this.accounts)
       var result:Account[] = []
       for(var ele of this.dataSource){
@@ -310,16 +310,6 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
       this.dataSource = result;
     } else {
       console.log("There is no account to update!")
-    }
-  }
-
-  test():void {
-    if(this.contenteditable == "true") {
-      this.contenteditable = "false";
-      console.log(this.dataSource);
-    } else {
-      this.contenteditable = "true";
-      console.log(this.dataSource);
     }
   }
 
