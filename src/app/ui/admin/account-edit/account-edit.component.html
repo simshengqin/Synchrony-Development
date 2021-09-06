@@ -10,15 +10,4 @@
 
     <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType" [accountUsername]="accountUsername" (outputData)="edit_doc_id($event)"></app-table>
 
-    <table>
-        <tr>
-            <td>
-                <span [contentEditable]="contenteditable">
-                    textbox
-                </span>
-                <button (click)="test()">edit</button>
-            </td>
-        </tr>
-    </table>
-
   </div>
