@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -18,6 +18,9 @@ export class DialogBoxComponent implements OnInit {
   @Input('actionType') public actionType: any;
   @Input('docid') public docid!: any;
   @Input('username') public username!: any;
+
+  @Output() editEvent = new EventEmitter<string>();
+  @Input() contenteditable = new Boolean;
 
   constructor(
     private crudservice:CrudService,
@@ -42,7 +45,17 @@ export class DialogBoxComponent implements OnInit {
   click_to_view(){
     console.log("View")
   }
+
+  send_to_parent(value: string) {
+    this.editEvent.emit(value);
+  }
+
+  make_true($event) {
+
+  }
   
-  
+  make_false($event) {
+    this.send_to_parent($event);
+  }
 
 }

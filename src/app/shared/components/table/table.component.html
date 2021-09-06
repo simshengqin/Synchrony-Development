@@ -9,22 +9,22 @@
     <!------ Start of Admin's Account Delete Page -------->
     <ng-container matColumnDef="username">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
-      <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+      <td mat-cell *matCellDef="let element" [contentEditable]="contenteditable"> {{element.username}} </td>
     </ng-container>
 
     <ng-container matColumnDef="first_name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
-      <td mat-cell *matCellDef="let element" class="table-editable"> {{element.first_name}} </td>
+      <td mat-cell *matCellDef="let element" [contentEditable]="contenteditable"> {{element.first_name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="last_name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
+      <td mat-cell *matCellDef="let element" [contentEditable]="contenteditable"> {{element.last_name}} </td>
     </ng-container>
   
     <ng-container matColumnDef="role">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
-      <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+      <td mat-cell *matCellDef="let element" [contentEditable]="contenteditable"> {{element.role}} </td>
     </ng-container>
 
 
@@ -32,10 +32,10 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> School </th>
       <td mat-cell *matCellDef="let element">
         <ng-container *ngFor="let tag of element.school; let i = index">
-          <span *ngIf="tag =='NA'">
+          <span *ngIf="tag =='NA'" [contentEditable]="contenteditable">
             {{tag}}
           </span>
-            <span *ngIf="tag!='NA'">
+            <span *ngIf="tag!='NA'" [contentEditable]="contenteditable">
             ({{i+1}}) {{tag}}
           </span>
           </ng-container>
@@ -47,10 +47,10 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> school_instrument_level </th>
         <td mat-cell *matCellDef="let element">
           <ng-container *ngFor="let tag of element.school_instrument_level; let i = index">
-          <span *ngIf="tag =='NA'">
+          <span *ngIf="tag =='NA'" [contentEditable]="contenteditable">
             {{tag}}
           </span>
-            <span *ngIf="tag!='NA'">
+            <span *ngIf="tag!='NA'" [contentEditable]="contenteditable">
             ({{i+1}}) {{tag}}
           </span>
         </ng-container>
@@ -101,6 +101,8 @@
       <td mat-cell *matCellDef="let element"> {{element.feedback_status}} </td>
     </ng-container>
     <!------ End of Instructor's Mark Assignment Page -------->
+
+    <!-- Action Buttons -->
     <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> Action </th>
         <td mat-cell *matCellDef="let element">
@@ -110,8 +112,8 @@
             <app-dialog-box *ngIf="actionType=='accountDelete'" [actionType]="actionType" [docid]="element.docId" [username]="element.username"></app-dialog-box>
           </ng-container>
 
-          <ng-container *ngIf="accountUsername!=element.username">
-            <app-dialog-box *ngIf="actionType=='accountEdit'" [actionType]="actionType" [docid]="element.docId" [username]="element.username"></app-dialog-box>
+          <ng-container>
+            <app-dialog-box *ngIf="actionType=='accountEdit'" [actionType]="actionType" [docid]="element.docId" [username]="element.username" [contenteditable]="contenteditable" (editEvent)="editTable($event)"></app-dialog-box>
           </ng-container>
           
           <app-dialog-box *ngIf="actionType=='wage'" [actionType]="actionType"></app-dialog-box>

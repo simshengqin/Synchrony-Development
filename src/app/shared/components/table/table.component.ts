@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, Input, Output, EventEmitter, OnChanges} from '@angular/core';
+import {Component, OnInit, ViewChild, Input, Output, EventEmitter, OnChanges, ComponentFactoryResolver} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -20,6 +20,8 @@ export class TableComponent implements OnInit, OnChanges {
   matTableDataSource: any;
   deleteDataDocId!: string;
   editDataDocId!: string;
+
+  contenteditable:boolean = false;
 
   @Output() public outputData = new EventEmitter<any>();
 
@@ -86,5 +88,13 @@ export class TableComponent implements OnInit, OnChanges {
   }
   onMarkClick(assignmentSubmissionDocId: string): void {
     this.router.navigate(['instructor/assignment/mark'], { queryParams: { assignmentSubmissionDocId }});
+  }
+
+  editTable($event) {
+    if(this.contenteditable == true) {
+      this.contenteditable = false;
+    } else {
+      this.contenteditable = true;
+    }
   }
 }

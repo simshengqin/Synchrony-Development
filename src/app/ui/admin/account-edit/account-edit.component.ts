@@ -316,8 +316,10 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   test():void {
     if(this.contenteditable == "true") {
       this.contenteditable = "false";
+      console.log(this.dataSource);
     } else {
       this.contenteditable = "true";
+      console.log(this.dataSource);
     }
   }
 
