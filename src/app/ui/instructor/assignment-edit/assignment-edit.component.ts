@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
+import { CrudService } from 'src/app/core/services/crud.service';
+import { TableComponent } from 'src/app/shared/components/table/table.component';
+import { Account } from '../../../core/models/account';
+import { Assignment } from '../../../core/models/assignment'
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-assignment-edit',
@@ -7,9 +12,163 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssignmentEditComponent implements OnInit {
 
-  constructor() { }
+  account!:Account;
+  accountDocId!:string;
+  instructorSchools:string[]=[];
+  sub_schools:string[]=[]
+  sub_instrument:string[]=[];
+  sub_levels:string[]=[];
+  
+  sub_display_instrument:boolean = false
+  sub_display_levels:boolean = false
+
+  // set filter name
+  nameSchool:string = "School"
+  nameInstrument:string = "Instrument"
+  nameLevels:string = "Levels"
+  
+  // get filter data
+  select_Combine_SchoolInstrumentLevels:string[] = [];
+  selectSubSchools:string[] = [];
+  selectSubInstruments:string[] = [];
+  selectSubLevels:string[] = [];
+
+  // Mat Table
+  dataSource!:any;
+  displayedColumns:string[] = ['name', 'due_datetime', 'school_instrument_level', 'action'];
+  actionType:string = "instructorAssignmentEdit";
+  // Assignment
+  assignments:any[]=[];
+
+  constructor(
+    private crudservice:CrudService) 
+    { }
 
   ngOnInit(): void {
+    this.get_account_information();
+  }
+
+  // Get the account doc Id
+  get_account_information(): void {
+    if(sessionStorage.getItem('account') != null){
+      this.account = JSON.parse(sessionStorage.getItem('account'));
+      this.accountDocId = this.account.docId;
+      this.instructorSchools = this.account.school;
+      //console.log(this.accountDocId);
+      this.get_all_instructor_assignments()
+      this.set_distint_school_instrument_level(this.account.school_instrument_level)
+    }
+  }
+
+  async get_all_instructor_assignments(){
+    this.dataSource = [];
+    this.assignments = [];
+    const data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId).pipe(first()).toPromise()
+    for(var ele of data){
+      this.create_assignment(ele)
+    }
+    this.dataSource = this.assignments;
+  }
+
+  create_assignment(data:any){
+    var assignment: any = {
+      docId: data.docId,
+      instructor_account_doc_id: data.instructor_account_doc_id,
+      created_datetime: data.created_datetime,
+      description: data.description,
+      due_datetime: data.due_datetime.toDate(),
+      name: data.name,
+      school: data.school,
+      school_instrument_level: data.school_instrument_level,
+      file_names: data.file_names
+    }
+    this.assignments.push(assignment)
+  }
+
+  // split the school_instrument_level into arrays of there own.
+  set_distint_school_instrument_level(data:string[]){
+    for(var dataSchoolInstrumentLevel of data){
+      var sub_query = dataSchoolInstrumentLevel.split("_")
+      var school = sub_query[0];
+      var instrument = sub_query[1];
+      var level = sub_query[2];
+      if(this.sub_schools.indexOf(school)==-1){
+        this.sub_schools.push(school)
+      }
+      if(this.sub_instrument.indexOf(instrument)==-1){
+        this.sub_instrument.push(instrument)
+      }
+      if(this.sub_levels.indexOf(level)==-1){
+        this.sub_levels.push(level)
+      }
+    }
+  } 
+
+    // == get filter == //
+    get_query_data_sub_schools($event:any):void{
+      this.selectSubSchools = $event.value
+      if(this.selectSubSchools.length == 0){
+        this.sub_display_instrument = false
+        this.sub_display_levels = false
+      } else {
+        this.sub_display_instrument = true
+        this.sub_display_levels = false
+      }
+      if(this.sub_display_instrument == false && this.sub_display_levels == false){
+        this.get_all_instructor_assignments();
+      }
+    }
+  
+    get_query_data_sub_instruments($event:any):void{
+      this.selectSubInstruments = $event.value
+      if(this.selectSubInstruments.length == 0){
+        this.sub_display_levels = false
+      } else {
+        this.sub_display_levels = true
+      }
+    }
+  
+  get_query_data_sub_levels($event:any):void{
+    this.selectSubLevels = $event.value
+    this.combine_querry_search_data()
+    this.query_table_with_filter()
+  }
+
+  // Method: 
+  combine_querry_search_data(){
+    this.select_Combine_SchoolInstrumentLevels = [];
+    if(this.sub_display_instrument != false && this.sub_display_levels != false){
+      this.select_Combine_SchoolInstrumentLevels = [];
+      for(var eleSchool of this.selectSubSchools){
+        for(var eleInstrument of this.selectSubInstruments){
+          for(var eleLevel of this.selectSubLevels){
+            var query = eleSchool + "_" + eleInstrument + "_" + eleLevel
+            if(this.select_Combine_SchoolInstrumentLevels.indexOf(query)==-1){
+              this.select_Combine_SchoolInstrumentLevels.push(query)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Method: 
+  query_table_with_filter(){
+    var result:Account[] = [];
+    result = this.assignments;
+    if(this.select_Combine_SchoolInstrumentLevels.length!=0){
+      this.filtering_by_school_instrument_levels(this.select_Combine_SchoolInstrumentLevels)
+    }
+  }
+
+  // Method: 
+  async filtering_by_school_instrument_levels(filter:string[]){
+    this.assignments = [];
+    const data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId,"school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
+    for(var ele of data){
+      this.create_assignment(ele)
+    }
+    this.dataSource = this.assignments;
   }
 
 }

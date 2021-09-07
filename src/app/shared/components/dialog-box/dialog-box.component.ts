@@ -18,6 +18,7 @@ export class DialogBoxComponent implements OnInit {
   @Input('actionType') public actionType: any;
   @Input('docid') public docid!: any;
   @Input('username') public username!: any;
+  @Input('assignmentName') public assignmentName!: any;
 
   @Output() editEvent = new EventEmitter<string>();
   @Output() triggerUpdate = new EventEmitter<string>();
@@ -37,10 +38,16 @@ export class DialogBoxComponent implements OnInit {
     console.log(event);
   }
 
-  click_to_delete(){
+  click_to_delete_account(){
     console.log("User " + this.username + " has be deleted!")
     this.crudservice.delete("accounts",this.docid)
     this.router.navigate(['/admin/account/delete'])
+  }
+
+  click_to_delete_assignment(){
+    console.log("Assignment deleted!")
+    //this.crudservice.delete("accounts",this.docid)
+    //this.router.navigate(['/admin/account/delete'])
   }
 
   click_to_view(){

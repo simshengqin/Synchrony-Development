@@ -6,11 +6,11 @@
 <button *ngIf="actionType=='accountEdit' && contenteditable == true" type="button" mdbBtn color="danger" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="make_false($event)" mdbWavesEffect> Cancel </button>
 
 <button *ngIf="actionType=='wage'" type="button" mdbBtn color="info" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()" mdbWavesEffect> View </button>
-
+<button *ngIf="actionType=='instructorAssignmentEdit'" type="button" mdbBtn color="danger" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()" mdbWavesEffect> Delete </button>
 
 <div mdbModal #frame="mdbModal" class="modal fade" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" (open)="onOpen($event)">
     
-    <!-- DELETE MODAL -->
+    <!-- DELETE MODAL ACCOUNT -->
     <div *ngIf="actionType=='accountDelete'" class="modal-dialog modal-notify modal-danger" role="document">
 
         <div  class="modal-content">
@@ -30,7 +30,7 @@
             </div>
 
             <div class="modal-footer justify-content-center">
-            <a type="button" mdbBtn color="danger" class="waves-light" (click)="click_to_delete()" mdbWavesEffect> Delete
+            <a type="button" mdbBtn color="danger" class="waves-light" (click)="click_to_delete_account()" mdbWavesEffect> Delete
                 <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>
             </a>
             <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
@@ -59,7 +59,7 @@
             </div>
 
             <div class="modal-footer justify-content-center">
-            <a type="button" mdbBtn color="danger" class="waves-light" (click)="click_to_delete()" mdbWavesEffect> Confirm
+            <a type="button" mdbBtn color="danger" class="waves-light" (click)="click_to_delete_assignment()" mdbWavesEffect> Confirm
                 <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>
             </a>
             <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
@@ -69,6 +69,7 @@
     </div>
 
     <!-- VIEW MODAL -->
+    <!-- VIEW MODAL ACCOUNT-->
     <div *ngIf="actionType=='wage'" class="modal-dialog modal-notify modal-info" role="document">
         <div class="modal-content">
 
@@ -98,5 +99,34 @@
         </div>
     </div>
     <!-- END OF VIEW MODAL -->
+
+    <!-- DELETE ASSIGNMENT ACCOUNT -->
+    <div *ngIf="actionType=='instructorAssignmentEdit'" class="modal-dialog modal-notify modal-danger" role="document">
+
+        <div  class="modal-content">
+
+            <div class="modal-header">
+                <p class="heading lead"> Delete Assignment ? </p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="text-center">
+                    <mdb-icon fas icon="comment-slash" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
+                    <p> Are you sure you would want to delete this Assignment title: <br> <b> {{assignmentName}} </b> ? <br> this action cannot be undo </p>
+                </div>
+            </div>
+
+            <div class="modal-footer justify-content-center">
+            <a type="button" mdbBtn color="danger" class="waves-light" (click)="click_to_delete_assignment()" mdbWavesEffect> Delete
+                <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>
+            </a>
+            <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
+                data-dismiss="modal"> No </a>
+            </div>
+        </div>
+    </div>
 
 </div>
