@@ -1,0 +1,13 @@
+<app-header></app-header>
+<div class="account-create-wrapper wrapper-padding">
+    
+    <!-- <h1 class="mb-3"> Edit Assignments </h1> -->
+    <p>assignment-edit-individual works!</p>
+
+    <div *ngFor="let ele of assignmentFileNames">
+        <span> {{ele}} </span> 
+        <app-dialog-box [actionType]="actionType" [fileLocationPath]="fileLocationPath" [fileName]="ele"></app-dialog-box> 
+        <button type="button" mdbBtn color="danger" mdbWavesEffect (click)="delete_file(ele)"> Remove </button> 
+    </div>
+
+</div>

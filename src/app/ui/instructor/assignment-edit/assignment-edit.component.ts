@@ -64,6 +64,7 @@ export class AssignmentEditComponent implements OnInit {
     this.dataSource = [];
     this.assignments = [];
     const data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId).pipe(first()).toPromise()
+    console.log(data)
     for(var ele of data){
       this.create_assignment(ele)
     }
@@ -71,12 +72,17 @@ export class AssignmentEditComponent implements OnInit {
   }
 
   create_assignment(data:any){
+    // Change the date and time formate
+    var edit_due_datetime = data.due_datetime.toDate()
+    edit_due_datetime = edit_due_datetime.toString().split("GMT")[0].split(" ");
+    var edit_due_date = edit_due_datetime[0] + ", " + edit_due_datetime[2] + " " + edit_due_datetime[1] + " " + edit_due_datetime[3] + ", "
+    var edit_due_time = edit_due_datetime[4]
     var assignment: any = {
       docId: data.docId,
       instructor_account_doc_id: data.instructor_account_doc_id,
       created_datetime: data.created_datetime,
       description: data.description,
-      due_datetime: data.due_datetime.toDate(),
+      due_datetime: edit_due_date + edit_due_time,
       name: data.name,
       school: data.school,
       school_instrument_level: data.school_instrument_level,

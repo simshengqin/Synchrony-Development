@@ -7,6 +7,9 @@ import { TableComponent } from 'src/app/shared/components/table/table.component'
 import { Account } from '../../../core/models/account';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from "../../../../environments/environment.prod"
 
 @Component({
   selector: 'app-dialog-box',
@@ -18,7 +21,15 @@ export class DialogBoxComponent implements OnInit {
   @Input('actionType') public actionType: any;
   @Input('docid') public docid!: any;
   @Input('username') public username!: any;
+  // Instructor edit assignment component 
   @Input('assignmentName') public assignmentName!: any;
+  // Instructor edit individual assignment component 
+  @Input('fileLocationPath') public fileLocationPath!: any;
+  @Input('fileName') public fileName!: any;
+
+  storage_bucket = "gs://" + environment.firebase.storageBucket;
+  fileType!:string;
+  pdfUrl!:any;
 
   @Output() editEvent = new EventEmitter<string>();
   @Output() triggerUpdate = new EventEmitter<string>();
@@ -26,7 +37,9 @@ export class DialogBoxComponent implements OnInit {
 
   constructor(
     private crudservice:CrudService,
-    private router: Router
+    private router: Router,
+    private storage: AngularFireStorage,
+    private ds:DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +61,21 @@ export class DialogBoxComponent implements OnInit {
     console.log("Assignment deleted!")
     //this.crudservice.delete("accounts",this.docid)
     //this.router.navigate(['/admin/account/delete'])
+  }
+
+  acquire_file(){
+    this.fileType = this.fileName.split(".")[1];
+    this.getPDF()
+  }
+
+  getPDF():any{
+    var pdf = this.storage_bucket + this.fileLocationPath + this.fileName
+    const ref = this.storage.refFromURL(pdf);
+    this.pdfUrl = ref.getDownloadURL().subscribe(data => {this.pdfUrl = data})
+  }
+
+  returnSafeURL(){
+    return this.ds.bypassSecurityTrustResourceUrl(this.pdfUrl)
   }
 
   click_to_view(){

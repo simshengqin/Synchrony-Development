@@ -15,6 +15,7 @@ import { InstructorHomeComponent } from './ui/instructor/instructor-home/instruc
 import { AssignmentCreateComponent } from './ui/instructor/assignment-create/assignment-create.component';
 import { AssignmentEditComponent } from './ui/instructor/assignment-edit/assignment-edit.component';
 import { AssignmentMarkComponent } from './ui/instructor/assignment-mark/assignment-mark.component';
+import { AssignmentEditIndividualComponent } from './ui/instructor/assignment-edit-individual/assignment-edit-individual.component';
 // Student
 import { StudentHomeComponent } from './ui/student/student-home/student-home.component';
 import {AssignmentViewComponent} from "./ui/student/assignment-view/assignment-view.component";
@@ -75,6 +76,11 @@ const routes: Routes = [{
       path: 'instructor/assignment/edit',
       pathMatch: 'full',
       component: AssignmentEditComponent
+    },
+    {
+      path: 'instructor/assignment/edit/assignment/:docId',
+      pathMatch: 'full',
+      component: AssignmentEditIndividualComponent
     },
     {
       path: 'instructor/assignment/mark',
