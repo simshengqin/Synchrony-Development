@@ -58,6 +58,7 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   selectSubLevels:string[] = [];
 
   contenteditable: string = "false";
+  username: string;
 
   constructor(
     private crudservice:CrudService
@@ -297,19 +298,60 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
     return filterResult
   }
 
-  edit_doc_id($event:any):void{
-    if($event!=""||$event!=null){
-      console.log(this.dataSource);
-      this.crudservice.update("accounts", this.accounts[0].docId, this.accounts)
-      var result:Account[] = []
-      for(var ele of this.dataSource){
-        if(ele.docId != $event){
-          result.push(ele)
+  edit_doc_id($event:any):any{
+    console.log("edit_doc_id activated");
+    // [0] = username, [1] = first_name, [2] = last_name, [3] = role
+    // check if any of these are null before passing through crudservice.update
+    // if all are null, crudservice.update does not take place and return a message
+
+    let data = {};
+
+    // Data validation
+    for(let i=0; i<$event.length; i++) {
+      if($event[i] != undefined) {
+        // use switch() function to create the data object
+        switch(i) {
+          case 0:
+            data['username'] = $event[i];
+            break;
+          
+          case 1:
+            data['first_name'] = $event[i];
+            break;
+
+          case 2:
+            data['last_name'] = $event[i];
+            break;
+
+          case 3:
+            data['role'] = $event[i];
+            break;
         }
+      } else {
+        continue;
+      }
+    }
+
+    console.log(data);
+
+    if(data == {}) {
+      return "No changes were made";
+    }
+    
+    try {
+      this.crudservice.update("accounts", this.accounts[0].docId, data);
+
+      var result:Account[] = []
+      
+      for(var ele of this.dataSource){
+        result.push(ele);
       }
       this.dataSource = result;
-    } else {
-      console.log("There is no account to update!")
+      return "Update is successful!";
+
+    } catch (error) {
+      console.log (error);
+      return error;
     }
   }
 

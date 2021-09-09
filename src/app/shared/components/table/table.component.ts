@@ -25,7 +25,13 @@ export class TableComponent implements OnInit, OnChanges {
   contenteditable:boolean = false;
 
   @Output() public outputData = new EventEmitter<any>();
-  @Output() triggerUpdate = new EventEmitter<string>();
+  @Output() triggerUpdate = new EventEmitter<any>();
+
+  @Input("username") username: string;
+  @Input("first_name") first_name: string;
+  @Input("last_name") last_name: string;
+  @Input("role") role: string;
+  updateArray = [];
 
   constructor(
     private router: Router,
@@ -76,10 +82,6 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
 
-  update($event): void {
-    this.triggerUpdate.emit($event);
-  }
-
   // Modal //
   onOpen(event: any): void {
     console.log(event);
@@ -102,5 +104,16 @@ export class TableComponent implements OnInit, OnChanges {
     } else {
       this.contenteditable = true;
     }
+  }
+
+  sendToTable($event) {
+    console.log("sentToTable activated");
+    this.updateArray.push(this.username);
+    this.updateArray.push(this.first_name);
+    this.updateArray.push(this.last_name);
+    this.updateArray.push(this.role);
+    this.triggerUpdate.emit(this.updateArray);
+    // this.updateArray = [];
+    // this.triggerUpdate.emit(this.username);
   }
 }
