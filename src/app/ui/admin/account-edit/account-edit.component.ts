@@ -304,9 +304,9 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
     // check if any of these are null before passing through crudservice.update
     // if all are null, crudservice.update does not take place and return a message
 
+    // Creating data object
     let data = {};
 
-    // Data validation
     for(let i=0; i<$event.length; i++) {
       if($event[i] != undefined) {
         // use switch() function to create the data object
@@ -335,23 +335,24 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
     console.log(data);
 
     if(data == {}) {
-      return "No changes were made";
-    }
-    
-    try {
-      this.crudservice.update("accounts", this.accounts[0].docId, data);
+      console.log("No changes were made");
+    } else {
 
-      var result:Account[] = []
-      
-      for(var ele of this.dataSource){
-        result.push(ele);
+      try {
+        this.crudservice.update("accounts", this.accounts[0].docId, data);
+  
+        var result:Account[] = []
+        
+        for(var ele of this.dataSource){
+          result.push(ele);
+        }
+        this.dataSource = result;
+        console.log("Update is successful!");
+  
+      } catch (error) {
+        console.log(error);
       }
-      this.dataSource = result;
-      return "Update is successful!";
-
-    } catch (error) {
-      console.log (error);
-      return error;
+      
     }
   }
 
