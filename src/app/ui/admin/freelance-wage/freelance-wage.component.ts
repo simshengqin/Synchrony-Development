@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { Account } from '../../../core/models/account';
+import { Wages } from '../../../core/models/wages';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -10,6 +11,18 @@ import { first } from 'rxjs/operators';
 })
 export class FreelanceWageComponent implements OnInit {
 
+  wages:Wages[] = [];
+  dataSource!:any;
+  displayedColumns:string[] = ['month', 'number_of_minutes', 'school_abbreviation', 'year'];
+  actionType:string = "wage";
+  // set filter data
+  schools:string[] = [];
+  // set filter name
+  nameSchool:string = "School"
+  // selected schools 
+  selectedSchools:string[] = [];
+
+  /*
   accounts:Account[] = [];
   // set table data
   dataSource!:any;
@@ -34,15 +47,64 @@ export class FreelanceWageComponent implements OnInit {
   selectSubSchools:string[] = [];
   selectSubInstruments:string[] = [];
   selectSubLevels:string[] = [];
-
+  */
   constructor(
     private crudservice:CrudService
   ) { }
 
   ngOnInit(): void {
-    this.retrieve_all_accounts();
+    //this.retrieve_all_accounts();
+    this.retrieve_all_wages();
   }
 
+  async retrieve_all_wages(){
+    const data = await this.crudservice.read('wages').pipe(first()).toPromise();
+    for(var ele of data){
+      console.log(ele)
+      this.create_wage(ele)
+      this.set_distint_school(ele.school_abbreviation)
+    }
+    this.dataSource = this.wages
+  }
+
+  create_wage(data:any){
+    var wage:Wages = {
+      docId: data.docId,
+      account_doc_id: data.account_doc_id,
+      month: data.month,
+      number_of_minutes: data.number_of_minutes,
+      school_abbreviation: data.school_abbreviation,
+      year: data.year
+    }
+    this.wages.push(wage);
+  }
+
+  set_distint_school(data:string){
+    if(this.schools.indexOf(data)==-1){
+      this.schools.push(data)
+    }
+  }
+
+  get_query_data_sub_schools($event:any):void{
+    this.selectedSchools = $event.value
+    if(this.selectedSchools.length==0){
+      this.retrieve_all_wages();
+    }
+  }
+
+  async filter_wages_by_selected_school(){
+    this.wages = [];
+    const data = await this.crudservice.read('wages','school_abbreviation','in',this.selectedSchools).pipe(first()).toPromise();
+    for(var ele of data){
+      console.log(ele)
+      this.create_wage(ele)
+    }
+    this.dataSource = this.wages
+  }
+
+
+
+  /*
   async retrieve_all_accounts(){
     const data = await this.crudservice.read('accounts','role','==','instructor').pipe(first()).toPromise();
     if(data!=undefined||data!=null){
@@ -181,6 +243,6 @@ export class FreelanceWageComponent implements OnInit {
 
   edit_doc_id($event:any){
     console.log($event);
-  }
+  } */
 
 }
