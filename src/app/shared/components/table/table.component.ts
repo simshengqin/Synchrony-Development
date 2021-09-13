@@ -113,7 +113,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.updateArray.push(this.last_name);
     this.updateArray.push(this.role);
     this.triggerUpdate.emit(this.updateArray);
-    // this.updateArray = [];
-    // this.triggerUpdate.emit(this.username);
+    this.updateArray = [];
   }
 }

@@ -57,9 +57,6 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   selectSubInstruments:string[] = [];
   selectSubLevels:string[] = [];
 
-  contenteditable: string = "false";
-  username: string;
-
   constructor(
     private crudservice:CrudService
   ) { }
@@ -332,8 +329,6 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
       }
     }
 
-    console.log(data);
-
     if(data == {}) {
       console.log("No changes were made");
     } else {
@@ -348,12 +343,16 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
         }
         this.dataSource = result;
         console.log("Update is successful!");
+
+        // send request back to dialog-box component to return to edit form
   
       } catch (error) {
         console.log(error);
       }
-      
+
     }
+
+    // turn contenteditable off!!!!
   }
 
 }

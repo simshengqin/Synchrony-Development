@@ -88,6 +88,7 @@ export class DialogBoxComponent implements OnInit {
 
   make_true($event) {
     this.triggerUpdate.emit($event);
+    this.send_to_parent($event);
   }
   
   make_false($event) {
