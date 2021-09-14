@@ -11,9 +11,10 @@ import { first } from 'rxjs/operators';
 })
 export class FreelanceWageComponent implements OnInit {
 
-  wages:Wages[] = [];
+  wages:any[] = [];
   dataSource!:any;
-  displayedColumns:string[] = ['month', 'number_of_minutes', 'school_abbreviation', 'year'];
+  displayedColumns:string[] = ['first_name', 'last_name' ,'month', 'number_of_minutes', 'school_abbreviation', 'year'];
+  //displayedColumns:string[] = ['month', 'number_of_minutes', 'school_abbreviation', 'year'];
   actionType:string = "wage";
   // set filter data
   schools:string[] = [];
@@ -58,18 +59,26 @@ export class FreelanceWageComponent implements OnInit {
   }
 
   async retrieve_all_wages(){
+    this.dataSource = [];
+    this.wages = [];
     const data = await this.crudservice.read('wages').pipe(first()).toPromise();
     for(var ele of data){
       console.log(ele)
-      this.create_wage(ele)
+      const instructorData = await this.crudservice.readByDocId('accounts',ele.account_doc_id).pipe(first()).toPromise();
+      this.create_wage(ele, instructorData)
       this.set_distint_school(ele.school_abbreviation)
     }
     this.dataSource = this.wages
+    console.log(this.dataSource);
   }
 
-  create_wage(data:any){
-    var wage:Wages = {
+  create_wage(data:any, instructorData:any){
+    //const instructor = await this.crudservice.readByDocId('accounts',data.account_doc_id).pipe(first()).toPromise();
+    //console.log(instructor)
+    var wage:any = {
       docId: data.docId,
+      first_name: instructorData.first_name,
+      last_name: instructorData.last_name,
       account_doc_id: data.account_doc_id,
       month: data.month,
       number_of_minutes: data.number_of_minutes,
@@ -87,17 +96,23 @@ export class FreelanceWageComponent implements OnInit {
 
   get_query_data_sub_schools($event:any):void{
     this.selectedSchools = $event.value
+    console.log(this.selectedSchools)
     if(this.selectedSchools.length==0){
       this.retrieve_all_wages();
+    } else{
+      this.filter_wages_by_selected_school();
     }
   }
 
   async filter_wages_by_selected_school(){
+    this.dataSource = [];
     this.wages = [];
     const data = await this.crudservice.read('wages','school_abbreviation','in',this.selectedSchools).pipe(first()).toPromise();
+    console.log(data)
     for(var ele of data){
       console.log(ele)
-      this.create_wage(ele)
+      const instructorData = await this.crudservice.readByDocId('accounts',ele.account_doc_id).pipe(first()).toPromise();
+      this.create_wage(ele, instructorData)
     }
     this.dataSource = this.wages
   }

@@ -93,6 +93,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
         }
       }
       this.dataSource = this.accounts
+      //console.log(this.dataSource)
     }
   }
 
