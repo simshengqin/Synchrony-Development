@@ -23,7 +23,7 @@ export class InputSelectComponent implements OnInit {
   }
 
   // Method: get the dropdown list values and prepare to sent to parent
-  selected_value(event: MatSelectChange) {
+  selected_value(event: MatSelectChange):void {
     this.selectedData = {
       value: event.value,
       //text: event.source.triggerValue
@@ -32,7 +32,7 @@ export class InputSelectComponent implements OnInit {
   }
 
   // Method: sent data to the parent 
-  public sentToParent(){
+  public sentToParent():void{
     this.outputData.emit(this.selectedData)
   }
 

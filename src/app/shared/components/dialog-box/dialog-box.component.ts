@@ -30,6 +30,7 @@ export class DialogBoxComponent implements OnInit {
   storage_bucket = "gs://" + environment.firebase.storageBucket;
   fileType!:string;
   pdfUrl!:any;
+  videoUrl!:any;
 
   @Output() editEvent = new EventEmitter<string>();
   @Output() triggerUpdate = new EventEmitter<string>();
@@ -65,13 +66,28 @@ export class DialogBoxComponent implements OnInit {
 
   acquire_file(){
     this.fileType = this.fileName.split(".")[1];
-    this.getPDF()
+    
+    if(this.fileType == "pdf"){
+      this.getPDF()
+    }
+    if(this.fileType == "mp4"){
+      this.getVideo()
+    }
   }
 
   getPDF():any{
     var pdf = this.storage_bucket + this.fileLocationPath + this.fileName
     const ref = this.storage.refFromURL(pdf);
     this.pdfUrl = ref.getDownloadURL().subscribe(data => {this.pdfUrl = data})
+  }
+
+  getVideo():any{
+    var video = this.storage_bucket + this.fileLocationPath + this.fileName
+    const ref = this.storage.refFromURL(video);
+    //ref.getDownloadURL().subscribe(data => {this.videoUrl = data})
+    return this.videoUrl = ref.getDownloadURL().subscribe(data => {this.videoUrl = data})
+    console.log(ref.getDownloadURL().subscribe(data => {this.videoUrl = data}))
+    console.log(this.videoUrl)
   }
 
   returnSafeURL(){

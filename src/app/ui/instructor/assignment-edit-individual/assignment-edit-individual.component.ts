@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { TableComponent } from 'src/app/shared/components/table/table.component';
+import {ToastrService} from 'ngx-toastr';
 import { Account } from '../../../core/models/account';
 import { Assignment } from '../../../core/models/assignment'
 import { first } from 'rxjs/operators';
@@ -8,8 +9,14 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { environment } from "../../../../environments/environment.prod";
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Validators } from '@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { FormControl } from '@angular/forms';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
+
+
 
 @Component({
   selector: 'app-assignment-edit-individual',
@@ -27,26 +34,55 @@ export class AssignmentEditIndividualComponent implements OnInit {
   assignment!:Assignment;
   assignmentDocId!:string;
   assignmentDescription!:string;
-  assignmentDueDateTime!:Timestamp;
+  assignmentDueDateTime!:any;
+  assignmentDueDate!:any;
+  assignmentDueTime!:string;
   assignmentName!:string;
   assignmentSchool:string[]=[];
   assignmentSchoolInstrumentLevel:string[]=[];
   assignmentFileNames:string[]=[];
 
-  // Assignment' files
+  nameSchool:string = "School"
+  nameInstrument:string = "Instrument"
+  nameLevels:string = "Levels"
+
+  schools:string[] = []
+  instruments:string[] = []
+  levels:string[] = []
+  queriedInstruments:string[] = []
+  queriedLevels:string[] = []
+
+  displaySchool = false;
+  displayInstruments = false;
+  displayLevels = false;
+
+  selectedSchool!:string
+  selectedInstrument!:string
+  selectedLevel!:string
+
+  toAddSchoolInstrumentLevel!:string
+
+  //tempdate!:string;
+ // temptime!:string;
+
+  // Assignment's files and storage 
   fileLocationPath!:string; // contains the path for assignments folder
   files:string[] = []; // contains all the files
   storage_bucket = "gs://" + environment.firebase.storageBucket;
+  // forms
+  updateAssignmentForm!: FormGroup; 
 
   constructor(
     private route: ActivatedRoute,
     private crudservice:CrudService,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private fb: FormBuilder,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
-    this.get_account_information()
-    this.get_assignment_information()
+    this.get_account_information();
+    this.get_assignment_information();
   }
 
   // Get the account information
@@ -55,8 +91,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
       this.account = JSON.parse(sessionStorage.getItem('account'));
       this.accountDocId = this.account.docId;
       this.instructorSchools = this.account.school;
-      //this.get_all_instructor_assignments()
-      //this.set_distint_school_instrument_level(this.account.school_instrument_level)
+      this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
     }
   }
 
@@ -66,15 +101,135 @@ export class AssignmentEditIndividualComponent implements OnInit {
     this.assignmentDocId = assignmentid;
     const data = await this.crudservice.readByDocId('assignments', assignmentid).pipe(first()).toPromise();
     this.assignment = data
-    //this.assignmentDescription = this.assignment.description;
-    //this.assignmentDueDateTime = this.assignment.due_datetime;
-    //this.assignmentName = this.assignment.name;
-    //this.assignmentSchool = this.assignment.school;
-    //this.assignmentSchoolInstrumentLevel = this.assignment.school_instrument_level;
+    this.assignmentDescription = this.assignment.description;
+    this.convert_date_time(this.assignment.due_datetime)    
+    this.assignmentName = this.assignment.name;
+    this.assignmentSchool = this.assignment.school;
+    this.assignmentSchoolInstrumentLevel = this.assignment.school_instrument_level;
     //this.assignmentFileNames = this.assignment.file_names;
     
     this.get_assignment_files(assignmentid)
   }
+
+  // === === //
+  // === INSTRUCTOR SCHOOL INSTRUMENT AND LEVEL === //
+  // === === //
+  
+  get_instructor_assign_school_insturment_level(data:string[]){
+    this.schools = [];
+    this.instruments = [];
+    this.levels = [];
+    
+    this.displayInstruments = false;
+    this.displayLevels = false;
+
+    this.schools.push("none")
+    for (var ele of data){
+      var tempsSchool = ele.split("_")[0]
+      var tempInsturment = ele.split("_")[1]
+      this.schools.push(tempsSchool)
+      this.instruments.push(tempsSchool+"_"+tempInsturment)
+      this.levels.push(ele)
+    }
+    this.displaySchool = true
+  }
+
+  get_query_data_school($event:any):void{
+    // change in school will refresh the instruments and levels
+    if(this.selectedSchool!=$event.value){
+      this.queriedInstruments = []
+      this.queriedLevels = []
+      this.selectedInstrument = "";
+      this.selectedLevel = "";
+    }
+    this.queriedInstruments = []
+    this.selectedSchool = $event.value
+    if(this.selectedSchool.length == 0 || this.selectedSchool == "none"){
+      this.displayInstruments = false
+      this.displayLevels = false
+    } else {
+      this.displayInstruments = true
+      this.displayLevels = false
+      this.queriedInstruments.push("none")
+      for(var ele of this.instruments){
+        var tempSchool = ele.split("_")[0]
+        if(tempSchool == this.selectedSchool){
+          this.queriedInstruments.push(ele.split("_")[1])
+        }
+      }
+      console.log(this.queriedInstruments)
+    }
+  }
+
+  get_query_data_instrument($event:any):void{
+    this.queriedLevels = []
+    this.selectedInstrument = $event.value
+    if(this.selectedInstrument.length == 0 || this.selectedInstrument == "none"){
+      this.displayInstruments = true
+      this.displayLevels = false
+    } else {
+      this.queriedLevels.push("none")
+      this.displayInstruments = true
+      this.displayLevels = true
+      for(var ele of this.levels){
+        var tempSchoolInstrument = ele.split("_")[0] + "_" + ele.split("_")[1]
+        var selectedSchoolInstrument = this.selectedSchool + "_" + this.selectedInstrument
+        if(tempSchoolInstrument == selectedSchoolInstrument){
+          this.queriedLevels.push(ele.split("_")[2])
+        }
+      }
+    }
+  }
+
+  get_query_data_level($event:any):void{
+    this.selectedLevel = $event.value
+    this.toAddSchoolInstrumentLevel = this.selectedSchool + "_" + this.selectedInstrument + "_" + this.selectedLevel
+  }
+
+  add(){
+    if(this.selectedSchool == "none" || this.selectedInstrument == "none" || this.selectedLevel == "none"){
+      this.toastr.error( 'Please ensure that you have selected and input!', '', {positionClass: 'toast-top-center'});
+    } else {
+      if(!this.assignmentSchoolInstrumentLevel.includes(this.toAddSchoolInstrumentLevel)){
+        this.assignmentSchoolInstrumentLevel.push(this.toAddSchoolInstrumentLevel);
+      } else {
+        this.toastr.error( 'Group has been added already!', '', {positionClass: 'toast-top-center'});
+      }
+    }
+    this.displaySchool = false
+    this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
+  }
+
+  // === === //
+  // === TIME AND DATE === //
+  // === === //
+
+  convert_date_time(data:Timestamp){
+    //var month = data.toDate().getMonth()
+    //var day = data.toDate().getDay()
+    this.assignmentDueDateTime = data.toDate().toString().split(" ");
+    this.assignmentDueDate = this.assignmentDueDateTime[3] + "-" + this.convert_date_abbreviation_to_number(this.assignmentDueDateTime[1]) + "-" + this.assignmentDueDateTime[2]
+    this.assignmentDueTime = this.assignmentDueDateTime[4].split(":")[0] + ":" + this.assignmentDueDateTime[4].split(":")[1]
+    //var dueDate = this.assignmentDueDateTime[3] + "-" + (month+1) + "-" + day
+    //data.toDate().getMonth;
+    //this.assignmentDueDate = dueDate;
+    //this.assignmentDueDate = data.toDate().getFullYear() + "-" + data.toDate().getMonth() + "-" + data.toDate().getDay() 
+
+  }
+
+  // Method: Convert date_abbreviation "Jan" or "January" to a number
+  private convert_date_abbreviation_to_number(data:string){
+    var num = "January___February__March_____April_____May_______June______July______August____September_October___November__December__".indexOf(data) / 10 + 1
+    var strNum = num.toString()
+    if(strNum.length==1){
+      strNum = "0"+strNum;
+    }
+    return strNum
+  }
+
+  // === === //
+  // === FILES == //
+  // === === //
 
   // Get assignment files
   get_assignment_files(docid:string){
@@ -109,6 +264,14 @@ export class AssignmentEditIndividualComponent implements OnInit {
       file_names: this.assignmentFileNames
     }
     return data
+  }
+
+  removeButton(i: number){
+    console.log(i)
+  }
+
+  onSubmit(){
+
   }
 
 
