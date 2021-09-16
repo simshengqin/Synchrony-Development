@@ -9,6 +9,7 @@ import { ValidationErrors } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FormGroupDirective } from '@angular/forms';
 import { NgForm } from '@angular/forms';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-update-password',
@@ -89,7 +90,7 @@ export class UpdatePasswordComponent implements OnInit {
         console.log("Login Validation triggered!");
         this.firstTime = false;
         // Validate login
-        this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).subscribe(async (account:any) => {
+        this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).pipe(first()).subscribe(async (account:any) => {
         console.log(account);
 
         if (account.length==0){

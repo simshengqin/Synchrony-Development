@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
-//import { Account } from 'src/app/core/models/account';
+import { Account } from 'src/app/core/models/account';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -70,7 +71,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
 
       // Calling firebase service
-      this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).subscribe(async (account:any) => {
+      this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).pipe(first()).subscribe(async (account:any) => {
         console.log(account);
 
         if (account.length==0){
