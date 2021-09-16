@@ -113,7 +113,8 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
       first_name: data.first_name,
       last_name: data.last_name,
       password: data.password,
-      first_login: data.first_login
+      first_login: data.first_login,
+      is_delete: data.is_delete
     };
     this.accounts.push(account);
   }

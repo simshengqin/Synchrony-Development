@@ -8,6 +8,7 @@ export interface Account {
   school_instrument_level: string[];
   role: Role;
   first_login: boolean;
+  is_delete: boolean;
 }
 export enum Role {
   admin = 'admin',

@@ -53,9 +53,15 @@ export class DialogBoxComponent implements OnInit {
   }
 
   click_to_delete_account(){
-    console.log("User " + this.username + " has be deleted!")
-    this.crudservice.delete("accounts",this.docid)
-    this.router.navigate(['/admin/account/delete'])
+    console.log("User " + this.username + " has be hidden!")
+    let data = {
+      is_delete: true,
+      password: this.genPassword()
+    }
+    this.crudservice.update("accounts",this.docid,data)
+    this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/admin/account/delete']);
+  }); 
   }
 
   click_to_delete_assignment(){
@@ -109,6 +115,18 @@ export class DialogBoxComponent implements OnInit {
   
   make_false($event) {
     this.send_to_parent($event);
+  }
+
+  // Method: auto generate a radnom password   
+  private genPassword():string{
+    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let password = ''
+    for (let i = 0; i < 20; i++) {
+      password += CHARS.charAt(
+        Math.floor(Math.random() * CHARS.length)
+      )
+    }
+    return password
   }
 
 }

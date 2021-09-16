@@ -19,7 +19,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   accountUsername!:string;
   // set table data
   dataSource!:any;
-  displayedColumns:string[] = ['username', 'role', 'school', 'school_instrument_level', 'action'];
+  displayedColumns:string[] = ['username','first_name','last_name','role', 'school_instrument_level', 'action'];
   actionType:string = "accountDelete";
 
   // === set filter data === //
@@ -104,18 +104,21 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     if(data.school_instrument_level[0] == "-"){
       data.school_instrument_level[0] = "NA";
     }
-    var account: Account = {
-      docId: data.docId,
-      username: data.username,
-      role: data.role,
-      school: data.school,
-      school_instrument_level: data.school_instrument_level,
-      first_name: data.first_name,
-      last_name: data.last_name,
-      password: data.password,
-      first_login: data.first_login
-    };
-    this.accounts.push(account);
+    if(!data.is_delete){
+      var account: Account = {
+        docId: data.docId,
+        username: data.username,
+        role: data.role,
+        school: data.school,
+        school_instrument_level: data.school_instrument_level,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        password: data.password,
+        first_login: data.first_login,
+        is_delete: data.is_delete
+      };
+      this.accounts.push(account);
+    }
   }
   /*
   retrieve_all_accounts(){
@@ -186,18 +189,20 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   // Method:
   set_distint_school_instrument_level(data:string[]){
     for(var dataSchoolInstrumentLevel of data){
-      var sub_query = dataSchoolInstrumentLevel.split("_")
-      var school = sub_query[0];
-      var instrument = sub_query[1];
-      var level = sub_query[2];
-      if(this.sub_schools.indexOf(school)==-1){
-        this.sub_schools.push(school)
-      }
-      if(this.sub_instrument.indexOf(instrument)==-1){
-        this.sub_instrument.push(instrument)
-      }
-      if(this.sub_levels.indexOf(level)==-1){
-        this.sub_levels.push(level)
+      if(dataSchoolInstrumentLevel!="NA"){
+        var sub_query = dataSchoolInstrumentLevel.split("_")
+        var school = sub_query[0];
+        var instrument = sub_query[1];
+        var level = sub_query[2];
+        if(this.sub_schools.indexOf(school)==-1){
+          this.sub_schools.push(school)
+        }
+        if(this.sub_instrument.indexOf(instrument)==-1){
+          this.sub_instrument.push(instrument)
+        }
+        if(this.sub_levels.indexOf(level)==-1){
+          this.sub_levels.push(level)
+        }
       }
     }
   }
