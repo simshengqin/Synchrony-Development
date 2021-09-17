@@ -1,18 +1,19 @@
 <div class="assignment-mark-individual-wrapper">
-<!--  <h1 *ngIf="assignment && student" class="mb-1">Mark {{assignment.name}} for {{student.firstName + ' ' +student.lastName}}</h1>-->
+<!--  <span [contentEditable]="contentEditable">mmm</span>-->
+  <h1 *ngIf="assignment && student" class="mb-1">Mark {{assignment.name}} for {{student.last_name + ' ' +student.first_name}}</h1>
   <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="16px" class="mb-3">
     <button class="btn btn-info" (click)="onInstructionsClick()">View Instructions</button>
-    <label class="btn btn-primary mb-0">
-      <i class="fa fa-image"></i> Load PDF
-      <input #pdfInput type="file" accept="application/pdf"  class="d-none"(change)="onLoadPdfClick($event)" [textContent]="'Load Pdf'"/>
-    </label>
-    <label class="btn btn-primary mb-0">
-      <i class="fa fa-image"></i> Load video
-      <input #videoInput type="file" accept="video/*"  class="d-none"(change)="loadVideo()" [textContent]="'Upload Video'"/>
-    </label>
+<!--    <label class="btn btn-primary mb-0">-->
+<!--      <i class="fa fa-image"></i> Load PDF-->
+<!--      <input #pdfInput type="file" accept="application/pdf"  class="d-none"(change)="onLoadPdfClick($event)" [textContent]="'Load Pdf'"/>-->
+<!--    </label>-->
+<!--    <label class="btn btn-primary mb-0">-->
+<!--      <i class="fa fa-image"></i> Load video-->
+<!--      <input #videoInput type="file" accept="video/*"  class="d-none"(change)="loadVideo()" [textContent]="'Upload Video'"/>-->
+<!--    </label>-->
   </div>
 
-  <!--  <div [ngClass]="{'invisible' : isRecording}" class="form-text mb-1" >-->
+<!--    <div [ngClass]="{'invisible' : isRecording}" class="form-text mb-1" >-->
 <!--    Download the scoresheet and open it in the pdf viewer on the left:-->
 <!--    <a #scoresheet target="_blank" [href]="assignmentSubmission?.student_attachment_scoresheet">-->
 <!--      {{assignmentSubmission?.student_attachment_scoresheet_name}}-->
@@ -25,9 +26,20 @@
 <!--    </a>-->
 <!--    <p>Then, click on the grey button below to share your screen and the white circle record button to start recording</p>-->
 <!--  </div>-->
-  <div fxLayout="row wrap" fxLayoutGap="32px grid" fxLayoutAlign="space-between" class="mb-2">
-    <ngx-extended-pdf-viewer fxLayout="column" fxFlex="50" fxFlex.lt-md="100" useBrowserLocale="true" height="80vh" [ngClass.lt-md]="'reduced-height'"></ngx-extended-pdf-viewer>
-    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" fxFlex.lt-md="100" >
+  <div fxLayout="row wrap" fxLayoutGap="32px grid" fxLayoutAlign="space-between" class="mb-2 min-height">
+    <embed fxLayout="column" fxFlex="50" fxFlex.lt-md="100" class="h-100"
+            [ngClass.lt-md]="'reduced-height'" [src]="pdfUrl">
+<!--    <ngx-extended-pdf-viewer fxLayout="column" fxFlex="50" fxFlex.lt-md="100" useBrowserLocale="true" height="80vh" [ngClass.lt-md]="'reduced-height'"-->
+<!--                             [src]="pdfUrl.toString()"-->
+<!--    ></ngx-extended-pdf-viewer>-->
+    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" fxFlex.lt-md="100" class="h-100">
+      <video [ngClass]="selectedRecordingOption == 'Camera Recording' ? 'h-50': 'h-100'" controls [src]="videoUrl"></video>
+      <app-videojs-record #cameraVideojs *ngIf="selectedRecordingOption == 'Camera Recording'"
+                          class ="h-50"
+                          [selectedRecordingOption] = "'Camera Recording'"
+                          (startedRecordingEmit)="this.isRecording = true;"
+                          (recordingEmit)="updateFeedbackAttachment($event)"
+                          (feedbackEmit)="submitFeedback()"></app-videojs-record>
 <!--      <app-video-player></app-video-player>-->
     </div>
   </div>
@@ -35,14 +47,50 @@
 <!--    <button *ngIf="!isRecording" class="btn btn-success mr-3" (click)="onRecordClick()">{{recorded ? 'Record Again' : 'Record'}}</button>-->
 <!--    <button *ngIf="isRecording"  class="btn btn-danger mr-3" (click)="stopRecording()">Stop</button>-->
 <!--  </div>-->
-  <div  fxLayout="row" fxLayoutAlign="center" class="form-text mb-3" ><!-- *ngIf="recorded"-->
-    <app-videojs-record class = "mb-3" (recordingEmit)="updateFeedbackAttachment($event)"></app-videojs-record>
+  <div *ngIf="!isRecording" fxLayout="row" fxLayoutAlign="center" class="w-100 mb-1">
+    <mat-form-field appearance="fill">
+      <mat-label> Select a recording option </mat-label>
+      <mat-select  [(value)]="selectedRecordingOption" placeholder="Recording option">
+        <mat-option [value]="'Screen Recording'" >Screen Recording</mat-option>
+        <mat-option [value]="'Camera Recording'">Camera Recording</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayoutAlign="center" class="form-text mb-3" [ngClass]="{'invisible' : !recorded}" ><!-- *ngIf="recorded"-->
+  <div fxLayout="row" fxLayoutAlign="center" class="w-100 mb-2">
+    <button *ngIf="!isRecording" type="button" mdbBtn color="success"
+            (click)="startRecording(isRecorded)">
+      {{isRecorded ? 'Record again' : 'Record'}}
+    </button>
+    <button *ngIf="isRecording && !isPaused" type="button" mdbBtn color="warning"
+            (click)="pauseRecording()">Pause</button>
+    <button *ngIf="isRecording && isPaused" type="button" mdbBtn color="success"
+            (click)="resumeRecording()">Resume</button>
+    <button *ngIf="isRecording && !isPaused" type="button" mdbBtn color="danger"
+            (click)="stopRecording()">Stop</button>
+
+    <div fxLayout="row" fxLayoutAlign="center">
+      <button *ngIf="!isRecording && isRecorded" type="button" mdbBtn color="info" rounded="true" (click)="submitFeedback()" mdbWavesEffect>
+        Submit Feedback</button>
+    </div>
+
+  </div>
+  <div  fxLayout="row" fxLayoutAlign="center" class="form-text mb-3" ><!-- *ngIf="recorded"-->
+<!--    <div fxLayout="column" fxLayoutAlign="start" class="go-back-section" (click)="onGoBackClick()">-->
+<!--      <mat-icon class="mr-1">arrow_back</mat-icon>-->
+<!--      <span class="go-back-text">Back</span>-->
+<!--    </div>-->
+    <app-videojs-record #screenVideojs *ngIf="selectedRecordingOption == 'Screen Recording'" [selectedRecordingOption] = "'Screen Recording'"
+                        class = "mb-3" (startedRecordingEmit)="this.isRecording = true;"
+                        (recordingEmit)="updateFeedbackAttachment($event)"
+     (feedbackEmit)="submitFeedback()"></app-videojs-record>
+  </div>
+  <div *ngIf="!isRecording" fxLayout="row" fxLayoutAlign="center" class="form-text mb-3" [ngClass]="{'invisible' : !isRecorded}" ><!-- *ngIf="recorded"-->
     Click <a #feedbackAttachment>&nbsp;here&nbsp;</a> to download the recording
   </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <button *ngIf="!isRecording && recorded"  class="btn btn-secondary" (click)="submitFeedback()">Submit</button>
-  </div>
-<!--  <app-confirm-modal (responseEmit)="onCloseModal($event)" (feedbackEmit)="onFeedback($event)"></app-confirm-modal>-->
+<!--  <div fxLayout="row" fxLayoutAlign="center">-->
+<!--    <button *ngIf="!isRecording && recorded" type="button" mdbBtn color="info" rounded="true" (click)="submitFeedback()" mdbWavesEffect>-->
+<!--      Submit Feedback</button>-->
+<!--  </div>-->
+
+  <app-confirm-modal (responseEmit)="onCloseModal($event)" (feedbackEmit)="onFeedback($event)"></app-confirm-modal>
 </div>

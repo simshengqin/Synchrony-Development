@@ -145,7 +145,7 @@
           <ng-container>
             <app-dialog-box *ngIf="actionType=='accountEdit'" [actionType]="actionType" [docid]="element.docId" [username]="element.username" [contenteditable]="contenteditable" (editEvent)="editTable($event)" (triggerUpdate)="sendToTable($event)"></app-dialog-box>
           </ng-container>
-          
+
           <app-dialog-box *ngIf="actionType=='wage'" [actionType]="actionType"></app-dialog-box>
 
           <button *ngIf="actionType=='instructorAssignmentEdit'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/instructor/assignment/edit/assignment/{{ element.docId }}"> Edit </button>
@@ -158,7 +158,7 @@
           <ng-container *ngIf="actionType=='assignmentView'">
             <button *ngIf="!element.isOverDueDate" type="button" mdbBtn color="info" rounded="true" (click)="onSubmitClick(element.docId)" mdbWavesEffect>
               {{element.submission_status == 'Pending Submission' ? "Submit" : "Resubmit"}} </button>
-            <button *ngIf="element.assignmentSubmission" type="button" mdbBtn color="info" rounded="true" (click)="onFeedbackClick(element.assignmentSubmission.docId)" mdbWavesEffect>
+            <button *ngIf="element.assignmentSubmission?.feedback_datetime != null" type="button" mdbBtn color="info" rounded="true" (click)="onFeedbackClick(element.assignmentSubmission.docId)" mdbWavesEffect>
               View Feedback </button>
           </ng-container>
 

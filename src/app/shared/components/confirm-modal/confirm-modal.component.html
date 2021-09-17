@@ -1,0 +1,78 @@
+<div class="confirm-modal-wrapper">
+  <ng-template #confirmModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{title}}</h4>
+      <button type="button" class="close" (click)="modal.dismiss('cross')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div  class="modal-body">
+      {{description}}
+      <div *ngIf="title == 'Submit Feedback'">
+        <h3>Grade</h3>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Please input grade (0 to 100)</mat-label>
+          <input matInput placeholder="" value=""
+                 type="number" min="0" max="100" [(ngModel)]="grade"
+                 (change)= "grade < 0 ? grade = 0 : grade; grade > 100 ? grade = 100 : grade;">
+        </mat-form-field>
+        <mat-error *ngIf="isGradeError && !grade">
+          Grade cannot be empty
+        </mat-error>
+        <h3>Feedback</h3>
+        <textarea class="modal-content form-control mt-3" placeholder="Enter your feedback here (Optional)" [(ngModel)]="feedback"></textarea>
+        <small *ngIf="assignmentSubmission && assignmentSubmission.feedback" class="form-text text-muted" >
+          Previous Grade: {{assignmentSubmission.grade}} &nbsp;
+          Previous feedback: {{assignmentSubmission.feedback}}
+        </small>
+      </div>
+      <div *ngIf="title == 'Recording Instructions'">
+        <h4> Recording Steps </h4>
+        <p> 1. Select the desired recording option. (Screen recording to record computer screen
+          / Camera recording to record camera) </p>
+        <p> 2. Click on the record button when you are ready to being recording </p>
+        <p> 3. Enable screen sharing/camera permissions </p>
+        <p> 4. The recording will begin. Pause when necessary. </p>
+        <p> 5. After recording, press stop and click submit feedback to send it to the respective student</p>
+        <hr>
+        <h4> Student attachments </h4>
+        <div class="form-text" >
+          Scoresheet pdf:
+          <a #scoresheet target="_blank" [href]="assignmentSubmission?.student_attachment_scoresheet">
+            {{assignmentSubmission?.student_attachment_scoresheet_name}}
+          </a>
+        </div>
+        <div class="form-text" >
+         Video recording :
+          <a #videoPlayer target="_blank" [href]="assignmentSubmission?.student_attachment_recording">
+            {{assignmentSubmission?.student_attachment_recording_name}}
+          </a>
+        </div>
+        <hr>
+        <ng-container *ngIf="assignmentSubmission && assignmentSubmission.feedback_datetime != null">
+          <h4> Previously submitted instructor's feedback information</h4>
+          <div class="form-text" >
+            <div> Grade: {{assignmentSubmission.grade}}</div>
+            <div> Feedback: {{assignmentSubmission.feedback == '' ? "No Feedback" : assignmentSubmission.feedback}} </div>
+            <div> Feedback Recording:
+              <a target="_blank" [href]="assignmentSubmission?.instructor_feedback_attachment">
+                {{assignmentSubmission?.instructor_feedback_attachment_name}}
+              </a>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div *ngFor="let button of buttons">
+        <button *ngIf="button == 'close'" type="button" class="btn btn-secondary" (click)="modal.close(button)">Close</button>
+        <button *ngIf="button == 'discard'" type="button" class="btn btn-danger" (click)="modal.close(button)">Discard Changes</button>
+        <button *ngIf="button == 'delete'" type="button" class="btn btn-danger" (click)="modal.close(button)">Delete</button>
+        <button *ngIf="button == 'submit'" type="button" class="btn btn-success" (click)="modal.close(button)" [disabled]="!grade && grade !== 0">Submit</button>
+        <button *ngIf="button == 'ok'" type="button" class="btn btn-primary" (click)="modal.close(button)">OK</button>
+      </div>
+
+    </div>
+  </ng-template>
+</div>
+

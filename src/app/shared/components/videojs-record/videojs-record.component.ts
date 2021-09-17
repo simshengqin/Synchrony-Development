@@ -2,10 +2,10 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  ElementRef, Output, EventEmitter, AfterViewInit
+  ElementRef, Output, EventEmitter, AfterViewInit, ViewChild, Input
 } from '@angular/core';
 
-import videojs from 'video.js';
+import videojs, {VideoJsPlayer} from 'video.js';
 import * as adapter from 'webrtc-adapter/out/adapter_no_global.js';
 import * as RecordRTC from 'recordrtc';
 
@@ -26,6 +26,7 @@ import 'videojs-record/dist/plugins/videojs.record.ts-ebml.js';
 declare var require: any;
 // import * as WaveSurfer from 'wavesurfer.js';
 import * as WaveSurferRegions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
+import {ConfirmModalComponent} from "../confirm-modal/confirm-modal.component";
 @Component({
   selector: 'app-videojs-record',
   templateUrl: './videojs-record.component.html',
@@ -35,14 +36,19 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
   private WaveSurfer = require('wavesurfer.js');
   // reference to the element itself: used to access events and methods
   // private _elementRef: ElementRef;
+  @Output() startedRecordingEmit: EventEmitter<any> = new EventEmitter<any>();
   @Output() recordingEmit: EventEmitter<Blob> = new EventEmitter<Blob>();
+  @Output() feedbackEmit: EventEmitter<any> = new EventEmitter<any>();
   // index to create unique ID for component
   idx = 'clip1';
 
   private config: any;
-  private player: any;
+  player: any;
   private plugin: any;
-
+  isRecording = false;
+  isPaused = false;
+  isRecorded = false;
+  @Input() selectedRecordingOption;
   // constructor initializes our declared vars
   constructor(elementRef: ElementRef) {
     this.player = false;
@@ -78,11 +84,11 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
       // autoplay: false,
       fluid: false,
       // loop: false,
-      width: 80,
-      height: 45,
+      width: 570,
+      height: 320,
       bigPlayButton: false,
       controlBar: {
-        volumePanel: false,
+        volumePanel: true,
         fullscreenToggle: false,
         bigPlayButton: false
       },
@@ -92,8 +98,6 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
         // wavesurfer: ws,
         record: {
           audio: true,
-          screen: true,
-          // video: true,
           debug: true,
           displayMilliseconds: false,
           maxLength: 600,
@@ -111,6 +115,8 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
     // ID with which to access the template's video element
     const el = 'video_' + this.idx;
     // setup the player via the unique element ID
+    this.config.plugins.record.screen = this.selectedRecordingOption !== 'Camera Recording';
+    this.config.plugins.record.video = this.selectedRecordingOption === 'Camera Recording';
     this.player = videojs(document.getElementById(el), this.config, () => {
       console.log('player ready! id:', el);
 
@@ -124,11 +130,14 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
     // device is ready
     this.player.on('deviceReady', () => {
       console.log('device is ready!');
+      this.player.record().start();
     });
 
     // user clicked the record button and started recording
     this.player.on('startRecord', () => {
       console.log('started recording!');
+      this.isRecording = true;
+      this.startedRecordingEmit.emit();
     });
 
     // user completed recording and stream is available
@@ -161,7 +170,30 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   startRecording(): void {
+    this.player.record().getDevice();
     this.player.record().start();
+    this.isRecording = true;
   }
 
+  startRerecording(): void {
+    this.player.record().start();
+    this.isRecording = true;
+  }
+  pauseRecording(): void {
+    this.isPaused = true;
+    this.player.record().pause();
+  }
+  resumeRecording(): void {
+    this.isPaused = false;
+    this.player.record().resume();
+  }
+  stopRecording(): void {
+    this.player.record().stop();
+    this.isPaused = false;
+    this.isRecording = false;
+    this.isRecorded = true;
+  }
+  submitFeedback(): void {
+    this.feedbackEmit.emit();
+  }
 }

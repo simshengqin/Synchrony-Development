@@ -3,6 +3,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import {Router} from "@angular/router";
+import {CrudService} from "../../../core/services/crud.service";
+import {Account} from "../../../core/models/account";
 
 @Component({
   selector: 'app-table',
@@ -35,6 +37,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   constructor(
     private router: Router,
+    private crudService: CrudService,
   ) { }
 
   ngOnChanges(): void {

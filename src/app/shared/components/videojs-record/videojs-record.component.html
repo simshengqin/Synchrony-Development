@@ -1,1 +1,25 @@
-<video id="video_{{idx}}" class="video-js vjs-default-skin" playsinline></video>
+<div fxLayout="row" fxLayoutAlign="center" class="w-100 mb-2">
+<!--  <button *ngIf="!isRecording" type="button" mdbBtn color="success"-->
+<!--          (click)="startRecording()">-->
+<!--    {{isRecorded ? 'Record again' : 'Record'}}-->
+<!--  </button>-->
+<!--  <button *ngIf="isRecording && !isPaused" type="button" mdbBtn color="warning"-->
+<!--          (click)="pauseRecording()">Pause</button>-->
+<!--  <button *ngIf="isRecording && isPaused" type="button" mdbBtn color="success"-->
+<!--          (click)="resumeRecording()">Resume</button>-->
+<!--  <button *ngIf="isRecording && !isPaused" type="button" mdbBtn color="danger"-->
+<!--          (click)="stopRecording()">Stop</button>-->
+
+<!--  <div fxLayout="row" fxLayoutAlign="center">-->
+<!--    <button *ngIf="!isRecording && isRecorded" type="button" mdbBtn color="info" rounded="true" (click)="submitFeedback()" mdbWavesEffect>-->
+<!--      Submit Feedback</button>-->
+<!--  </div>-->
+
+</div>
+<div *ngIf="isRecording" fxLayout="row" fxLayoutAlign="center" class="w-100">
+  Time elapsed: {{player.record().streamCurrentTime | number: '1.1-1'}}s
+</div>
+<div [ngClass] = "((isRecording || !isRecorded) && (selectedRecordingOption !== 'Camera Recording')) ? 'invisible' : ''">
+<!--  <h3 class="text-center"> Recording Preview</h3>-->
+  <video id="video_{{idx}}" class="video-js vjs-default-skin" playsinline></video>
+</div>
