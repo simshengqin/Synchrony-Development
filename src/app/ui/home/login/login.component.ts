@@ -89,6 +89,13 @@ export class LoginComponent implements OnInit {
           console.log(account[0]);
           //sessionStorage.setItem('account',account[0]);
           sessionStorage.setItem('account', JSON.stringify(account[0]));
+
+          // Check if account has been deleted 
+          if (account[0].is_delete){
+            alert("Account has been deactivated. Please seek the admin to reset your account");
+            return;
+          }
+
           // Check if user has logged in for the first time. If so, redirect to update password
           if (account[0].first_login){
             // If user has logged in for the first time, redirect to update password page

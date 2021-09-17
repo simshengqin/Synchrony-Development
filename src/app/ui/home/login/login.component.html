@@ -33,7 +33,11 @@
               <label for="newPassword">New Password: </label>
               <input type="password" formControlName="newPassword"/>
               <mat-error *ngIf="isSubmitClicked && newPassword.errors?.minlength">
-                Password must be at least 5 characters long!
+                New Password must be at least 5 characters long!
+              </mat-error>
+
+              <mat-error *ngIf="isSubmitClicked && newPassword.errors?.required">
+                New Password cannot be blank!
               </mat-error>
 
               <br/>
@@ -45,7 +49,13 @@
               Passwords do not match!
             </mat-error>
 
-            <button type="submit">Login</button>
+            <div *ngIf="updatePasswordPage">
+              <button type="submit">Update Password</button>
+            </div>
+
+            <div *ngIf="loginPage">
+              <button type="submit"> Login </button>
+            </div>
 
             <p>Form Value: {{ loginForm.value | json }}</p>
             <p>Form status: {{ loginForm.status | json }}</p>

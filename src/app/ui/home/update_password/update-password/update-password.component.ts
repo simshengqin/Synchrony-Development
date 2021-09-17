@@ -103,6 +103,12 @@ export class UpdatePasswordComponent implements OnInit {
           this.isValidUsernamePasswordCombi = true;
           this.account = account[0];
 
+          if (account[0].is_delete){
+            alert("Account has been deactivated. Please seek the admin to reset your account");
+            this.router.navigate(["/login"]);
+            return;
+          }
+
           // Update password
           this.account.password = this.loginForm.value.newPassword;
           this.account.first_login = false;
