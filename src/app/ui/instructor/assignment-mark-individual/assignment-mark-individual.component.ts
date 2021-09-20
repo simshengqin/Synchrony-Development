@@ -16,7 +16,7 @@ import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {ConfirmModalComponent} from '../../../shared/components/confirm-modal/confirm-modal.component';
-import {VideoPlayerComponent} from '../../../shared/components/video-player/video-player.component';
+// import {VideoPlayerComponent} from '../../../shared/components/video-player/video-player.component';
 @Component({
   selector: 'app-assignment-mark-individual',
   templateUrl: './assignment-mark-individual.component.html',
@@ -33,7 +33,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
   @ViewChild('feedbackAttachment') feedbackAttachment: ElementRef;
   recordedVideo: Blob;
   @ViewChild(VideojsRecordComponent) videojsRecordComponent: VideojsRecordComponent;
-  @ViewChild(VideoPlayerComponent) videoPlayerComponent: VideoPlayerComponent;
+  // @ViewChild(VideoPlayerComponent) videoPlayerComponent: VideoPlayerComponent;
   @ViewChild('videoInput') videoInput: ElementRef;
   @ViewChild(NgxExtendedPdfViewerComponent) ngxExtendedPdfViewerComponent: NgxExtendedPdfViewerComponent;
   pdfUrl: SafeResourceUrl;

@@ -88,7 +88,7 @@ import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.co
 import {DropzoneComponent} from "./shared/components/dropzone/dropzone.component";
 import { AssignmentEditIndividualComponent } from './ui/instructor/assignment-edit-individual/assignment-edit-individual.component';
 import {ConfirmModalComponent} from './shared/components/confirm-modal/confirm-modal.component';
-import {VideoPlayerComponent} from './shared/components/video-player/video-player.component';
+// import {VideoPlayerComponent} from './shared/components/video-player/video-player.component';
 
 @NgModule({
   declarations: [
