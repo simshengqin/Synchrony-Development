@@ -1,0 +1,17 @@
+<app-header></app-header>
+<div class="account-create-wrapper wrapper-padding">
+    <h1 class="mb-3">Edit Accounts</h1>
+
+    <form>
+        <!-- Read up on formGroups and formControl for input fields -->
+        <!-- angular model?? -->
+        Username: <input type="text" [value]="username"> <br>
+        First Name: <input type="text" [value]="first_name"> <br>
+        Surname: <input type="text" [value]="last_name"> <br>
+        Role: <input type="text" [value]="role"> <br>
+        School: <input type="text" [value]="school"> <br>
+        School-Instrument-Level: <input type="text" size=50 [value]="school_instrument_level"> <br>
+        <input type="button" name="Submit" value="Submit" (click)="edit()">
+        <input type="button" value="Return" routerLink="/admin/account/edit">
+    </form>
+</div>

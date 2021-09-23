@@ -7,6 +7,7 @@ import { CardsComponent } from './shared/components/cards/cards.component';
 
 import { AccountCreateComponent} from './ui/admin/account-create/account-create.component';
 import { AccountEditComponent} from './ui/admin/account-edit/account-edit.component';
+import { AccountEditFormComponent } from './ui/admin/account-edit-form/account-edit-form.component';
 import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';
 import { FreelanceWageComponent } from './ui/admin/freelance-wage/freelance-wage.component';
 import { AdminHomeComponent } from './ui/admin/admin-home/admin-home.component';
@@ -55,6 +56,11 @@ const routes: Routes = [{
       path: 'admin/account/edit',
       pathMatch: 'full',
       component: AccountEditComponent
+    },
+    {
+      path: 'admin/account/edit/form',
+      pathMatch: 'full',
+      component: AccountEditFormComponent
     },
     {
       path: 'admin/freelance',
