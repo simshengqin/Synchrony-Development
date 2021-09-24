@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CrudService } from 'src/app/core/services/crud.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-account-edit-form',
@@ -9,6 +11,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class AccountEditFormComponent implements OnInit {
 
+  docId: string;
   username: string;
   first_name: string;
   last_name: string;
@@ -16,18 +19,13 @@ export class AccountEditFormComponent implements OnInit {
   school: string;
   school_instrument_level: string;
 
-  editForm = new FormGroup({
-    // username: new FormControl(),
-    // first_name: new FormControl(),
-    // last_name: new FormControl(),
-    // role: new FormControl(),
-    // school: new FormControl(),
-    // school_instrument_level: new FormControl()
-  })
+  editForm!: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private crudservice: CrudService,
+    private formBuilder: FormBuilder,
+    private router: Router
   ){}
 
   ngOnInit(): void {
@@ -36,25 +34,90 @@ export class AccountEditFormComponent implements OnInit {
 
     this.route.queryParams.subscribe(params => {
       let data = params;
+      this.docId = data.docId;
       this.username = data.username;
       this.first_name = data.first_name;
       this.last_name = data.last_name;
       this.role = data.role;
       this.school = data.school;
-      this.school_instrument_level = data.school_instrument_level;
+      this.school_instrument_level = data.school_instrument_level
     })
+    this.initForm();
+    console.log(this.username);
   }
 
+  initForm(): void {
+    this.editForm = this.formBuilder.group({
+      username:[""],
+      first_name:[""],
+      last_name: [""],
+      role: [""],
+      school: [""],
+      school_instrument_level: [""]
+    });
+  }
+
+  // get new_username(): FormControl{
+  //   return this.editForm.get('username') as FormControl;
+  // }
+
+  // get new_first_name(): FormControl{
+  //   return this.editForm.get('first_name') as FormControl;
+  // }
+
+  // get new_last_name(): FormControl{
+  //   return this.editForm.get('last_name') as FormControl;
+  // }
+
+  // get new_role(): FormControl{
+  //   return this.editForm.get('role') as FormControl;
+  // }
+
+  // get new_school(): FormControl{
+  //   return this.editForm.get('school') as FormControl;
+  // }
+
+  // get new_school_instrument_level(): FormControl{
+  //   return this.editForm.get('school_instrument_level') as FormControl;
+  // }
+
   edit() {
-    // let form = this.formBuilder.group({
-    //   username: 'username',
-    //   first_name: 'first_name',
-    //   last_name: 'last_name',
-    //   role: 'role',
-    //   school: 'school',
-    //   school_instrument_level: 'school_instrument_level'
-    // })
-    // console.log(form);
+    let username = this.editForm.value.username;
+    let firstName = this.editForm.value.first_name;
+    let lastName = this.editForm.value.last_name;
+    let role = this.editForm.value.role;
+    let school = this.editForm.value.school;
+    let schoolInstrumentLevel = this.editForm.value.school_instrument_level;
+
+    try {
+      if(username!='') {
+        this.crudservice.update("accounts", this.docId, {"username": username});
+      }
+
+      if(firstName!='') {
+        this.crudservice.update("accounts", this.docId, {"first_name": firstName});
+      }
+
+      if(lastName!='') {
+        this.crudservice.update("accounts", this.docId, {"last_name": lastName});
+      }
+
+      if(role!='') {
+        this.crudservice.update("accounts", this.docId, {"role": role});
+      }
+
+      if(school!='') {
+        this.crudservice.update("accounts", this.docId, {"school": school});
+      }
+
+      this.router.navigate(['/admin/account/edit']);
+      // Needs to be modified; first obtain the array then update the whole array.
+      // if(schoolInstrumentLevel!='') {
+      //   this.crudservice.update("accounts", this.docId, {"school_instrument_level": schoolInstrumentLevel});
+      // }
+    } catch(e) {
+      console.log(e);
+    }
   }
 
 }

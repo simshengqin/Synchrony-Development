@@ -2,15 +2,15 @@
 <div class="account-create-wrapper wrapper-padding">
     <h1 class="mb-3">Edit Accounts</h1>
 
-    <form>
+    <form [formGroup]="editForm">
         <!-- Read up on formGroups and formControl for input fields -->
         <!-- angular model?? -->
-        Username: <input type="text" [value]="username"> <br>
-        First Name: <input type="text" [value]="first_name"> <br>
-        Surname: <input type="text" [value]="last_name"> <br>
-        Role: <input type="text" [value]="role"> <br>
-        School: <input type="text" [value]="school"> <br>
-        School-Instrument-Level: <input type="text" size=50 [value]="school_instrument_level"> <br>
+        Username: <input type="text" [ngModel]="username" formControlName="username"> <br>
+        First Name: <input type="text" [ngModel]="first_name" formControlName="first_name"> <br>
+        Surname: <input type="text" [ngModel]="last_name" formControlName="last_name"> <br>
+        Role: <input type="text" [ngModel]="role" formControlName="role"> <br>
+        School: <input type="text" [ngModel]="school" formControlName="school"> <br>
+        School-Instrument-Level: <input type="text" size=50 [ngModel]="school_instrument_level" formControlName="school_instrument_level"> <br>
         <input type="button" name="Submit" value="Submit" (click)="edit()">
         <input type="button" value="Return" routerLink="/admin/account/edit">
     </form>
