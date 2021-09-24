@@ -1,14 +1,17 @@
 <app-header></app-header>
-<p>assignment-mark works!</p>
 <div class="assignment-mark-wrapper wrapper-padding max-width-section">
-  <app-assignment-mark-individual></app-assignment-mark-individual>
-  <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType" [accountUsername]="accountUsername"></app-table>
-<!--  <ng-container *ngIf="assignmentSubmissionDocId">-->
-<!--    <app-assignment-mark-individual [assignmentSubmissionDocId]="assignmentSubmissionDocId"></app-assignment-mark-individual>-->
-<!--  </ng-container>-->
-<!--  <ng-container *ngIf="!assignmentSubmissionDocId">-->
-<!--    <h1 class="mb-3">Mark Assignments</h1>-->
-<!--    <app-search-filter [filterActions] = "filterActions"></app-search-filter>-->
+  <ng-container *ngIf="assignmentSubmissionDocId">
+    <app-assignment-mark-individual [assignmentSubmissionDocId]="assignmentSubmissionDocId"></app-assignment-mark-individual>
+  </ng-container>
+  <ng-container *ngIf="!assignmentSubmissionDocId">
+    <h1 class="mb-3">Mark Assignments</h1>
+    <app-input-dropdown-select [inputDataList]="feedbackStatusOptions" [name]="'Feedback Status'"  (outputData)="filterData($event, 'Feedback Status')"></app-input-dropdown-select>
+    <br>
+    <app-input-dropdown-select [inputDataList]="schoolOptions" [name]="'School'"  (outputData)="filterData($event, 'School')"></app-input-dropdown-select>
+    <app-input-dropdown-select [inputDataList]="instrumentOptions" [name]="'Instrument'"  (outputData)="filterData($event, 'Instrument')"></app-input-dropdown-select>
+    <app-input-dropdown-select [inputDataList]="levelOptions" [name]="'Level'"  (outputData)="filterData($event, 'Level')"></app-input-dropdown-select>
+    <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType"></app-table>
+    <!--    <app-search-filter [filterActions] = "filterActions"></app-search-filter>-->
 <!--    <app-common-table [tableActions]="tableActions" [tableColumns]="tableColumns" [assignmentSubmissions]="assignmentSubmissions"></app-common-table>-->
-<!--  </ng-container>-->
+  </ng-container>
 </div>

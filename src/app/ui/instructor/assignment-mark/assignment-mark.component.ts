@@ -1,9 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {first} from 'rxjs/operators';
-import {AssignmentSubmission} from '../../../core/models/assignment-submission';
-import {CrudService} from '../../../core/services/crud.service';
-import {Account} from '../../../core/models/account';
+import {first} from "rxjs/operators";
+import {AssignmentSubmission} from "../../../core/models/assignment-submission";
+import {CrudService} from "../../../core/services/crud.service";
+import {Account} from "../../../core/models/account";
+import {TranslateService} from "@ngx-translate/core";
+import {DatePipe} from "@angular/common";
+import {Assignment} from "../../../core/models/assignment";
 
 @Component({
   selector: 'app-assignment-mark',
@@ -11,10 +14,11 @@ import {Account} from '../../../core/models/account';
   styleUrls: ['./assignment-mark.component.scss']
 })
 export class AssignmentMarkComponent implements OnInit {
+  loggedInAccount: Account;
   accountUsername!: '';
   dataSource!: Array<AssignmentSubmission>;
-  displayedColumns: string[] = ['student_name', 'submission_status', 'feedback_status', 'action'];
-  actionType = 'assignment_mark';
+  displayedColumns: string[] = ['assignment_name', 'assignment_school_instrument_level', 'assignment_student_name', 'assignment_submission_status', 'assignment_feedback_status', 'action'];
+  actionType = 'assignmentMark';
   // tableActions?: Array<TableAction> = [TableAction.assignment_mark, TableAction.assignment_instructor_feedback];
   // tableColumns?: Array<TableColumn> = [ TableColumn.position, TableColumn.assignment_name2,
   //   TableColumn.assignment_school, TableColumn.assignment_group, TableColumn.assignment_student_name,
@@ -25,75 +29,122 @@ export class AssignmentMarkComponent implements OnInit {
   // , TableColumn.assignment_student, TableColumn.assignment_status
   //   , TableColumn.assignment_due_datetime, TableColumn.assignment_feedback_datetime, TableColumn.actions];
   // filterActions?: Array<FilterAction> = [FilterAction.assignment_school, FilterAction.assignment_group, FilterAction.assignment_feedback];
-  // assignmentSubmissions: Array<AssignmentSubmission>;
-  instructorDocId = localStorage.getItem('activeDocId');
+  assignmentSubmissions: Array<AssignmentSubmission>;
+  // instructorDocId = localStorage.getItem('activeDocId');
   assignmentSubmissionDocId: '';
   // @ViewChild(CommonTableComponent) commonTableComponent: CommonTableComponent;
+  schoolOptions: string[] = [];
+  instrumentOptions: string[] = [];
+  levelOptions: string[] = [];
+  feedbackStatusOptions: string[] = ['With Feedback', 'Without Feedback'];
+  selectedSchoolOptions: string[] = [];
+  selectedInstrumentOptions: string[] = [];
+  selectedLevelOptions: string[] = [];
+  selectedFeedbackStatusOptions: string[] = [];
   constructor(
     private activatedRoute: ActivatedRoute,
-    private crudservice: CrudService,
+    private crudService: CrudService,
+    private translateService: TranslateService,
   ) { }
 
   async ngOnInit(): Promise<void> {
-    // const account: Account = {
-    //   username: csvRecord.username,
-    //   role: csvRecord.role,
-    //   school: csvRecord.school,
-    //   school_instrument_level: csvRecord.school_instrument_level,
-    //   first_name: csvRecord.first_name,
-    //   last_name: csvRecord.last_name,
-    //   password: csvRecord.password,
-    //   first_login: true,
-    //   assignment_doc_id?: 'L64vRDampr23ZC3GrS8j',
-    //   instructor_doc_id?: 'Ejq8BKzGlikF5nEpd6KN',
-    //   student_doc_id?: 'u7OpBkGAOtosqxpaEaIK',
-    //   school?: '';
-    //   school_instrument_level?: '';
-    //   submitted_datetime?: number;
-    //   student_attachment_scoresheet?: '';
-    //   student_attachment_scoresheet_name?: '';
-    //   student_attachment_recording?: '';
-    //   student_attachment_recording_name?: '';
-    //   feedback?: '',
-    //   instructor_feedback_attachment_name?: string,
-    //   instructor_feedback_attachment?: '';
-    //   feedback_datetime?: number;
-    //   grade?: number;
-    // };
-    // if (accounts.length === 0) {
-    //   console.log(account);
-    //   await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
-    // } else {
-    //   await this.crudService.update('accounts', accounts[0].docId, account);
-    // }
-    const dataSource = await this.crudservice.read('assignments_submissions_and_feedback').pipe(first()).toPromise();
-    console.log(dataSource);
-    // this.activatedRoute.queryParams.subscribe(async params => {
-    //   this.assignmentSubmissionDocId = params.assignmentSubmissionDocId;
-    //   const school = params.assignment_school ? params.assignment_school : '';
-    //   const group = params.assignment_group ? params.assignment_group : '';
-    //   const assignmentFeedback = params.assignment_feedback ? params.assignment_feedback : '';
-    //   const filterOp4 = assignmentFeedback === 'With Feedback' ? '!=' : '==';
-    //   const filterVal4 = assignmentFeedback === '' ? '' : -1;
-    //   console.log(school + ',' + group + ',' + assignmentFeedback + ',');
-    //   this.filterService.get('assignment_submissions', 'instructorDocId', '==', this.instructorDocId,
-    //     'school', '==', school,
-    //     'group', '==', group,
-    //     'feedback_datetime', filterOp4, filterVal4).subscribe(async (assignmentSubmissions) => {
-    //     for (const assignmentSubmission of assignmentSubmissions) {
-    //       assignmentSubmission.student = await this.studentService.getStudent(assignmentSubmission.studentDocId)
-    //         .pipe(first())
-    //         .toPromise();
-    //       assignmentSubmission.student_name = assignmentSubmission.student.firstName + ' ' +
-    //         assignmentSubmission.student.lastName;
-    //       assignmentSubmission.assignment = await this.assignmentService.getAssignment(assignmentSubmission.assignmentDocId)
-    //         .pipe(first())
-    //         .toPromise();
-    //       assignmentSubmission.assignment_name = assignmentSubmission.assignment.name;
-    //     }
-    //     this.assignmentSubmissions = assignmentSubmissions;
-    //     this.commonTableComponent.loadTableData(this.assignmentSubmissions);
-    //   });
-    // });
+    this.loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
+    // const dataSource = await this.crudService.read('assignment_submissions').pipe(first()).toPromise();
+    // console.log(dataSource);
+    this.translateService.use('en');
+    const datePipe = new DatePipe(this.translateService.currentLang);
+    const loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
+    this.activatedRoute.queryParams.subscribe(async params => {
+      this.assignmentSubmissionDocId = params.assignmentSubmissionDocId;
+      this.assignmentSubmissions = await this.crudService.read('assignment_submissions',
+        'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();
+      for (const assignmentSubmission of this.assignmentSubmissions) {
+
+        assignmentSubmission.assignment = await this.crudService.readByDocId(
+          'assignments', assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
+          // await this.assignmentService.getAssignment(assignmentSubmission.assignmentDocId)
+          // .pipe(first())
+          // .toPromise();
+        assignmentSubmission.assignment_name = assignmentSubmission.assignment?.name;
+        assignmentSubmission.student = await this.crudService.readByDocId(
+          'accounts', assignmentSubmission.student_doc_id).pipe(first()).toPromise();
+        // await this.studentService.getStudent(assignmentSubmission.studentDocId)
+        // .pipe(first())
+        // .toPromise();
+        assignmentSubmission.student_name = assignmentSubmission.student.last_name + ' ' +
+          assignmentSubmission.student.first_name;
+        assignmentSubmission.submission_status = 'Last submitted on ' +
+          datePipe.transform(assignmentSubmission.submitted_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
+        assignmentSubmission.feedback_status = 'Not reviewed';
+        if (assignmentSubmission.feedback_datetime != null) {
+          assignmentSubmission.feedback_status = 'Last marked on ' +
+            datePipe.transform(assignmentSubmission.feedback_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
+        }
+      }
+      this.dataSource = this.assignmentSubmissions;
+      this.updateSelectOptions();
+      console.log(this.dataSource);
+    });
   }
+  filterData($event: any, type: string): void {
+    // console.log($event.value);
+    switch (type) {
+      case 'School':
+        this.selectedSchoolOptions = $event.value;
+        break;
+      case 'Instrument':
+        this.selectedInstrumentOptions = $event.value;
+        break;
+      case 'Level':
+        this.selectedLevelOptions = $event.value;
+        break;
+      case 'Feedback Status':
+        this.selectedFeedbackStatusOptions = $event.value;
+        break;
+    }
+    const filteredAssignmentSubmissions: Array<AssignmentSubmission> = [];
+    for (const assignmentSubmission of this.assignmentSubmissions) {
+      for (const schoolInstrumentLevel of assignmentSubmission.school_instrument_level) {
+          const schoolInstrumentLevelArr = schoolInstrumentLevel.split('_');
+          const school = schoolInstrumentLevelArr[0];
+          const instrument = schoolInstrumentLevelArr[1];
+          const level = schoolInstrumentLevelArr[2];
+          if (
+            (this.selectedSchoolOptions.length === 0 || this.selectedSchoolOptions.includes(school)) &&
+            (this.selectedInstrumentOptions.length === 0 || this.selectedInstrumentOptions.includes(instrument)) &&
+            (this.selectedLevelOptions.length === 0 || this.selectedLevelOptions.includes(level)) &&
+            (this.selectedFeedbackStatusOptions.length === 0 ||
+              (this.selectedFeedbackStatusOptions.includes('With Feedback') && assignmentSubmission.feedback_status !== 'Not reviewed') ||
+              (this.selectedFeedbackStatusOptions.includes('Without Feedback') && assignmentSubmission.feedback_status === 'Not reviewed'))
+          ) {
+            filteredAssignmentSubmissions.push(assignmentSubmission);
+          }
+      }
+    }
+    this.dataSource = filteredAssignmentSubmissions;
+    this.updateSelectOptions();
+  }
+
+  private updateSelectOptions(): void {
+    this.schoolOptions = [];
+    this.instrumentOptions = [];
+    this.levelOptions = [];
+    for (const assignmentSubmission of this.assignmentSubmissions) {
+      for (const schoolInstrumentLevel of assignmentSubmission.school_instrument_level) {
+          const schoolInstrumentLevelArr = schoolInstrumentLevel.split('_');
+          const school = schoolInstrumentLevelArr[0];
+          const instrument = schoolInstrumentLevelArr[1];
+          const level = schoolInstrumentLevelArr[2];
+          if (!this.schoolOptions.includes(school)) {
+            this.schoolOptions.push(school);
+          }
+          if (!this.instrumentOptions.includes(instrument)) {
+            this.instrumentOptions.push(instrument);
+          }
+          if (!this.levelOptions.includes(level)) {
+            this.levelOptions.push(level);
+          }
+        }
+      }
+    }
 }
