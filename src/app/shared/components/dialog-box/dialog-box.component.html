@@ -6,6 +6,7 @@
 <button *ngIf="actionType=='accountEdit' && contenteditable == true" type="button" mdbBtn color="danger" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="make_false($event)" mdbWavesEffect> Cancel </button> -->
 
 <button *ngIf="actionType=='wage'" type="button" mdbBtn color="info" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()" mdbWavesEffect> View </button>
+
 <button *ngIf="actionType=='instructorAssignmentEdit'" type="button" mdbBtn color="danger" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()" mdbWavesEffect> Delete </button>
 
 <button *ngIf="actionType=='instructorEditIndividual'" type="button" mdbBtn color="primary" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="acquire_file()" (click)="frame.show()" mdbWavesEffect> View </button>

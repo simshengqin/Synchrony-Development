@@ -150,7 +150,7 @@
 
           <button *ngIf="actionType=='instructorAssignmentEdit'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/instructor/assignment/edit/assignment/{{ element.docId }}"> Edit </button>
 
-          <app-dialog-box *ngIf="actionType=='instructorAssignmentEdit'" [actionType]="actionType" [assignmentName]="element.name"></app-dialog-box>
+          <app-dialog-box *ngIf="actionType=='instructorAssignmentEdit'" [actionType]="actionType" [docid]="element.docId" [assignmentName]="element.name"></app-dialog-box>
 
           <button *ngIf="actionType=='assignmentSubmit'" type="button" mdbBtn color="info" rounded="true" (click)="onSubmitClick(element.docId)" mdbWavesEffect>
             {{element.submission_status == 'Pending Submission' ? "Submit" : "Resubmit"}} </button>

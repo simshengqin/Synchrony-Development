@@ -66,8 +66,12 @@ export class DialogBoxComponent implements OnInit {
 
   click_to_delete_assignment(){
     console.log("Assignment deleted!")
-    //this.crudservice.delete("accounts",this.docid)
+    console.log(this.docid)
+    this.crudservice.delete("assignments",this.docid)
     //this.router.navigate(['/admin/account/delete'])
+    this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/instructor/assignment/edit']);
+  }); 
   }
 
   acquire_file(){

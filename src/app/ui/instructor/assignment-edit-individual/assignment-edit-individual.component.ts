@@ -62,6 +62,12 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   toAddSchoolInstrumentLevel!:string
 
+  acceptMultipleFiles:boolean = true
+  acceptedFileTypes:string = ".pdf,.mp4"
+  newFiles: File[] = []; // Contains the new files as object to upload, retrive from dropzone.
+  newFilesNames: string[] = []; // Contains the new files names to upload to chck for duplicates.
+  filesToBeDeleted: string[] = []; // contains the list of files to be deleted
+
   //tempdate!:string;
  // temptime!:string;
 
@@ -74,8 +80,10 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private crudservice:CrudService,
     private storage: AngularFireStorage,
+    //private afStorage: AngularFireStorage,
     private fb: FormBuilder,
     private toastr: ToastrService,
   ) { }
@@ -116,6 +124,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
   // === === //
   
   get_instructor_assign_school_insturment_level(data:string[]){
+
     this.schools = [];
     this.instruments = [];
     this.levels = [];
@@ -127,10 +136,18 @@ export class AssignmentEditIndividualComponent implements OnInit {
     for (var ele of data){
       var tempsSchool = ele.split("_")[0]
       var tempInsturment = ele.split("_")[1]
-      this.schools.push(tempsSchool)
-      this.instruments.push(tempsSchool+"_"+tempInsturment)
-      this.levels.push(ele)
+      // ensure distinct values
+      if(this.schools.indexOf(tempsSchool)==-1){
+        this.schools.push(tempsSchool)
+      }
+      if(this.instruments.indexOf(tempsSchool+"_"+tempInsturment)==-1){
+        this.instruments.push(tempsSchool+"_"+tempInsturment)
+      }
+      if(this.levels.indexOf(ele)==-1){
+        this.levels.push(ele)
+      }
     }
+    
     this.displaySchool = true
   }
 
@@ -196,6 +213,9 @@ export class AssignmentEditIndividualComponent implements OnInit {
         this.toastr.error( 'Group has been added already!', '', {positionClass: 'toast-top-center'});
       }
     }
+    
+
+
     this.displaySchool = false
     this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
   }
@@ -233,45 +253,82 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   // Get assignment files
   get_assignment_files(docid:string){
+    console.log(docid)
     this.fileLocationPath = "/assignment/" + docid + "/";
+    console.log(this.assignment["file_names"])
     for(var ele of this.assignment["file_names"]){
       this.assignmentFileNames.push(ele);
     }
   }
 
-  // delete files
+  // Method: Remove the file from the array, will not remove if request is canceled 
   delete_file(data:string){
-    // Remove the file from the array 
     var index = this.assignmentFileNames.indexOf(data)
+    this.filesToBeDeleted.push(this.assignmentFileNames[index]);
     this.assignmentFileNames.splice(index,1)
     // Remove the file from S3 Stroge.
-    this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + data).delete();
+    //this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + data).delete();
+
     // Set updated data into new object
-    var updateData = this.update_data_assignment()
+    //var updateData = this.update_data_assignment()
+
     // Update the assignment.
-    this.crudservice.update("assignments",this.assignmentDocId,updateData)
+    //this.crudservice.update("assignments",this.assignmentDocId,updateData)
   } 
 
-  update_data_assignment(){
-    let data = {
-      //instructor_account_doc_id: this.assignment.instructor_account_doc_id,
-      //created_datetime: this.assignment.created_datetime,
-      //description: this.assignmentDescription,
-      //due_datetime: this.assignmentDueDateTime,
-      //name: this.assignmentName,
-      //school: this.assignmentSchool,
-      //school_instrument_level: this.assignmentSchoolInstrumentLevel ,
-      file_names: this.assignmentFileNames
+  // Method: Remove the file from firestorge Stroge.
+  delete_files_from_database(){
+    if(this.filesToBeDeleted.length!=0){
+      for(var file of this.filesToBeDeleted){
+        this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + file).delete();
+      }
     }
-    return data
   }
 
+  addFiles($event:any){
+    for(var file of $event){
+      if(this.newFilesNames.indexOf(file["name"])==-1){
+        this.newFilesNames.push(file["name"]);
+        this.newFiles.push(file)
+      }
+    }
+  }
+
+  add_files_to_database(){
+    if(this.newFiles.length!=0){
+      for(var file of this.newFiles){
+        var location: string = 'assignment/' + this.assignmentDocId + "/" + file['name']
+        //console.log(location + file["name"])
+        this.assignmentFileNames.push(file['name']);
+        this.storage.upload(location, file);
+      }
+    }
+  }
+
+  // remove school instrument level 
   removeButton(i: number){
-    console.log(i)
+    this.assignmentSchoolInstrumentLevel.splice(i,1)
   }
 
   onSubmit(){
+    var updateAssignmentDueDateandTime:Timestamp = firebase.firestore.Timestamp.fromDate(new Date(this.assignmentDueDate + " " + this.assignmentDueTime))
+    let updateData = {
+      //instructor_account_doc_id: this.assignment.instructor_account_doc_id,
+      //created_datetime: this.assignment.created_datetime,
+      description: this.assignmentDescription,
+      due_datetime: updateAssignmentDueDateandTime,
+      name: this.assignmentName,
+      school_instrument_level: this.assignmentSchoolInstrumentLevel,
+      file_names: this.assignmentFileNames
+    }
+    this.delete_files_from_database()
+    this.add_files_to_database()
+    // Update the assignment.
+    this.crudservice.update("assignments", this.assignmentDocId, updateData)
+  }
 
+  back(){
+    this.router.navigate(['/instructor/assignment/edit']);
   }
 
 

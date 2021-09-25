@@ -33,7 +33,7 @@
         <!-- ROW -->
         <div class="row">
             <div class="form-outline col-3" *ngIf="displaySchool">
-                <app-input-select [inputDataList]="schools" [name]="nameSchool" (outputData)="get_query_data_school($event)"></app-input-select>
+                <app-input-select id="testSchool" [inputDataList]="schools" [name]="nameSchool" (outputData)="get_query_data_school($event)"></app-input-select>
             </div>
             <div class="form-outline col-3" *ngIf="displayInstruments">
                 <app-input-select [inputDataList]="queriedInstruments" [name]="nameInstrument" (outputData)="get_query_data_instrument($event)"></app-input-select>
@@ -89,14 +89,14 @@
             <!-- Column 2-->
             <div class="col-6">
                 <h2> Upload New Files: </h2>
-                <app-dropzone></app-dropzone>
+                <app-dropzone [acceptMultipleFiles]="acceptMultipleFiles" [acceptedFileTypes]="acceptedFileTypes" (fileEmit)="addFiles($event)"></app-dropzone>
             </div>
         <div> <!-- End of row -->
         <!-- Segment 6: Assignment School Instrument Level  -->
         <div class="row">
             <div class="float-end"> 
-                <button type="button" mdbBtn color="danger" mdbWavesEffect> Cancel </button> 
-                <button type="button" mdbBtn color="success" mdbWavesEffect> Update </button> 
+                <button type="button" mdbBtn color="danger" (click)="back()" mdbWavesEffect> Cancel </button> 
+                <button type="button" mdbBtn color="success" (click)="onSubmit()" mdbWavesEffect> Update </button> 
             </div>
         </div>
     <div> <!-- End of Container -->
