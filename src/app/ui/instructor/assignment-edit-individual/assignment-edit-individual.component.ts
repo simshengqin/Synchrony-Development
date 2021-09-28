@@ -15,6 +15,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormControl } from '@angular/forms';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
+import { validateBasis } from '@angular/flex-layout';
 
 
 
@@ -68,13 +69,18 @@ export class AssignmentEditIndividualComponent implements OnInit {
   newFilesNames: string[] = []; // Contains the new files names to upload to chck for duplicates.
   filesToBeDeleted: string[] = []; // contains the list of files to be deleted
 
-  //tempdate!:string;
- // temptime!:string;
-
   // Assignment's files and storage 
   fileLocationPath!:string; // contains the path for assignments folder
   files:string[] = []; // contains all the files
   storage_bucket = "gs://" + environment.firebase.storageBucket;
+
+  // validation, will be true when on load.
+  isFileAcceptable:boolean = true;
+  isNameAcceptable:boolean = true;
+  isDescriptionAcceptable:boolean = true;
+  isDueDateTimeAcceptable:boolean = true;
+  isSchoolInstrumentLevelAcceptable:boolean = true;
+
   // forms
   updateAssignmentForm!: FormGroup; 
 
@@ -279,7 +285,9 @@ export class AssignmentEditIndividualComponent implements OnInit {
   // Method: Remove the file from firestorge Stroge.
   delete_files_from_database(){
     if(this.filesToBeDeleted.length!=0){
+      console.log("Deleteing ")
       for(var file of this.filesToBeDeleted){
+        console.log(file)
         this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + file).delete();
       }
     }
@@ -287,11 +295,29 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   addFiles($event:any){
     for(var file of $event){
-      if(this.newFilesNames.indexOf(file["name"])==-1){
-        this.newFilesNames.push(file["name"]);
-        this.newFiles.push(file)
+      if(!this.check_file_naming_convention(file["name"])){
+        if(this.assignmentFileNames.indexOf(file["name"])==-1){
+          this.newFiles.push(file)
+        } else {
+          this.showMessageError(file['name'] + " is already included in this assignment")
+          this.isFileAcceptable = false
+        }
+      } else {
+        this.showMessageError(file['name'] + " has special characters, please remove this file")
+        this.isFileAcceptable = false
       }
     }
+    this.isFileAcceptable = true
+  }
+
+  private check_file_naming_convention(filename:string):boolean{
+    var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]+/;
+    // return true is there is special characters 
+    if(format.test(filename)){
+      return true
+    }
+    // return false if no special characters 
+    return false
   }
 
   add_files_to_database(){
@@ -299,8 +325,13 @@ export class AssignmentEditIndividualComponent implements OnInit {
       for(var file of this.newFiles){
         var location: string = 'assignment/' + this.assignmentDocId + "/" + file['name']
         //console.log(location + file["name"])
-        this.assignmentFileNames.push(file['name']);
-        this.storage.upload(location, file);
+        if(this.assignmentFileNames.indexOf(file['name'])==-1){
+          this.assignmentFileNames.push(file['name']);
+          this.storage.upload(location, file);
+          this.showMessageSuccess("file Uploaded")
+        } else {
+          this.showMessageError(file['name'] + " is already included")
+        }
       }
     }
   }
@@ -311,26 +342,90 @@ export class AssignmentEditIndividualComponent implements OnInit {
   }
 
   onSubmit(){
-    var updateAssignmentDueDateandTime:Timestamp = firebase.firestore.Timestamp.fromDate(new Date(this.assignmentDueDate + " " + this.assignmentDueTime))
-    let updateData = {
-      //instructor_account_doc_id: this.assignment.instructor_account_doc_id,
-      //created_datetime: this.assignment.created_datetime,
-      description: this.assignmentDescription,
-      due_datetime: updateAssignmentDueDateandTime,
-      name: this.assignmentName,
-      school_instrument_level: this.assignmentSchoolInstrumentLevel,
-      file_names: this.assignmentFileNames
-    }
-    this.delete_files_from_database()
-    this.add_files_to_database()
-    // Update the assignment.
-    this.crudservice.update("assignments", this.assignmentDocId, updateData)
+    
+    this.validate_due_date_and_time()
+    this.validate_name()
+    this.validate_school_instrument_level()
+    this.validate_description()
+    
+    if(this.isFileAcceptable && this.isNameAcceptable && 
+      this.isSchoolInstrumentLevelAcceptable && this.isDueDateTimeAcceptable && 
+      this.isDescriptionAcceptable){
+        var updateAssignmentDueDateandTime:Timestamp = firebase.firestore.Timestamp.fromDate(new Date(this.assignmentDueDate + " " + this.assignmentDueTime))
+        this.delete_files_from_database()
+        this.add_files_to_database()
+        let updateData = {
+          //instructor_account_doc_id: this.assignment.instructor_account_doc_id,
+          //created_datetime: this.assignment.created_datetime,
+          description: this.assignmentDescription,
+          due_datetime: updateAssignmentDueDateandTime,
+          name: this.assignmentName,
+          school_instrument_level: this.assignmentSchoolInstrumentLevel,
+          file_names: this.assignmentFileNames
+        }
+        // Update the assignment.
+        this.crudservice.update("assignments", this.assignmentDocId, updateData)
+        this.router.navigate(['/instructor/assignment/edit']);
+        this.showMessageSuccess(this.assignmentName + " has been updated!")
+      } else {
+        this.showMessageError(this.assignmentName + " attributes do not meet the requirements")
+      }
   }
 
   back(){
     this.router.navigate(['/instructor/assignment/edit']);
   }
 
+  private validate_description(){
+    if(this.assignmentDescription.length==0 || this.assignmentDescription==""){
+      this.isDescriptionAcceptable = false
+      this.showMessageError(this.assignmentName + " description is empty, plase give context to the assignment")
+    } else {
+      this.isDescriptionAcceptable = true
+    }
+  }
 
+  private validate_school_instrument_level(){
+    if(this.assignmentSchoolInstrumentLevel.length==0){
+      this.isSchoolInstrumentLevelAcceptable = false
+      this.showMessageError(this.assignmentName + " needs to have groups to be attached to this assignment.")
+    } else {
+      this.isSchoolInstrumentLevelAcceptable = true
+    }
+  }
+
+  private validate_name(){
+    if(this.assignmentName.length==0 || this.assignmentName==""){
+      this.isNameAcceptable = false
+      this.showMessageError(this.assignmentName + " name is empty, plase give it a title")
+    } else {
+      this.isNameAcceptable = true
+    }
+  }
+
+  private validate_due_date_and_time(){
+    var updateAssignmentDueDateandTime:Timestamp = firebase.firestore.Timestamp.fromDate(new Date(this.assignmentDueDate + " " + this.assignmentDueTime))
+    var currentDateAndTime:Timestamp  = firebase.firestore.Timestamp.fromDate(new Date());
+    if(currentDateAndTime > updateAssignmentDueDateandTime){
+      this.isDueDateTimeAcceptable = false
+      this.showMessageError(this.assignmentName + " due date & time has already pass")
+    } else{
+      this.isDueDateTimeAcceptable = true
+    }
+  }
+
+  private showMessageSuccess(message:string) {
+    if(message==null||message==""){
+      message = "Success!";
+    }
+    this.toastr.success(message)  
+  }
+
+  private showMessageError(message:string) {
+    if(message==null||message==""){
+      message = "Error!";
+    }
+    this.toastr.error(message)  
+  }
 
 }
