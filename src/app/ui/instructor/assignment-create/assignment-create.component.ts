@@ -100,7 +100,9 @@ export class AssignmentCreateComponent implements OnInit {
       this.school = classGroup.split('_')[0];
       if (this.school == this.schoolSelected){
         this.classGroups.push(classGroup);
-        this.instrumentOptions.push(classGroup.split('_')[1]);
+        if (!this.instrumentOptions.includes(classGroup.split('_')[1])){
+          this.instrumentOptions.push(classGroup.split('_')[1]);
+        }
       }
     }
   }
