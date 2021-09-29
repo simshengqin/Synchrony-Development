@@ -295,17 +295,17 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   addFiles($event:any){
     for(var file of $event){
-      if(!this.check_file_naming_convention(file["name"])){
+      //if(!this.check_file_naming_convention(file["name"])){
         if(this.assignmentFileNames.indexOf(file["name"])==-1){
           this.newFiles.push(file)
         } else {
           this.showMessageError(file['name'] + " is already included in this assignment")
           this.isFileAcceptable = false
         }
-      } else {
+      /*} else {
         this.showMessageError(file['name'] + " has special characters, please remove this file")
         this.isFileAcceptable = false
-      }
+      }*/
     }
     this.isFileAcceptable = true
   }
