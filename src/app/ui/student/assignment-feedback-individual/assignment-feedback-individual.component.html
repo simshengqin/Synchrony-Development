@@ -1,6 +1,18 @@
 <app-header></app-header>
 <div class="assignment-feedback-individual-wrapper wrapper-padding max-width-section">
+
   <h1 *ngIf="assignment" class="mb-3">{{assignment.name}}'s Feedback</h1>
+  <div *ngIf="assignmentSubmission && (assignmentSubmission.student_attachment_scoresheet || assignmentSubmission.student_attachment_recording)" class="form-text mb-3" >
+    <h3 class="mb-3">My Submission</h3>
+    <div *ngIf="assignmentSubmission.student_attachment_recording" class="form-text mb-3" >
+      Music Score Sheet: <a [href]="assignmentSubmission.student_attachment_scoresheet" target="_blank">
+      {{assignmentSubmission.student_attachment_scoresheet_name}}</a>
+    </div>
+    <div *ngIf="assignmentSubmission.student_attachment_recording" class="form-text mb-3" >
+      Recording: <a [href]="assignmentSubmission.student_attachment_recording" target="_blank">
+      {{assignmentSubmission.student_attachment_recording_name}}</a>
+    </div>
+  </div>
   <h3 class="mb-3">Instructor's feedback</h3>
   <p *ngIf="assignmentSubmission"class="mb-3">{{assignmentSubmission.feedback | titlecase}}</p>
   <h4>Grade: {{assignmentSubmission.grade}}/100</h4>

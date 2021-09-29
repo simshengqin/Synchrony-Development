@@ -13,7 +13,8 @@ export interface Account {
 export enum Role {
   admin = 'admin',
   student = 'student',
-  instructor = 'instructor'
+  instructor = 'instructor',
+  invalid = ''
   // freelancer = 'freelancer'
 }
 
