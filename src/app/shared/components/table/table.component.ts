@@ -101,21 +101,27 @@ export class TableComponent implements OnInit, OnChanges {
     this.router.navigate(['instructor/assignment/mark'], { queryParams: { assignmentSubmissionDocId }});
   }
 
-  editTable($event) {
-    if(this.contenteditable == true) {
-      this.contenteditable = false;
-    } else {
-      this.contenteditable = true;
-    }
-  }
+  // editTable($event) {
+  //   if(this.contenteditable == true) {
+  //     this.contenteditable = false;
+  //   } else {
+  //     this.contenteditable = true;
+  //   }
+  // }
 
-  sendToTable($event) {
-    console.log("sentToTable activated");
-    this.updateArray.push(this.username);
-    this.updateArray.push(this.first_name);
-    this.updateArray.push(this.last_name);
-    this.updateArray.push(this.role);
-    this.triggerUpdate.emit(this.updateArray);
-    this.updateArray = [];
+  // sendToTable($event) {
+  //   console.log("sentToTable activated");
+  //   this.updateArray.push(this.username);
+  //   this.updateArray.push(this.first_name);
+  //   this.updateArray.push(this.last_name);
+  //   this.updateArray.push(this.role);
+  //   this.triggerUpdate.emit(this.updateArray);
+  //   this.updateArray = [];
+  // }
+
+  test(element) {
+    console.log(element);
+    // console.log(this.dataSource);
+    this.router.navigate(['/admin/account/edit/form'], {queryParams: element});
   }
 }

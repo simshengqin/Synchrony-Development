@@ -7,6 +7,7 @@ import { TableComponent } from 'src/app/shared/components/table/table.component'
 import { Account } from '../../../core/models/account';
 import { first } from 'rxjs/operators';
 
+
 @Component({
   selector: 'app-account-delete',
   templateUrl: './account-delete.component.html',
@@ -57,7 +58,8 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   selectSubLevels:string[] = [];
 
   constructor(
-    private crudservice:CrudService
+    private crudservice:CrudService,
+    
   ) { }
 
   ngOnInit(): void {
@@ -73,27 +75,18 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   async retrieve_all_accounts(){
     const data = await this.crudservice.read('accounts').pipe(first()).toPromise();
     if(data!=undefined||data!=null){
-      this.dataSource = data
+      //this.dataSource = data
       for(var ele of data){
         try{
           this.create_account(ele)
-          //var schoolgrp = ele["school_group"].split(",")
-          //var school = ele["school"].split(",")
-          //var school = ele["school"]
           var school_instrument_level = ele["school_instrument_level"]
-          //this.set_distint_school_levels(ele["levels"])
-          //this.set_distint_school_instruments(ele["instruments"])
-          // get distint school groups
-          //this.set_distint_school_group(schoolgrp);
-          // get distint school
-          //this.set_distint_school(school);
           this.set_distint_school_instrument_level(school_instrument_level);
         } catch(e){
           console.log("something wrong with the data! check the database!")
         }
       }
+      //console.log(this.accounts.length)
       this.dataSource = this.accounts
-      //console.log(this.dataSource)
     }
   }
 
@@ -120,72 +113,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       this.accounts.push(account);
     }
   }
-  /*
-  retrieve_all_accounts(){
-    this.crudservice.read('accounts').subscribe(async (data:any) => {
-      if(data!=undefined||data!=null){
-        for(let ele of data){
-          this.accounts.push(ele)
-        }
-        this.dataSource = data
-        // Filter Entry
-        for(var ele of data){
-          var schoolgrp = ele["school_group"].split(",")
-          var school = ele["school"].split(",")
-          //this.set_distint_school_levels(ele["levels"])
-          //this.set_distint_school_instruments(ele["instruments"])
-          // get distint school groups
-          this.get_distint_school_group(schoolgrp);
-          // get distint school
-          this.get_distint_school(school);
-        }
-        //console.log(this.groups)
-        //console.log(this.schools)
-        // End of Filter
-      }
-    })
-  }
-  */
 
-  // == set filter results == //
-  // Method:
-  /*
-  set_distint_school_levels(data:string[]){
-    for(var ele of data){
-      if(this.levels.indexOf(ele)==-1){
-        this.groups.push(ele)
-      }
-    }
-  } */
-  // Method:
-  /*
-  set_distint_school_instruments(data:string[]){
-    for(var ele of data){
-      if(this.instruments.indexOf(ele)==-1){
-        this.groups.push(ele)
-      }
-    }
-  } */
-  // Method:
-  /*
-  set_distint_school_group(data:string[]){
-    for(var dataSchoolGrp of data){
-      if(this.groups.indexOf(dataSchoolGrp)==-1){
-        this.groups.push(dataSchoolGrp)
-      }
-    }
-  }
-  */
-  // Method:
-  /*
-  set_distint_school(data:string[]){
-    for(var dataSchool of data){
-      if(this.schools.indexOf(dataSchool)==-1){
-        this.schools.push(dataSchool)
-      }
-    }
-  }
-  */
   // Method:
   set_distint_school_instrument_level(data:string[]){
     for(var dataSchoolInstrumentLevel of data){
@@ -212,21 +140,6 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     this.selectRoles = $event.value
     this.query_table_with_filter()
   }
-  /*
-  get_query_data_schools($event:any):void{
-    this.selectSchools = $event.value
-    this.query_table_with_filter()
-  } */
-  /*
-  get_query_data_groups($event:any):void{
-    this.selectGroups = $event.value
-    this.query_table_with_filter()
-  } */
-  /*
-  get_query_data_school_instrument_level($event:any):void{
-    this.selectSchools = $event.value
-    this.query_table_with_filter()
-  } */
 
   get_query_data_sub_schools($event:any):void{
     this.selectSubSchools = $event.value
@@ -283,40 +196,11 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     if(this.select_Combine_SchoolInstrumentLevels.length!=0){
       result = this.filtering_by_school_instrument_levels(result, this.select_Combine_SchoolInstrumentLevels)
     }
-    /*
-    if(this.selectSchools.length!=0){
-      result = this.filtering_by_school(result, this.selectSchools)
-    } */
-
-    //console.log(result)
-    /*
-    if(this.selectSchoolInstrumentLevels.length!=0){
-      result = this.filtering(result, this.selectSchoolInstrumentLevels)
-    } */
-    /*
-    if(this.selectGroups.length!=0){
-      result = this.filtering(result, this.selectGroups)
-    } */
-    /*
-    if(this.selectRoles.length ==0 && this.selectSchools.length ==0 && this.selectGroups.length ==0){
-      result = this.accounts;
-    }
-    */
     if(this.selectRoles.length == 0 && this.select_Combine_SchoolInstrumentLevels.length == 0){
       result = this.accounts;
     }
+    this.dataSource = [];
     this.dataSource = result
-
-    /*
-    const data = await this.crudservice.read('accounts',"role","in",this.selectRoles).pipe(first()).toPromise();
-    */
-    /*
-    this.crudservice.read("accounts",
-      "role","in",this.selectRoles,
-      "school","array-contains-any",this.selectSchools,
-      "school_group","array-contains-any",this.selectGroups).subscribe(async (data:any) => {
-      this.dataSource = data
-    }) */
   }
 
   filtering_by_role(result:Account[], filter:string[]):Account[]{
@@ -339,34 +223,6 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     }
     return filterResult
   }
-
-  /*
-  filtering_by_school(result:Account[], filter:string[]):Account[]{
-    var filterResult:Account[] = [];
-    var exist:boolean = false;
-    for(var ele of result){
-      var schools = ele.school
-      for(var query of filter){
-        for(var school of schools){
-          console.log(query)
-          console.log(school)
-          if(school == query){
-            for(var eleResult of filterResult){
-              if(eleResult.docId == ele.docId){
-                exist = true
-              }
-            }
-            if(!exist){
-              filterResult.push(ele)
-              exist = false
-            }
-          }
-        }
-      }
-    }
-    return filterResult
-  }
-  */
 
   // Brute force method
   filtering_by_school_instrument_levels(result:Account[], filter:string[]):Account[]{
@@ -393,43 +249,6 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     return filterResult
   }
 
-  // Method: query database method
-  /*
-  filtering_by_school_instrument_levels(result:Account[], filter:string[]):Account[]{
-    var filterResult:Account[] = [];
-    this.crudservice.read("accounts","school_instrument_level","array-contains-any",filter).pipe(first()).subscribe(async (data:any) => {
-      if(data!=null || data!=undefined){
-        filterResult = data
-        console.log(data)
-      }
-    })
-    return filterResult
-  }
-  */
-
-  /*
-  // Method: filtering function
-  filtering(result:Account[], filter:string[]):Account[]{
-    var filterResult:Account[] = [];
-    var exist:boolean = false;
-    for(var ele of result){
-      for(var query of filter){
-        if(ele[query][0] == query){
-          for(var eleResult of filterResult){
-            if(eleResult.docId == ele.docId){
-              exist = true
-            }
-          }
-          if(!exist){
-            filterResult.push(ele)
-            exist = false
-          }
-        }
-      }
-    }
-    return filterResult
-  } // End of Method
-*/
 
   delete_doc_id($event:any):void{
     if($event!=""||$event!=null){
@@ -446,6 +265,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       console.log("There is no account to delete!")
     }
   }
+
 
 
 

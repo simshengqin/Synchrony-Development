@@ -10,6 +10,8 @@ import { first } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from "../../../../environments/environment.prod"
+import {ToastrService} from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-dialog-box',
@@ -40,7 +42,8 @@ export class DialogBoxComponent implements OnInit {
     private crudservice:CrudService,
     private router: Router,
     private storage: AngularFireStorage,
-    private ds:DomSanitizer
+    private ds:DomSanitizer,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -59,6 +62,7 @@ export class DialogBoxComponent implements OnInit {
       password: this.genPassword()
     }
     this.crudservice.update("accounts",this.docid,data)
+    this.showMessageSuccess("The following user: " + this.username + " account has been successfully deleted")
     this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/admin/account/delete']);
   }); 
@@ -66,8 +70,12 @@ export class DialogBoxComponent implements OnInit {
 
   click_to_delete_assignment(){
     console.log("Assignment deleted!")
-    //this.crudservice.delete("accounts",this.docid)
-    //this.router.navigate(['/admin/account/delete'])
+    console.log(this.docid)
+    this.crudservice.delete("assignments",this.docid)
+    this.showMessageSuccess("The following assignment, title: " + this.assignmentName + " has been successfully deleted")
+    this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/instructor/assignment/edit']);
+  }); 
   }
 
   acquire_file(){
@@ -84,7 +92,7 @@ export class DialogBoxComponent implements OnInit {
   getPDF():any{
     var pdf = this.storage_bucket + this.fileLocationPath + this.fileName
     const ref = this.storage.refFromURL(pdf);
-    this.pdfUrl = ref.getDownloadURL().subscribe(data => {this.pdfUrl = data})
+    return this.pdfUrl = ref.getDownloadURL().subscribe(data => {this.pdfUrl = data})
   }
 
   getVideo():any{
@@ -92,8 +100,8 @@ export class DialogBoxComponent implements OnInit {
     const ref = this.storage.refFromURL(video);
     //ref.getDownloadURL().subscribe(data => {this.videoUrl = data})
     return this.videoUrl = ref.getDownloadURL().subscribe(data => {this.videoUrl = data})
-    console.log(ref.getDownloadURL().subscribe(data => {this.videoUrl = data}))
-    console.log(this.videoUrl)
+    //console.log(ref.getDownloadURL().subscribe(data => {this.videoUrl = data}))
+    //console.log(this.videoUrl)
   }
 
   returnSafeURL(){
@@ -127,6 +135,20 @@ export class DialogBoxComponent implements OnInit {
       )
     }
     return password
+  }
+
+  private showMessageSuccess(message:string) {
+    if(message==null||message==""){
+      message = "Success!";
+    }
+    this.toastr.success(message)  
+  }
+
+  private showMessageError(message:string) {
+    if(message==null||message==""){
+      message = "Error!";
+    }
+    this.toastr.error(message)  
   }
 
 }

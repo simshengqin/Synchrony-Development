@@ -44,15 +44,15 @@ export class AssignmentViewComponent implements OnInit {
           'student_doc_id', '==', loggedInAccount.docId,
           'assignment_doc_id', '==', assignment.docId).pipe(first()).toPromise();
       // console.log(assignmentSubmission);
+      assignment.isOverDueDate = new Date() > assignment.due_datetime.toDate();
       if (assignmentSubmission.length > 0) {
         assignment.submission_status = 'Last submitted on ' + datePipe.transform(assignmentSubmission[0].submitted_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
         // TODO: Get the latest assignment submission
         assignment.assignmentSubmission = assignmentSubmission[0];
       }
       else {
-        assignment.submission_status = 'Pending Submission';
+        assignment.submission_status = assignment.isOverDueDate ? 'Missing Submission' : 'Pending Submission';
       }
-      assignment.isOverDueDate = new Date() > assignment.due_datetime.toDate();
     }
     this.dataSource = this.assignments;
   }

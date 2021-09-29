@@ -20,7 +20,7 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   accountUsername!:string;
   // set table data
   dataSource!:any;
-  displayedColumns:string[] = ['username', 'role', 'school', 'school_instrument_level', 'action'];
+  displayedColumns:string[] = ['username', 'first_name', 'last_name', 'role', 'school', 'school_instrument_level', 'action'];
   actionType:string = "accountEdit";
 
   // === set filter data === //

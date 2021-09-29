@@ -31,6 +31,7 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
   assignment: Assignment;
   assignmentSubmission: AssignmentSubmission = null;
   newAssignmentSubmission: AssignmentSubmission;
+  assignmentSubmissionDocId: string;
   // @ViewChild(ConfirmModalComponent) confirmModalComponent: ConfirmModalComponent;
   scoresheetFile: File;
   recordingFile: File;
@@ -94,40 +95,54 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
         instructor_feedback_attachment: '',
         feedback_datetime: null
       };
+      // need to create the new assignment submission first to get its doc id, so we know where to store the files in firebase storage
+      if (this.assignmentSubmission == null) {
+        await this.crudService.create('assignment_submissions', this.newAssignmentSubmission).then((docId) => {
+          this.assignmentSubmissionDocId = docId;
+        });
+      }
+      else {
+        this.assignmentSubmissionDocId = this.assignmentSubmission.docId;
+      }
       this.isUploading = true;
       if (this.scoresheetFile) { await this.uploadFile(this.scoresheetFile, 'scoresheet'); }
       if (this.recordingFile) { await this.uploadFile(this.recordingFile, 'recording'); }
-      if (this.assignmentSubmission != null) {
-        console.log('update');
-        console.log(this.assignmentSubmission);
-        await this.crudService.update('assignment_submissions', this.assignmentSubmission.docId, this.newAssignmentSubmission);
-        this.toastrService.success('Updated assignment submission successfully!', '', {positionClass: 'toast-top-center'});
-        this.router.navigate(['student/assignment/view']);
-      } else {
-        console.log(this.assignmentSubmission);
-        await this.crudService.create('assignment_submissions', this.newAssignmentSubmission);
+      if (this.assignmentSubmission == null) {
+        await this.crudService.update('assignment_submissions', this.assignmentSubmissionDocId, this.newAssignmentSubmission);
         this.toastrService.success('Uploaded assignment submission successfully!', '', {positionClass: 'toast-top-center'});
-        this.router.navigate(['student/assignment/view']);
+      } else {
+        await this.crudService.update('assignment_submissions', this.assignmentSubmissionDocId, this.assignmentSubmission);
+        this.toastrService.success('Updated assignment submission successfully!', '', {positionClass: 'toast-top-center'});
       }
-
+      this.router.navigate(['student/assignment/view']);
     }
   }
   async uploadFile(file: File, type): Promise<void> {
-    const path = 'assignment_submissions/' + file.name;
+    const path = 'assignment_submissions/' + this.assignmentSubmissionDocId + '/' + file.name;
     console.log(file);
     const task = this.afStorage.upload(path, file);
     await task.then(async (result) => {
       await result.ref.getDownloadURL().then(
         async (downloadUrl) => {
           console.log(downloadUrl);
-          if (type === 'scoresheet') {
-            this.newAssignmentSubmission.student_attachment_scoresheet = downloadUrl;
-            this.newAssignmentSubmission.student_attachment_scoresheet_name = file.name;
-          } else if (type === 'recording') {
-            this.newAssignmentSubmission.student_attachment_recording = downloadUrl;
-            this.newAssignmentSubmission.student_attachment_recording_name = file.name;
+          if (this.assignmentSubmission == null) {
+            if (type === 'scoresheet') {
+              this.newAssignmentSubmission.student_attachment_scoresheet = downloadUrl;
+              this.newAssignmentSubmission.student_attachment_scoresheet_name = file.name;
+            } else if (type === 'recording') {
+              this.newAssignmentSubmission.student_attachment_recording = downloadUrl;
+              this.newAssignmentSubmission.student_attachment_recording_name = file.name;
+            }
           }
-
+          else {
+            if (type === 'scoresheet') {
+              this.assignmentSubmission.student_attachment_scoresheet = downloadUrl;
+              this.assignmentSubmission.student_attachment_scoresheet_name = file.name;
+            } else if (type === 'recording') {
+              this.assignmentSubmission.student_attachment_recording = downloadUrl;
+              this.assignmentSubmission.student_attachment_recording_name = file.name;
+            }
+          }
         });
     });
   }

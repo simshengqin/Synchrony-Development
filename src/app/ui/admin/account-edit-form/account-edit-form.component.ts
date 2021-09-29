@@ -1,0 +1,123 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CrudService } from 'src/app/core/services/crud.service';
+import { Router } from "@angular/router";
+import { first } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-account-edit-form',
+  templateUrl: './account-edit-form.component.html',
+  styleUrls: ['./account-edit-form.component.scss']
+})
+export class AccountEditFormComponent implements OnInit {
+
+  docId: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  role: string;
+  school: string;
+  school_instrument_level: string;
+
+  editForm!: FormGroup;
+
+  constructor(
+    private route: ActivatedRoute,
+    private crudservice: CrudService,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ){}
+
+  ngOnInit(): void {
+
+    this.route.queryParams.subscribe(params => {
+      let data = params;
+      this.docId = data.docId;
+      this.username = data.username;
+      this.first_name = data.first_name;
+      this.last_name = data.last_name;
+      this.role = data.role;
+      this.school = data.school;
+      this.school_instrument_level = data.school_instrument_level
+    })
+    this.initForm();
+  }
+
+  initForm(): void {
+    this.editForm = this.formBuilder.group({
+      username:[""],
+      first_name:[""],
+      last_name: [""],
+      role: [""],
+      school: [""],
+      school_instrument_level: [""]
+    });
+  }
+
+  // get new_username(): FormControl{
+  //   return this.editForm.get('username') as FormControl;
+  // }
+
+  // get new_first_name(): FormControl{
+  //   return this.editForm.get('first_name') as FormControl;
+  // }
+
+  // get new_last_name(): FormControl{
+  //   return this.editForm.get('last_name') as FormControl;
+  // }
+
+  // get new_role(): FormControl{
+  //   return this.editForm.get('role') as FormControl;
+  // }
+
+  // get new_school(): FormControl{
+  //   return this.editForm.get('school') as FormControl;
+  // }
+
+  // get new_school_instrument_level(): FormControl{
+  //   return this.editForm.get('school_instrument_level') as FormControl;
+  // }
+
+  async edit() {
+    let username = this.editForm.value.username;
+    let firstName = this.editForm.value.first_name;
+    let lastName = this.editForm.value.last_name;
+    let role = this.editForm.value.role;
+    let school = this.editForm.value.school;
+    let schoolInstrumentLevel = this.editForm.value.school_instrument_level;
+
+    try {
+      if(username!='') {
+        this.crudservice.update("accounts", this.docId, {"username": username});
+      }
+
+      if(firstName!='') {
+        this.crudservice.update("accounts", this.docId, {"first_name": firstName});
+      }
+
+      if(lastName!='') {
+        this.crudservice.update("accounts", this.docId, {"last_name": lastName});
+      }
+
+      if(role!='') {
+        this.crudservice.update("accounts", this.docId, {"role": role});
+      }
+
+      if(school!='') {
+        this.crudservice.update("accounts", this.docId, {"school": school});
+      }
+
+      if(schoolInstrumentLevel!='') {
+        let delimit = schoolInstrumentLevel.split(","); // it's an array
+        this.crudservice.update("accounts", this.docId, {"school_instrument_level": delimit});
+      }
+
+      this.router.navigate(['/admin/account/edit']);
+
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+}
