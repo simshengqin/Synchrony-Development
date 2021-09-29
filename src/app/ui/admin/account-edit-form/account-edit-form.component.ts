@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrudService } from 'src/app/core/services/crud.service';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-edit-form',
@@ -29,8 +30,6 @@ export class AccountEditFormComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    // let dataSource: any = this.route.snapshot.queryParamMap.get('dataSource');
-    // console.log(dataSource);
 
     this.route.queryParams.subscribe(params => {
       let data = params;
@@ -43,7 +42,6 @@ export class AccountEditFormComponent implements OnInit {
       this.school_instrument_level = data.school_instrument_level
     })
     this.initForm();
-    console.log(this.username);
   }
 
   initForm(): void {
@@ -81,7 +79,7 @@ export class AccountEditFormComponent implements OnInit {
   //   return this.editForm.get('school_instrument_level') as FormControl;
   // }
 
-  edit() {
+  async edit() {
     let username = this.editForm.value.username;
     let firstName = this.editForm.value.first_name;
     let lastName = this.editForm.value.last_name;
@@ -110,11 +108,13 @@ export class AccountEditFormComponent implements OnInit {
         this.crudservice.update("accounts", this.docId, {"school": school});
       }
 
+      if(schoolInstrumentLevel!='') {
+        let delimit = schoolInstrumentLevel.split(","); // it's an array
+        this.crudservice.update("accounts", this.docId, {"school_instrument_level": delimit});
+      }
+
       this.router.navigate(['/admin/account/edit']);
-      // Needs to be modified; first obtain the array then update the whole array.
-      // if(schoolInstrumentLevel!='') {
-      //   this.crudservice.update("accounts", this.docId, {"school_instrument_level": schoolInstrumentLevel});
-      // }
+
     } catch(e) {
       console.log(e);
     }
