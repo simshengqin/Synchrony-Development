@@ -61,6 +61,7 @@ export class AssignmentCreateComponent implements OnInit {
 
     // Populate school dropdown list
     this.sessionAccount = JSON.parse(sessionStorage.getItem('account')!);
+    console.log(this.sessionAccount);
     this.schoolOptions = this.sessionAccount.school;
     console.log(this.schoolOptions);
     this.schoolInstrumentLevel = this.sessionAccount.school_instrument_level;
