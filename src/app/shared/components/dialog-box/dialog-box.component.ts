@@ -92,7 +92,10 @@ export class DialogBoxComponent implements OnInit {
   getPDF():any{
     var pdf = this.storage_bucket + this.fileLocationPath + this.fileName
     const ref = this.storage.refFromURL(pdf);
-    return this.pdfUrl = ref.getDownloadURL().subscribe(data => {this.pdfUrl = data})
+    //return this.pdfUrl = ref.getDownloadURL().subscribe(data => {this.pdfUrl = data})
+    this.pdfUrl = ref.getDownloadURL().subscribe(data => {this.pdfUrl = data})
+    return this.pdfUrl = this.ds.bypassSecurityTrustResourceUrl(this.pdfUrl);
+
   }
 
   getVideo():any{
