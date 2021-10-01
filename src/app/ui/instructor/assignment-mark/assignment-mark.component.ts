@@ -63,7 +63,7 @@ export class AssignmentMarkComponent implements OnInit {
 
         assignmentSubmission.assignment = await this.crudService.readByDocId(
           'assignments', assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
-        if (new Date() < assignmentSubmission.assignment.due_datetime.toDate()) { continue; }
+        if (assignmentSubmission.assignment == null || new Date() < assignmentSubmission.assignment.due_datetime.toDate()) { continue; }
         assignmentSubmission.assignment_name = assignmentSubmission.assignment?.name;
         assignmentSubmission.student = await this.crudService.readByDocId(
           'accounts', assignmentSubmission.student_doc_id).pipe(first()).toPromise();

@@ -27,11 +27,11 @@ import { validateBasis } from '@angular/flex-layout';
 export class AssignmentEditIndividualComponent implements OnInit {
 
   actionType:string = "instructorEditIndividual";
-  // Instrustor 
+  // Instrustor
   account!:Account;
   accountDocId!:string;
   instructorSchools:string[]=[];
-  // Assignment 
+  // Assignment
   assignment!:Assignment;
   assignmentDocId!:string;
   assignmentDescription!:string;
@@ -64,12 +64,12 @@ export class AssignmentEditIndividualComponent implements OnInit {
   toAddSchoolInstrumentLevel!:string
 
   acceptMultipleFiles:boolean = true
-  acceptedFileTypes:string = ".pdf,.mp4"
+  acceptedFileTypes:string = ".pdf,.mp3,.mp4"
   newFiles: File[] = []; // Contains the new files as object to upload, retrive from dropzone.
   newFilesNames: string[] = []; // Contains the new files names to upload to chck for duplicates.
   filesToBeDeleted: string[] = []; // contains the list of files to be deleted
 
-  // Assignment's files and storage 
+  // Assignment's files and storage
   fileLocationPath!:string; // contains the path for assignments folder
   files:string[] = []; // contains all the files
   storage_bucket = "gs://" + environment.firebase.storageBucket;
@@ -82,7 +82,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
   isSchoolInstrumentLevelAcceptable:boolean = true;
 
   // forms
-  updateAssignmentForm!: FormGroup; 
+  updateAssignmentForm!: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
@@ -109,32 +109,32 @@ export class AssignmentEditIndividualComponent implements OnInit {
     }
   }
 
-  // Get the assignment information 
+  // Get the assignment information
   async get_assignment_information() {
     const assignmentid = this.route.snapshot.paramMap.get('docId');
     this.assignmentDocId = assignmentid;
     const data = await this.crudservice.readByDocId('assignments', assignmentid).pipe(first()).toPromise();
     this.assignment = data
     this.assignmentDescription = this.assignment.description;
-    this.convert_date_time(this.assignment.due_datetime)    
+    this.convert_date_time(this.assignment.due_datetime)
     this.assignmentName = this.assignment.name;
     this.assignmentSchool = this.assignment.school;
     this.assignmentSchoolInstrumentLevel = this.assignment.school_instrument_level;
     //this.assignmentFileNames = this.assignment.file_names;
-    
+
     this.get_assignment_files(assignmentid)
   }
 
   // === === //
   // === INSTRUCTOR SCHOOL INSTRUMENT AND LEVEL === //
   // === === //
-  
+
   get_instructor_assign_school_insturment_level(data:string[]){
 
     this.schools = [];
     this.instruments = [];
     this.levels = [];
-    
+
     this.displayInstruments = false;
     this.displayLevels = false;
 
@@ -153,7 +153,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
         this.levels.push(ele)
       }
     }
-    
+
     this.displaySchool = true
   }
 
@@ -219,7 +219,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
         this.toastr.error( 'Group has been added already!', '', {positionClass: 'toast-top-center'});
       }
     }
-    
+
 
 
     this.displaySchool = false
@@ -239,7 +239,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
     //var dueDate = this.assignmentDueDateTime[3] + "-" + (month+1) + "-" + day
     //data.toDate().getMonth;
     //this.assignmentDueDate = dueDate;
-    //this.assignmentDueDate = data.toDate().getFullYear() + "-" + data.toDate().getMonth() + "-" + data.toDate().getDay() 
+    //this.assignmentDueDate = data.toDate().getFullYear() + "-" + data.toDate().getMonth() + "-" + data.toDate().getDay()
 
   }
 
@@ -267,7 +267,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
     }
   }
 
-  // Method: Remove the file from the array, will not remove if request is canceled 
+  // Method: Remove the file from the array, will not remove if request is canceled
   delete_file(data:string){
     var index = this.assignmentFileNames.indexOf(data)
     this.filesToBeDeleted.push(this.assignmentFileNames[index]);
@@ -280,7 +280,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
     // Update the assignment.
     //this.crudservice.update("assignments",this.assignmentDocId,updateData)
-  } 
+  }
 
   // Method: Remove the file from firestorge Stroge.
   delete_files_from_database(){
@@ -312,11 +312,11 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   private check_file_naming_convention(filename:string):boolean{
     var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]+/;
-    // return true is there is special characters 
+    // return true is there is special characters
     if(format.test(filename)){
       return true
     }
-    // return false if no special characters 
+    // return false if no special characters
     return false
   }
 
@@ -336,20 +336,20 @@ export class AssignmentEditIndividualComponent implements OnInit {
     }
   }
 
-  // remove school instrument level 
+  // remove school instrument level
   removeButton(i: number){
     this.assignmentSchoolInstrumentLevel.splice(i,1)
   }
 
   onSubmit(){
-    
+
     this.validate_due_date_and_time()
     this.validate_name()
     this.validate_school_instrument_level()
     this.validate_description()
-    
-    if(this.isFileAcceptable && this.isNameAcceptable && 
-      this.isSchoolInstrumentLevelAcceptable && this.isDueDateTimeAcceptable && 
+
+    if(this.isFileAcceptable && this.isNameAcceptable &&
+      this.isSchoolInstrumentLevelAcceptable && this.isDueDateTimeAcceptable &&
       this.isDescriptionAcceptable){
         var updateAssignmentDueDateandTime:Timestamp = firebase.firestore.Timestamp.fromDate(new Date(this.assignmentDueDate + " " + this.assignmentDueTime))
         this.delete_files_from_database()
@@ -418,14 +418,14 @@ export class AssignmentEditIndividualComponent implements OnInit {
     if(message==null||message==""){
       message = "Success!";
     }
-    this.toastr.success(message)  
+    this.toastr.success(message)
   }
 
   private showMessageError(message:string) {
     if(message==null||message==""){
       message = "Error!";
     }
-    this.toastr.error(message)  
+    this.toastr.error(message)
   }
 
 }
