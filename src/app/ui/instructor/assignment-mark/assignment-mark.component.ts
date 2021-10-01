@@ -58,19 +58,15 @@ export class AssignmentMarkComponent implements OnInit {
       this.assignmentSubmissionDocId = params.assignmentSubmissionDocId;
       this.assignmentSubmissions = await this.crudService.read('assignment_submissions',
         'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();
+      const filteredAssignmentSubmissions = [];
       for (const assignmentSubmission of this.assignmentSubmissions) {
 
         assignmentSubmission.assignment = await this.crudService.readByDocId(
           'assignments', assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
-          // await this.assignmentService.getAssignment(assignmentSubmission.assignmentDocId)
-          // .pipe(first())
-          // .toPromise();
+        if (new Date() < assignmentSubmission.assignment.due_datetime.toDate()) { continue; }
         assignmentSubmission.assignment_name = assignmentSubmission.assignment?.name;
         assignmentSubmission.student = await this.crudService.readByDocId(
           'accounts', assignmentSubmission.student_doc_id).pipe(first()).toPromise();
-        // await this.studentService.getStudent(assignmentSubmission.studentDocId)
-        // .pipe(first())
-        // .toPromise();
         assignmentSubmission.student_name = assignmentSubmission.student.last_name + ' ' +
           assignmentSubmission.student.first_name;
         assignmentSubmission.submission_status = 'Last submitted on ' +
@@ -80,7 +76,9 @@ export class AssignmentMarkComponent implements OnInit {
           assignmentSubmission.feedback_status = 'Last marked on ' +
             datePipe.transform(assignmentSubmission.feedback_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
         }
+        filteredAssignmentSubmissions.push(assignmentSubmission);
       }
+      this.assignmentSubmissions = filteredAssignmentSubmissions;
       this.dataSource = this.assignmentSubmissions;
       this.updateSelectOptions();
       console.log(this.dataSource);
