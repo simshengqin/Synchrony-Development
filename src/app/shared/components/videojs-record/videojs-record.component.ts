@@ -83,9 +83,10 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
       controls: true,
       // autoplay: false,
       fluid: false,
+      // fill: true,
       // loop: false,
-      width: 570,
-      height: 320,
+      width: 410,
+      height: 240,
       bigPlayButton: false,
       controlBar: {
         volumePanel: true,
@@ -119,14 +120,13 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
     this.config.plugins.record.video = this.selectedRecordingOption === 'Camera Recording';
     this.player = videojs(document.getElementById(el), this.config, () => {
       console.log('player ready! id:', el);
-
       // print version information at startup
       const msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
         ' and recordrtc ' + RecordRTC.version;
       videojs.log(msg);
     });
-
+    // this.player.fill(true);
     // device is ready
     this.player.on('deviceReady', () => {
       console.log('device is ready!');

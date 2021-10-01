@@ -16,7 +16,7 @@
 <!--  </div>-->
 
 </div>
-<div *ngIf="isRecording" fxLayout="row" fxLayoutAlign="center" class="w-100">
+<div *ngIf="isRecording && (selectedRecordingOption !== 'Camera Recording')" fxLayout="row" fxLayoutAlign="center" class="w-100">
   Time elapsed: {{player.record().streamCurrentTime | number: '1.1-1'}}s
 </div>
 <div [ngClass] = "((isRecording || !isRecorded) && (selectedRecordingOption !== 'Camera Recording')) ? 'invisible' : ''">

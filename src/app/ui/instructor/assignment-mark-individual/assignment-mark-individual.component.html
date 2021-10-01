@@ -35,22 +35,22 @@
 <!--    <ngx-extended-pdf-viewer fxLayout="column" fxFlex="50" fxFlex.lt-md="100" useBrowserLocale="true" height="80vh" [ngClass.lt-md]="'reduced-height'"-->
 <!--                             [src]="pdfUrl.toString()"-->
 <!--    ></ngx-extended-pdf-viewer>-->
-    <div fxLayout="column" fxLayoutAlign="center" fxFlex="50" fxFlex.lt-md="100" class="h-100">
-      <video [ngClass]="selectedRecordingOption == 'Camera Recording' ? 'h-50': 'h-100'" controls [src]="videoUrl"></video>
+    <div fxLayout="column" fxLayoutAlign="center center" fxFlex="50" fxFlex.lt-md="100" class="h-95">
+      <video [ngClass]="selectedRecordingOption == 'Camera Recording' ? 'video-camera': 'video-screen'" controls [src]="videoUrl"></video>
       <app-videojs-record #cameraVideojs *ngIf="selectedRecordingOption == 'Camera Recording'"
-                          class ="h-50"
+                          class="h-100"
                           [selectedRecordingOption] = "'Camera Recording'"
                           (startedRecordingEmit)="this.isRecording = true;"
                           (recordingEmit)="updateFeedbackAttachment($event)"
                           (feedbackEmit)="submitFeedback()"></app-videojs-record>
-<!--      <app-video-player></app-video-player>-->
+
     </div>
   </div>
 <!--  <div fxLayout="row" fxLayoutAlign="center">-->
 <!--    <button *ngIf="!isRecording" class="btn btn-success mr-3" (click)="onRecordClick()">{{recorded ? 'Record Again' : 'Record'}}</button>-->
 <!--    <button *ngIf="isRecording"  class="btn btn-danger mr-3" (click)="stopRecording()">Stop</button>-->
 <!--  </div>-->
-  <div *ngIf="!isRecording" fxLayout="row" fxLayoutAlign="center" class="w-100 mb-1">
+  <div *ngIf="!isRecording" fxLayout="row" fxLayoutAlign="center" class="w-100">
     <mat-form-field appearance="fill">
       <mat-label> Select a recording option </mat-label>
       <mat-select  [(value)]="selectedRecordingOption" placeholder="Recording option">
