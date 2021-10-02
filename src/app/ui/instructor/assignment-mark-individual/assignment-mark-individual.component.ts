@@ -63,8 +63,8 @@ export class AssignmentMarkIndividualComponent implements OnInit {
       'assignments', this.assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
     this.pdfUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.assignmentSubmission.student_attachment_scoresheet);
     this.videoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.assignmentSubmission.student_attachment_recording);
-    console.log(this.pdfUrl);
-    console.log(this.videoUrl);
+    // console.log(this.pdfUrl);
+    // console.log(this.videoUrl);
     // this.pdfUrl = this.domSanitizer.sanitize(SecurityContext.RESOURCE_URL,
     //   this.domSanitizer.bypassSecurityTrustResourceUrl(this.assignmentSubmission.student_attachment_scoresheet));
     // console.log(this.pdfUrl);
@@ -123,7 +123,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
   //   xhr.send();
   // }
   onCloseModal(response: string): void {
-    console.log(response);
+    // console.log(response);
     if (response === 'discard') {
       this.isRecording = true;
       this.isRecorded = false;
@@ -137,7 +137,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
     await task.then(async (result) => {
       await result.ref.getDownloadURL().then(
         async (downloadUrl) => {
-          console.log(downloadUrl);
+          // console.log(downloadUrl);
           this.assignmentSubmission.instructor_feedback_attachment = downloadUrl;
           this.assignmentSubmission.feedback = input[0];
           this.assignmentSubmission.grade = input[1];
@@ -147,7 +147,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
           //   .then(r => console.log(r));
           this.toastrService.success('Added feedback successfully!', '', {positionClass: 'toast-top-center'});
           this.router.navigate(['instructor/assignment/mark']);
-          console.log(this.assignmentSubmission);
+          // console.log(this.assignmentSubmission);
         });
     });
   }

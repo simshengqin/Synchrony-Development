@@ -81,7 +81,7 @@ export class AssignmentMarkComponent implements OnInit {
       this.assignmentSubmissions = filteredAssignmentSubmissions;
       this.dataSource = this.assignmentSubmissions;
       this.updateSelectOptions();
-      console.log(this.dataSource);
+      // console.log(this.dataSource);
     });
   }
   filterData($event: any, type: string): void {

@@ -180,7 +180,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
           this.queriedInstruments.push(ele.split("_")[1])
         }
       }
-      console.log(this.queriedInstruments)
+      // console.log(this.queriedInstruments)
     }
   }
 
@@ -259,9 +259,9 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   // Get assignment files
   get_assignment_files(docid:string){
-    console.log(docid)
+    // console.log(docid)
     this.fileLocationPath = "/assignment/" + docid + "/";
-    console.log(this.assignment["file_names"])
+    // console.log(this.assignment["file_names"])
     for(var ele of this.assignment["file_names"]){
       this.assignmentFileNames.push(ele);
     }
@@ -285,9 +285,9 @@ export class AssignmentEditIndividualComponent implements OnInit {
   // Method: Remove the file from firestorge Stroge.
   delete_files_from_database(){
     if(this.filesToBeDeleted.length!=0){
-      console.log("Deleteing ")
+      // console.log("Deleteing ")
       for(var file of this.filesToBeDeleted){
-        console.log(file)
+        // console.log(file)
         this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + file).delete();
       }
     }
