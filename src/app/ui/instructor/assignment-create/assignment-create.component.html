@@ -121,34 +121,36 @@
         Please insert an assignment title!
       </mat-error>
 
+      <br><button type="submit">Add Class</button>
+
       <br>
       <label for = "description"> Assignment Description: </label>
       <br>
       <textarea rows="4" cols="80" formControlName="description"></textarea>
 
       <br>
-      <button type="submit">Add Class</button> <button [disabled]="!createAssignmentButtonClickable" class="create_assignment" (click)="createAssignment()">Create Assignment</button>
+      <button [disabled]="!createAssignmentButtonClickable" class="create_assignment" (click)="createAssignment()">Create Assignment</button>
     </form>
 
     <!-- Dropzone -->
-
+    <br>
     <div class="custom-dropzone" ngx-dropzone (change)="onSelect($event)" [accept]="'.pdf,.mp4'">
-      <ngx-dropzone-label> please upload your assignment here!</ngx-dropzone-label>
+      <ngx-dropzone-label> Please drag and drop your attachment files for this assignment here.<br>(Accepted format: .pdf)</ngx-dropzone-label>
       <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
         <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
       </ngx-dropzone-preview>
     </div>
 
-    <p>Date day: {{event?.getDate()}}</p>
+    <!-- <p>Date day: {{event?.getDate()}}</p> -->
     <!-- There is a bug in the calendar, be sure to add +1 later on  -->
-    <p>Date month: {{event?.getMonth()}}</p>
+    <!-- <p>Date month: {{event?.getMonth()}}</p>
     <p>Date year: {{event?.getUTCFullYear()}}</p>
     <p>Time selected: {{timeSelected}}</p>
     <p>School selected: {{schoolSelected}}</p>
     <p>Instrument selected: {{instrumentSelected}}</p>
     <p>Level selected: {{levelSelected}}</p>
     <p>Form Value: {{ newAssignmentForm.value | json }}</p>
-    <p>Form status: {{ newAssignmentForm.status | json }}</p>
+    <p>Form status: {{ newAssignmentForm.status | json }}</p> -->
 
   </div>
 </div>
