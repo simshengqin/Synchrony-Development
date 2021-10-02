@@ -90,7 +90,7 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
           //this.set_distint_school(school);
           this.set_distint_school_instrument_level(school_instrument_level);
         } catch(e){
-          console.log("something wrong with the data! check the database!")
+          // console.log("something wrong with the data! check the database!")
         }
       }
       this.dataSource = this.accounts
@@ -185,16 +185,16 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
 
   // Method: Combine all the permutation of the sub Strings of School, Instrument and levels
   combine_querry_search_data(){
-    console.log(this.selectSubSchools)
-    console.log(this.selectSubInstruments)
-    console.log(this.selectSubLevels)
+    // console.log(this.selectSubSchools)
+    // console.log(this.selectSubInstruments)
+    // console.log(this.selectSubLevels)
     this.select_Combine_SchoolInstrumentLevels = [];
     for(var eleSchool of this.selectSubSchools){
-      console.log(eleSchool)
+      // console.log(eleSchool)
       for(var eleInstrument of this.selectSubInstruments){
         for(var eleLevel of this.selectSubLevels){
           var query = eleSchool + "_" + eleInstrument + "_" + eleLevel
-          console.log(query);
+          // console.log(query);
           if(this.select_Combine_SchoolInstrumentLevels.indexOf(query)==-1){
             this.select_Combine_SchoolInstrumentLevels.push(query)
           }
@@ -297,7 +297,7 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   }
 
   edit_doc_id($event:any):any{
-    console.log("edit_doc_id activated");
+    // console.log("edit_doc_id activated");
     // [0] = username, [1] = first_name, [2] = last_name, [3] = role
     // check if any of these are null before passing through crudservice.update
     // if all are null, crudservice.update does not take place and return a message
@@ -331,7 +331,7 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
     }
 
     if(data == {}) {
-      console.log("No changes were made");
+      // console.log("No changes were made");
     } else {
 
       try {
@@ -343,12 +343,12 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
           result.push(ele);
         }
         this.dataSource = result;
-        console.log("Update is successful!");
+        // console.log("Update is successful!");
 
         // send request back to dialog-box component to return to edit form
   
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
 
     }

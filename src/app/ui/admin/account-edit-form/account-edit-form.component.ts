@@ -121,7 +121,7 @@ export class AccountEditFormComponent implements OnInit {
       this.router.navigate(['/admin/account/edit']);
 
     } catch(e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 

@@ -82,7 +82,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
           var school_instrument_level = ele["school_instrument_level"]
           this.set_distint_school_instrument_level(school_instrument_level);
         } catch(e){
-          console.log("something wrong with the data! check the database!")
+          // console.log("something wrong with the data! check the database!")
         }
       }
       //console.log(this.accounts.length)
@@ -167,16 +167,16 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
 
   // Method: Combine all the permutation of the sub Strings of School, Instrument and levels
   combine_querry_search_data(){
-    console.log(this.selectSubSchools)
-    console.log(this.selectSubInstruments)
-    console.log(this.selectSubLevels)
+    // console.log(this.selectSubSchools)
+    // console.log(this.selectSubInstruments)
+    // console.log(this.selectSubLevels)
     this.select_Combine_SchoolInstrumentLevels = [];
     for(var eleSchool of this.selectSubSchools){
-      console.log(eleSchool)
+      // console.log(eleSchool)
       for(var eleInstrument of this.selectSubInstruments){
         for(var eleLevel of this.selectSubLevels){
           var query = eleSchool + "_" + eleInstrument + "_" + eleLevel
-          console.log(query);
+          // console.log(query);
           if(this.select_Combine_SchoolInstrumentLevels.indexOf(query)==-1){
             this.select_Combine_SchoolInstrumentLevels.push(query)
           }
@@ -252,7 +252,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
 
   delete_doc_id($event:any):void{
     if($event!=""||$event!=null){
-      console.log($event)
+      // console.log($event)
       this.crudservice.delete("accounts",$event)
       var result:Account[] = []
       for(var ele of this.dataSource){
@@ -262,7 +262,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       }
       this.dataSource = result;
     } else {
-      console.log("There is no account to delete!")
+      // console.log("There is no account to delete!")
     }
   }
 

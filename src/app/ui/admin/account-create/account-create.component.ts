@@ -29,23 +29,23 @@ export class AccountCreateComponent implements OnInit {
     const singleAccount: Account = await this.crudService.readByDocId('accounts', '7hQyZTken7p6eSAR8MQB')
       .pipe(first())
       .toPromise();
-    console.log(singleAccount);
+    // console.log(singleAccount);
 
     const allAccounts: Account[] = await this.crudService.read('accounts').pipe(first()).toPromise();
-    console.log(allAccounts.sort((a, b) => a.username.localeCompare(b.username)));
+    // console.log(allAccounts.sort((a, b) => a.username.localeCompare(b.username)));
 
     const testAccounts: Account[] = await this.crudService.read('accounts',
       'role', '==', 'student',
       'school', '!=', 'NUS',
     ).pipe(first()).toPromise();
-    console.log(testAccounts);
+    // console.log(testAccounts);
 
     const testAccounts2: Account[] = await this.crudService.read('accounts',
       'role', '==', 'student',
       'school', '!=', 'NUS',
       'first_name', '==', 'Carecci',
     ).pipe(first()).toPromise();
-    console.log(testAccounts2);
+    // console.log(testAccounts2);
     const deleteAccount: Account[] = await this.crudService.read('accounts',
       'username', '==', 'student4'
     ).pipe(first()).toPromise();
@@ -55,7 +55,7 @@ export class AccountCreateComponent implements OnInit {
 
   }
   onCloseModal(response: string): void {
-    console.log(response);
+    // console.log(response);
   }
   async uploadFile(): Promise<void> {
     if (this.accountFile) {
@@ -105,7 +105,7 @@ export class AccountCreateComponent implements OnInit {
                 emptyColumns.push(key);
               }
             }
-            console.log(emptyColumns);
+            // console.log(emptyColumns);
             if (emptyColumns.length > 0) {
               this.errors.push('Row ' + i + ' has missing values for the following columns: ' + Array.from(emptyColumns).join(', '));
             }
@@ -138,7 +138,7 @@ export class AccountCreateComponent implements OnInit {
         }
         this.isUploading = false;
         }, (error: NgxCSVParserError) => {
-        console.log('Error', error);
+        // console.log('Error', error);
         this.isUploading = false;
         this.toastrService.error('Incorrect file format!', '', {positionClass: 'toast-top-center'});
       });

@@ -38,14 +38,14 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
       this.assignment = await this.crudService.readByDocId(
         'assignments', this.assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
       this.videoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.assignmentSubmission.instructor_feedback_attachment);
-      console.log(this.videoUrl);
+      // console.log(this.videoUrl);
       // this.assignmentSubmission = await this.assignmentSubmissionService.getAssignmentSubmission(this.assignmentSubmissionDocId)
       //   .pipe(first())
       //   .toPromise();
       // this.assignment = await this.assignmentService.getAssignment(this.assignmentSubmission.assignmentDocId)
       //   .pipe(first())
       //   .toPromise();
-      console.log(this.assignmentSubmission);
+      // console.log(this.assignmentSubmission);
     });
 
   }

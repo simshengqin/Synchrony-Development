@@ -63,13 +63,13 @@ export class FreelanceWageComponent implements OnInit {
     this.wages = [];
     const data = await this.crudservice.read('wages').pipe(first()).toPromise();
     for(var ele of data){
-      console.log(ele)
+      // console.log(ele)
       const instructorData = await this.crudservice.readByDocId('accounts',ele.account_doc_id).pipe(first()).toPromise();
       this.create_wage(ele, instructorData)
       this.set_distint_school(ele.school_abbreviation)
     }
     this.dataSource = this.wages
-    console.log(this.dataSource);
+    // console.log(this.dataSource);
   }
 
   create_wage(data:any, instructorData:any){
@@ -96,7 +96,7 @@ export class FreelanceWageComponent implements OnInit {
 
   get_query_data_sub_schools($event:any):void{
     this.selectedSchools = $event.value
-    console.log(this.selectedSchools)
+    // console.log(this.selectedSchools)
     if(this.selectedSchools.length==0){
       this.retrieve_all_wages();
     } else{
@@ -108,9 +108,9 @@ export class FreelanceWageComponent implements OnInit {
     this.dataSource = [];
     this.wages = [];
     const data = await this.crudservice.read('wages','school_abbreviation','in',this.selectedSchools).pipe(first()).toPromise();
-    console.log(data)
+    // console.log(data)
     for(var ele of data){
-      console.log(ele)
+      // console.log(ele)
       const instructorData = await this.crudservice.readByDocId('accounts',ele.account_doc_id).pipe(first()).toPromise();
       this.create_wage(ele, instructorData)
     }
