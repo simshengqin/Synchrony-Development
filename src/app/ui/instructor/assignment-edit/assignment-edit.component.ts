@@ -64,7 +64,7 @@ export class AssignmentEditComponent implements OnInit {
     this.dataSource = [];
     this.assignments = [];
     const data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId).pipe(first()).toPromise()
-    console.log(data)
+    // console.log(data)
     for(var ele of data){
       this.create_assignment(ele)
     }

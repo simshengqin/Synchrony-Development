@@ -1,10 +1,10 @@
 <!--<app-header [role]="'admin'"></app-header>-->
 <app-header></app-header>
 <div class="account-create-wrapper wrapper-padding">
-  <h1 class="mb-3">Create Accounts and Groups</h1>
-  <div class="mb-2">Please upload a file similar to the following format:
+  <h1 class="mb-3">Account & Grouping Creation</h1>
+  <div class="mb-2">Please upload a file with account data in accordance to the format provided in the sample .csv file below.
      <div class="mt-2 form-text text-muted" >
-      Accounts:<a [href]="'../../../assets/csv/accounts_sample.csv'">
+      Sample file:<a [href]="'../../../assets/csv/accounts_sample.csv'">
          {{"accounts_sample.csv"}}
        </a>
     </div>
@@ -14,7 +14,8 @@
 <!--    <i class="fa fa-image"></i> Choose File-->
 <!--    <input #file type="file" accept="text/csv"  class="d-none" [textContent]="'Choose File'"/>-->
 <!--  </label>-->
-  <app-dropzone [label]="'Drop the accounts information file here (Accepted format: .csv)'"
+  <app-dropzone [label]="'Please drag and drop your attachment files for this assignment here.
+  (Accepted format: .pdf)'"
                 [acceptedFileTypes] = "'.csv'"
                 [acceptMultipleFiles]=false (fileEmit)="accountFile = $event[0]"></app-dropzone>
 <!--  <input #file class="mb-3 form-control" accept=".csv" type="file">-->

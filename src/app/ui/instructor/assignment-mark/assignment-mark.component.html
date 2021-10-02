@@ -4,7 +4,7 @@
     <app-assignment-mark-individual [assignmentSubmissionDocId]="assignmentSubmissionDocId"></app-assignment-mark-individual>
   </ng-container>
   <ng-container *ngIf="!assignmentSubmissionDocId">
-    <h1 class="mb-3">Mark Assignments</h1>
+    <h1 class="mb-3">Mark Assignment</h1>
     <app-input-dropdown-select [inputDataList]="feedbackStatusOptions" [name]="'Feedback Status'"  (outputData)="filterData($event, 'Feedback Status')"></app-input-dropdown-select>
     <br>
     <app-input-dropdown-select [inputDataList]="schoolOptions" [name]="'School'"  (outputData)="filterData($event, 'School')"></app-input-dropdown-select>

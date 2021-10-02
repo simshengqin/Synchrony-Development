@@ -119,12 +119,12 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
   }
   async uploadFile(file: File, type): Promise<void> {
     const path = 'assignment_submissions/' + this.assignmentSubmissionDocId + '/' + file.name;
-    console.log(file);
+    // console.log(file);
     const task = this.afStorage.upload(path, file);
     await task.then(async (result) => {
       await result.ref.getDownloadURL().then(
         async (downloadUrl) => {
-          console.log(downloadUrl);
+          // console.log(downloadUrl);
           if (this.assignmentSubmission == null) {
             if (type === 'scoresheet') {
               this.newAssignmentSubmission.student_attachment_scoresheet = downloadUrl;

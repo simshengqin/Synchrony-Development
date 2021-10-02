@@ -9,21 +9,21 @@
     <div  class="modal-body">
       {{description}}
       <div *ngIf="title == 'Submit Feedback'">
-        <h3>Grade</h3>
+        <h3>Score</h3>
         <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Please input grade (0 to 100)</mat-label>
+          <mat-label>Please input score (0 to 100)</mat-label>
           <input matInput placeholder="" value=""
                  type="number" min="0" max="100" [(ngModel)]="grade"
                  (change)= "grade < 0 ? grade = 0 : grade; grade > 100 ? grade = 100 : grade;">
         </mat-form-field>
         <mat-error *ngIf="isGradeError && !grade">
-          Grade cannot be empty
+          Score cannot be empty
         </mat-error>
         <h3>Feedback</h3>
         <textarea class="modal-content form-control mt-3" placeholder="Enter your feedback here (Optional)" [(ngModel)]="feedback"></textarea>
         <small *ngIf="assignmentSubmission && assignmentSubmission.feedback" class="form-text text-muted" >
-          Previous Grade: {{assignmentSubmission.grade}} &nbsp;
-          Previous feedback: {{assignmentSubmission.feedback}}
+          Previous Score: {{assignmentSubmission.grade}} &nbsp;
+          Previous Feedback: {{assignmentSubmission.feedback}}
         </small>
       </div>
       <div *ngIf="title == 'Recording Instructions'">
@@ -52,7 +52,7 @@
         <ng-container *ngIf="assignmentSubmission && assignmentSubmission.feedback_datetime != null">
           <h4> Previously submitted instructor's feedback information</h4>
           <div class="form-text" >
-            <div> Grade: {{assignmentSubmission.grade}}</div>
+            <div> Score: {{assignmentSubmission.grade}}</div>
             <div> Feedback: {{assignmentSubmission.feedback == '' ? "No Feedback" : assignmentSubmission.feedback}} </div>
             <div> Feedback Recording:
               <a target="_blank" [href]="assignmentSubmission?.instructor_feedback_attachment">
@@ -65,7 +65,7 @@
     </div>
     <div class="modal-footer">
       <div *ngFor="let button of buttons">
-        <button *ngIf="button == 'close'" type="button" class="btn btn-secondary" (click)="modal.close(button)">Close</button>
+        <button *ngIf="button == 'close'" type="button" class="btn btn-danger" (click)="modal.close(button)">Close</button>
         <button *ngIf="button == 'discard'" type="button" class="btn btn-danger" (click)="modal.close(button)">Discard Changes</button>
         <button *ngIf="button == 'delete'" type="button" class="btn btn-danger" (click)="modal.close(button)">Delete</button>
         <button *ngIf="button == 'submit'" type="button" class="btn btn-success" (click)="modal.close(button)" [disabled]="!grade && grade !== 0">Submit</button>

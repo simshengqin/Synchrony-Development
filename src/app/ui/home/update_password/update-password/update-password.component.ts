@@ -83,23 +83,23 @@ export class UpdatePasswordComponent implements OnInit {
      // Validate account and password match
     if (this.loginForm.valid) {
       // Form validation complete. Update password
-      console.log("Form Validated ");
+      // console.log("Form Validated ");
 
       // Login Validation only happens once
       if (this.firstTime){
-        console.log("Login Validation triggered!");
+        // console.log("Login Validation triggered!");
         this.firstTime = false;
         // Validate login
         this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).pipe(first()).subscribe(async (account:any) => {
-        console.log(account);
+        // console.log(account);
 
         if (account.length==0){
           // username and password does not exist on the database
-          console.log("Login denied");
+          // console.log("Login denied");
           this.isValidUsernamePasswordCombi = false;
         } else {
           // Login is successful
-          console.log("Login successful");
+          // console.log("Login successful");
           this.isValidUsernamePasswordCombi = true;
           this.account = account[0];
 
@@ -112,7 +112,7 @@ export class UpdatePasswordComponent implements OnInit {
           // Update password
           this.account.password = this.loginForm.value.newPassword;
           this.account.first_login = false;
-          console.log(this.account);
+          // console.log(this.account);
           this.crudservice.update("accounts",this.account.docId, this.account);
           alert("Update successful! Please login again");
           this.router.navigate(["/login"]);
@@ -120,7 +120,7 @@ export class UpdatePasswordComponent implements OnInit {
         }
       })
     } else {
-      console.log("Update rejected");
+      // console.log("Update rejected");
       }
     }
   }

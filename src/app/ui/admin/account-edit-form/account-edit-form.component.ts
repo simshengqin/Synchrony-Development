@@ -19,6 +19,7 @@ export class AccountEditFormComponent implements OnInit {
   role: string;
   school: string;
   school_instrument_level: string;
+  selectedItem: string;
 
   editForm!: FormGroup;
 
@@ -40,6 +41,7 @@ export class AccountEditFormComponent implements OnInit {
       this.role = data.role;
       this.school = data.school;
       this.school_instrument_level = data.school_instrument_level
+      this.selectedItem = data.role;
     })
     this.initForm();
   }
@@ -80,7 +82,7 @@ export class AccountEditFormComponent implements OnInit {
   // }
 
   async edit() {
-    let username = this.editForm.value.username;
+    // let username = this.editForm.value.username;
     let firstName = this.editForm.value.first_name;
     let lastName = this.editForm.value.last_name;
     let role = this.editForm.value.role;
@@ -88,9 +90,10 @@ export class AccountEditFormComponent implements OnInit {
     let schoolInstrumentLevel = this.editForm.value.school_instrument_level;
 
     try {
-      if(username!='') {
-        this.crudservice.update("accounts", this.docId, {"username": username});
-      }
+      // username shouldnt be allowed to be editable!!
+      // if(username!='') {
+      //   this.crudservice.update("accounts", this.docId, {"username": username});
+      // }
 
       if(firstName!='') {
         this.crudservice.update("accounts", this.docId, {"first_name": firstName});
@@ -104,6 +107,7 @@ export class AccountEditFormComponent implements OnInit {
         this.crudservice.update("accounts", this.docId, {"role": role});
       }
 
+
       if(school!='') {
         this.crudservice.update("accounts", this.docId, {"school": school});
       }
@@ -111,12 +115,13 @@ export class AccountEditFormComponent implements OnInit {
       if(schoolInstrumentLevel!='') {
         let delimit = schoolInstrumentLevel.split(","); // it's an array
         this.crudservice.update("accounts", this.docId, {"school_instrument_level": delimit});
+        // check if the entry follows the sch_inst_lvl format!
       }
 
       this.router.navigate(['/admin/account/edit']);
 
     } catch(e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 

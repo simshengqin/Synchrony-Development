@@ -28,16 +28,16 @@
             <div class="modal-body">
                 <div class="text-center">
                     <mdb-icon fas icon="user-alt-slash" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
-                    <p>Are you sure you would want to delete this user <b> {{username}} </b> <br> ? this action cannot be undo </p>
+                    <p>Are you sure you would want to delete this user "<b>{{username}}</b>"?<br> <b>This action cannot be undone.</b></p>
                 </div>
             </div>
 
             <div class="modal-footer justify-content-center">
             <a type="button" mdbBtn color="danger" class="waves-light" (click)="click_to_delete_account()" (click)="frame.hide()" mdbWavesEffect> Delete
-                <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>
+                <!-- <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon> -->
             </a>
-            <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
-                data-dismiss="modal"> No </a>
+            <a type="button" mdbBtn color="primary" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
+                data-dismiss="modal"> Cancel </a>
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
             <a type="button" mdbBtn color="danger" class="waves-light" (click)="click_to_delete_assignment()" mdbWavesEffect> Confirm
                 <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>
             </a>
-            <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
+            <a type="button" mdbBtn color="primary" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
                 data-dismiss="modal"> Cancel </a>
             </div>
         </div>
@@ -119,7 +119,7 @@
             <div class="modal-body">
                 <div class="text-center">
                     <mdb-icon fas icon="comment-slash" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
-                    <p> Are you sure you would want to delete this Assignment title: <br> <b> {{assignmentName}} </b> ? <br> this action cannot be undo </p>
+                    <p> Are you sure you would want to delete this assignment titled "<b>{{assignmentName}}</b>"? <br><b>This action cannot be undone.</b></p>
                 </div>
             </div>
 
@@ -127,8 +127,8 @@
             <a type="button" mdbBtn color="danger" class="waves-light" (click)="click_to_delete_assignment()" mdbWavesEffect> Delete
                 <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>
             </a>
-            <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
-                data-dismiss="modal"> No </a>
+            <a type="button" mdbBtn color="primary" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
+                data-dismiss="modal"> Cancel </a>
             </div>
         </div>
     </div>

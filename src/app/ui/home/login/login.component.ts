@@ -72,21 +72,21 @@ export class LoginComponent implements OnInit {
 
       // Calling firebase service
       this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).pipe(first()).subscribe(async (account:any) => {
-        console.log(account);
+        // console.log(account);
 
         if (account.length==0){
           // username and password does not exist on the database
-          console.log("Login denied");
+          // console.log("Login denied");
           this.isValidUsernamePasswordCombi = false;
         } else {
           // Login is successful
-          console.log("Login successful");
+          // console.log("Login successful");
 
           // Remove password from object
           delete account[0].password;
 
           // Store account details as session
-          console.log(account[0]);
+          // console.log(account[0]);
           //sessionStorage.setItem('account',account[0]);
           sessionStorage.setItem('account', JSON.stringify(account[0]));
 
@@ -104,18 +104,18 @@ export class LoginComponent implements OnInit {
           } else {
             // If user has logged in before, direct to web page based on role
             this.role = account[0].role;
-            console.log(this.role);
+            // console.log(this.role);
 
             if (this.role=="instructor"){
                 // Redirect to instructor page
-                console.log("teacher's page");
+                // console.log("teacher's page");
                 this.router.navigate(["instructor/home"]);
               } else if (this.role == "student"){
                 // Redirect to student page
-                console.log("student's page")
+                // console.log("student's page")
                 this.router.navigate(["student/assignment/view"]);
               } else if (this.role == "admin"){
-                console.log("admin page");
+                // console.log("admin page");
                 this.router.navigate(["admin/home"]);
             }
           }

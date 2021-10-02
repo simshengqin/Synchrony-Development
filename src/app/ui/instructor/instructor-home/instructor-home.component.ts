@@ -11,9 +11,9 @@ export class InstructorHomeComponent implements OnInit {
   editTitle: string = "Edit Assignment";
   markTitle: string = "Mark Assignment";
 
-  newDescription: string = "description";
-  editDescription: string = "description";
-  markDescription: string = "description";
+  newDescription: string = "Create new assignments for students to complete.";
+  editDescription: string = "Edit created assignments' deadline, attachments and more.";
+  markDescription: string = "Mark or re-mark assignment submissions by students.";
 
   newLink: string = "instructor/assignment/create";
   editLink: string = "instructor/assignment/edit";

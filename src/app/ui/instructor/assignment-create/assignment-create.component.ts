@@ -61,11 +61,11 @@ export class AssignmentCreateComponent implements OnInit {
 
     // Populate school dropdown list
     this.sessionAccount = JSON.parse(sessionStorage.getItem('account')!);
-    console.log(this.sessionAccount);
+    // console.log(this.sessionAccount);
     this.schoolOptions = this.sessionAccount.school;
-    console.log(this.schoolOptions);
+    // console.log(this.schoolOptions);
     this.schoolInstrumentLevel = this.sessionAccount.school_instrument_level;
-    console.log(this.schoolInstrumentLevel);
+    // console.log(this.schoolInstrumentLevel);
   }
 
   initForm(): void{
@@ -89,7 +89,7 @@ export class AssignmentCreateComponent implements OnInit {
   }
 
   populateInstrumentOptions(){
-    console.log('Instrument Function Triggered');
+    // console.log('Instrument Function Triggered');
     // Clear all subsequent options
     this.instrumentOptions = [];
     this.classGroups = [];
@@ -126,7 +126,7 @@ export class AssignmentCreateComponent implements OnInit {
       this.buttonText = this.schoolSelected + '_' + this.instrumentSelected + '_' + this.levelSelected;
 
       // Validate if the same text has been put before
-      console.log(this.buttonText);
+      // console.log(this.buttonText);
 
       if (this.buttonTexts.includes(this.buttonText)){
         this.buttonRepeat = true;
@@ -148,7 +148,7 @@ export class AssignmentCreateComponent implements OnInit {
     this.buttonTexts.shift();
     this.buttonRepeat = false;
 
-    console.log(this.buttonTexts.length);
+    // console.log(this.buttonTexts.length);
     // Submit button is unclickable if there are no classes
     if (this.buttonTexts.length == 0){
       this.createAssignmentButtonClickable = false;
@@ -172,7 +172,7 @@ export class AssignmentCreateComponent implements OnInit {
     this.docIdAfterUpload = sessionStorage.getItem('assignment_docId');
     let index = 0;
     for (const ele of this.files){
-      console.log(ele);
+      // console.log(ele);
       const location: string = 'assignment/' + this.docIdAfterUpload + '/' + this.fileNames[index];
       this.afStorage.upload(location, ele);
       index += 1;
@@ -196,7 +196,7 @@ export class AssignmentCreateComponent implements OnInit {
     // Retrieving Necessary information
     // Creating assignment Create Time
     this.assignmentCreateDate = Timestamp.fromDate(new Date());
-    console.log('Assignment Time: ', this.assignmentCreateDate);
+    // console.log('Assignment Time: ', this.assignmentCreateDate);
 
     // Retrieve Assignment Due date
     // Validation check for due date: Cannot be undefined
@@ -206,7 +206,7 @@ export class AssignmentCreateComponent implements OnInit {
     }
     this.assignmentDueDate = Timestamp.fromDate(new Date(this.event.getUTCFullYear(), this.event?.getMonth(),
       this.event.getDate(), this.timeSelected.substring(0, 2), this.timeSelected.substring(2, 4)));
-    console.log('Assignment Due Time:', this.assignmentDueDate);
+    // console.log('Assignment Due Time:', this.assignmentDueDate);
 
 
     // Due date validation
@@ -219,21 +219,21 @@ export class AssignmentCreateComponent implements OnInit {
       this.dueDateError = false;
     }
 
-    console.log(this.dueDateError);
+    // console.log(this.dueDateError);
 
     if (this.newAssignmentForm.status) {
 
       // Retrieve instructor Account DocID
-      console.log('DocID:', this.sessionAccount.docId);
+      // console.log('DocID:', this.sessionAccount.docId);
 
       // Retrieve description
-      console.log('description:', this.newAssignmentForm.value.description);
+      // console.log('description:', this.newAssignmentForm.value.description);
 
       // Retrieve assignment name
-      console.log('title:', this.newAssignmentForm.value.title);
+      // console.log('title:', this.newAssignmentForm.value.title);
 
       // Retrieve schools
-      console.log(this.buttonTexts);
+      // console.log(this.buttonTexts);
       for (const buttonText of this.buttonTexts) {
         // Retrieve schools and put in schools array
         if (!this.schools.includes(buttonText.split('_')[0])) {
@@ -241,17 +241,17 @@ export class AssignmentCreateComponent implements OnInit {
         }
       }
 
-      console.log('Schools:', this.schools);
+      // console.log('Schools:', this.schools);
 
       // Get schoolInstrumentLevel
-      console.log('schoolInstrumentLevel', this.buttonTexts);
+      // console.log('schoolInstrumentLevel', this.buttonTexts);
 
       // get file names
       const i = 0;
       for (let i = 0; i < this.files.length; i++) {
         this.fileNames.push(this.files[i].name);
       }
-      console.log('file names:', this.fileNames);
+      // console.log('file names:', this.fileNames);
 
       // Pack all information into assignment class:
 
@@ -268,12 +268,12 @@ export class AssignmentCreateComponent implements OnInit {
 
       await this.crudService.create('assignments', finalAssignmentSubmission)
         .then(function (docRef) {
-          console.log('Document: ', docRef);
-          console.log('Document', typeof (docRef));
+          // console.log('Document: ', docRef);
+          // console.log('Document', typeof (docRef));
           sessionStorage.setItem('assignment_docId', docRef);
         }).catch(() => console.log('Unable to Upload Assignment!'));
 
-      console.log('no man\'s land');
+      // console.log('no man\'s land');
 
       this.upload();
 
