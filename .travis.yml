@@ -24,10 +24,9 @@ before_deploy:
   
 deploy:
   provider: elasticbeanstalk
-  access_key_id:
-    secure: "Encrypted <access-key-id>=AKIASIYNIY4ZGQUHGZM5"
+  access_key_id: "AKIASIYNIY4ZGQUHGZM5"
   secret_access_key:
-    secure: "Encypted <secret-access-key>=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"
+    secure: "POQp6NLntdsQngA00zoHuUoVMDllqG+OXHOA45zk"
   region: "ap-southeast-1"
   app: Synchrony"
   env: "Synchrony-env"
