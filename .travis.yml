@@ -25,14 +25,14 @@ before_deploy:
   
 deploy:
   - provider: elasticbeanstalk
-    access_key_id: AKIASIYNIY4ZGQUHGZM5            // You have use environment variable name instead of plain text
-    secret_access_key: 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     // You have use environment variable name instead of plain text
+    access_key_id: "AKIASIYNIY4ZGQUHGZM5"            // You have use environment variable name instead of plain text
+    secret_access_key: "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"     // You have use environment variable name instead of plain text
     region: "ap-southeast-1"            // "ap-south-1"
     app: "demo-application"                     // "demo-application"
     env: "demo-production"                     // "demo-production"
     bucket_name: "elasticbeanstalk-ap-southeast-1-156257273650" // Once you create new application, it will automatically create a unique bucket for it.
     on:
-      branch: main // For example: - master
+      branch: - main // For example: - master
 
 after_deploy:
   - echo "Applcation Deployed!"
