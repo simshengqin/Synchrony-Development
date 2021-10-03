@@ -9,9 +9,8 @@ cache:
 
 branches:
   only:
-    - staging
     - main
-
+    - staging
 before_script:
   - npm install
 
@@ -33,6 +32,7 @@ deploy:
   app: Synchrony"
   env: "Synchrony-env"
   bucket_name: "elasticbeanstalk-ap-southeast-1-156257273650"
-
+  on:                
+    branch: main
 after_deploy:
   - echo "Applcation Deployed!"
