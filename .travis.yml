@@ -33,6 +33,9 @@ deploy:
   region: ap-southeast-1
   secret_access_key: 
     secure: "Encypted <secret-access-key>=POQp6NLntdsQngA00zoHuUoVMDllqG+OXHOA45zk"
-
+  on:
+    branches:    
+      only:      
+        - main
 after_deploy:
   - echo "Applcation Deployed!"
