@@ -23,19 +23,16 @@ before_deploy:
   - sed -i '/dist/d' .gitignore
   - git add . && git commit -m "latest build"
   
-deploy: 
-  access_key_id: 
-    secure: "Encrypted <access-key-id>=AKIASIYNIY4ZGQUHGZM5"
-  app: Synchrony
-  bucket_name: elasticbeanstalk-ap-southeast-1-156257273650
-  env: Synchrony-env
+deploy:
   provider: elasticbeanstalk
-  region: ap-southeast-1
-  secret_access_key: 
+  access_key_id:
+    secure: "Encrypted <access-key-id>=AKIASIYNIY4ZGQUHGZM5"
+  secret_access_key:
     secure: "Encypted <secret-access-key>=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"
-  on:
-    branches:    
-      only:      
-        - main
+  region: "ap-southeast-1"
+  app: Synchrony"
+  env: "Synchrony-env"
+  bucket_name: "elasticbeanstalk-ap-southeast-1-156257273650"
+
 after_deploy:
   - echo "Applcation Deployed!"
