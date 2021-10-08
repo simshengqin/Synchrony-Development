@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     // Initialize formbuilder
     this.initForm();
+    sessionStorage.clear()
   }
 
   initForm(): void{

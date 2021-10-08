@@ -23,15 +23,18 @@ export class AssignmentEditComponent implements OnInit {
   sub_display_levels:boolean = false
 
   // set filter name
+  assignmentStatus:string[] = ["new assignment(s)","assignment(s) with submission status"];
   nameSchool:string = "School"
   nameInstrument:string = "Instrument"
   nameLevels:string = "Levels"
+  nameStatus:string = "Assignment Status"
   
   // get filter data
   select_Combine_SchoolInstrumentLevels:string[] = [];
   selectSubSchools:string[] = [];
   selectSubInstruments:string[] = [];
   selectSubLevels:string[] = [];
+  selectAssignmentStatus:string[] = [];
 
   // Mat Table
   dataSource!:any;
@@ -60,18 +63,47 @@ export class AssignmentEditComponent implements OnInit {
     }
   }
 
+  // Get filter data by submission status
+  get_assignment_statues($event:any):void{
+    console.log($event.value)
+    this.selectAssignmentStatus = $event.value
+    if (this.select_Combine_SchoolInstrumentLevels.length == 0){
+      this.get_all_instructor_assignments()
+    } else {
+      this.filtering_by_school_instrument_levels(this.select_Combine_SchoolInstrumentLevels)
+    }
+  } 
+
   async get_all_instructor_assignments(){
     this.dataSource = [];
     this.assignments = [];
     const data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId).pipe(first()).toPromise()
     // console.log(data)
     for(var ele of data){
-      this.create_assignment(ele)
+      var canDelete = true
+      const checkAssignmentSubmission = await this.crudservice.read("assignment_submissions","assignment_doc_id","==",ele.docId).pipe(first()).toPromise()
+      if (checkAssignmentSubmission.length > 0){
+        canDelete = false
+      }
+      if(this.selectAssignmentStatus.length == 0){
+        this.create_assignment(ele,canDelete)
+      } else {
+        if (this.selectAssignmentStatus.indexOf("new assignment(s)")!=-1) {
+          if(canDelete){
+            this.create_assignment(ele,canDelete)
+          }
+        }
+        if (this.selectAssignmentStatus.indexOf("assignment(s) with submission status")!=-1){
+          if(!canDelete){
+            this.create_assignment(ele,canDelete)
+          }
+        }
+      }
     }
     this.dataSource = this.assignments;
   }
 
-  create_assignment(data:any){
+  create_assignment(data:any,canDelete:boolean){
     // Change the date and time formate
     var edit_due_datetime = data.due_datetime.toDate()
     edit_due_datetime = edit_due_datetime.toString().split("GMT")[0].split(" ");
@@ -86,7 +118,8 @@ export class AssignmentEditComponent implements OnInit {
       name: data.name,
       school: data.school,
       school_instrument_level: data.school_instrument_level,
-      file_names: data.file_names
+      file_names: data.file_names,
+      canDelete: canDelete
     }
     this.assignments.push(assignment)
   }
@@ -160,10 +193,12 @@ export class AssignmentEditComponent implements OnInit {
 
   // Method: 
   query_table_with_filter(){
-    var result:Account[] = [];
-    result = this.assignments;
+    //var result:Account[] = [];
+    //result = this.assignments;
     if(this.select_Combine_SchoolInstrumentLevels.length!=0){
       this.filtering_by_school_instrument_levels(this.select_Combine_SchoolInstrumentLevels)
+    } else {
+      this.dataSource = this.assignments;
     }
   }
 
@@ -172,7 +207,25 @@ export class AssignmentEditComponent implements OnInit {
     this.assignments = [];
     const data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId,"school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
     for(var ele of data){
-      this.create_assignment(ele)
+      var canDelete = true
+      const checkAssignmentSubmission = await this.crudservice.read("assignment_submissions","assignment_doc_id","==",ele.docId).pipe(first()).toPromise()
+      if (checkAssignmentSubmission.length > 0){
+        canDelete = false
+      }
+      if(this.selectAssignmentStatus.length == 0){
+        this.create_assignment(ele,canDelete)
+      } else {
+        if (this.selectAssignmentStatus.indexOf("new assignment(s)")!=-1) {
+          if(canDelete){
+            this.create_assignment(ele,canDelete)
+          }
+        }
+        if (this.selectAssignmentStatus.indexOf("assignment(s) with submission status")!=-1){
+          if(!canDelete){
+            this.create_assignment(ele,canDelete)
+          }
+        }
+      }
     }
     this.dataSource = this.assignments;
   }

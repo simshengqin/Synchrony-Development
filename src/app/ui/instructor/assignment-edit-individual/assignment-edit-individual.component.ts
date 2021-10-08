@@ -53,6 +53,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
   queriedInstruments:string[] = []
   queriedLevels:string[] = []
 
+  addSchoolInstrumentsLevels = true;
   displaySchool = false;
   displayInstruments = false;
   displayLevels = false;
@@ -105,7 +106,8 @@ export class AssignmentEditIndividualComponent implements OnInit {
       this.account = JSON.parse(sessionStorage.getItem('account'));
       this.accountDocId = this.account.docId;
       this.instructorSchools = this.account.school;
-      this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
+      this.addSchoolInstrumentsLevels = true
+      //this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
     }
   }
 
@@ -129,16 +131,23 @@ export class AssignmentEditIndividualComponent implements OnInit {
   // === INSTRUCTOR SCHOOL INSTRUMENT AND LEVEL === //
   // === === //
 
+  add_display_school_instrument_level(){
+    this.addSchoolInstrumentsLevels = false
+    this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
+    this.displaySchool = true
+  }
+
   get_instructor_assign_school_insturment_level(data:string[]){
 
     this.schools = [];
     this.instruments = [];
     this.levels = [];
 
+    //this.displaySchool = false
     this.displayInstruments = false;
     this.displayLevels = false;
 
-    this.schools.push("none")
+    //this.schools.push("none")
     for (var ele of data){
       var tempsSchool = ele.split("_")[0]
       var tempInsturment = ele.split("_")[1]
@@ -154,7 +163,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
       }
     }
 
-    this.displaySchool = true
+    //this.displaySchool = true
   }
 
   get_query_data_school($event:any):void{
@@ -173,7 +182,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
     } else {
       this.displayInstruments = true
       this.displayLevels = false
-      this.queriedInstruments.push("none")
+      //this.queriedInstruments.push("none")
       for(var ele of this.instruments){
         var tempSchool = ele.split("_")[0]
         if(tempSchool == this.selectedSchool){
@@ -191,7 +200,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
       this.displayInstruments = true
       this.displayLevels = false
     } else {
-      this.queriedLevels.push("none")
+      //this.queriedLevels.push("none")
       this.displayInstruments = true
       this.displayLevels = true
       for(var ele of this.levels){
@@ -220,10 +229,13 @@ export class AssignmentEditIndividualComponent implements OnInit {
       }
     }
 
-
+    this.addSchoolInstrumentsLevels = true
 
     this.displaySchool = false
-    this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
+    this.displayInstruments = false;
+    this.displayLevels = false;
+    
+    //this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
   }
 
   // === === //

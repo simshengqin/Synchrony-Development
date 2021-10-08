@@ -31,6 +31,9 @@
         <!-- Segment 3: Assignment School Instrument Level  -->
         <h2> School / Instrument / Level: </h2>
         <!-- ROW -->
+        <div clas="row">
+            
+        </div>
         <div class="row">
             <div class="form-outline col-3" *ngIf="displaySchool">
                 <app-input-select id="testSchool" [inputDataList]="schools" [name]="nameSchool" (outputData)="get_query_data_school($event)"></app-input-select>
@@ -50,6 +53,7 @@
             <div class="form-outline col-12">
                 <span> Selected: </span> <br>
                 <button type="button" class="btn btn-primary" *ngFor="let buttonText of assignmentSchoolInstrumentLevel; let i = index;" (click)="removeButton(i)"> {{buttonText}} <span class="badge bg-danger ms-2"> X </span> </button>
+                <button *ngIf="addSchoolInstrumentsLevels" type="button" class="btn btn-success" (click)="add_display_school_instrument_level()" > + Add </button>
             </div>
         </div>
         <br>
