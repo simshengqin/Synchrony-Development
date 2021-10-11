@@ -69,15 +69,35 @@ export class DialogBoxComponent implements OnInit {
   });
   }
 
-  click_to_delete_assignment(){
-    console.log('Assignment deleted!');
-    console.log(this.docid);
-    this.crudservice.delete('assignments', this.docid);
-    this.showMessageSuccess('The following assignment, title: ' + this.assignmentName + ' has been successfully deleted');
-    this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/instructor/assignment/edit']);
-  });
+  async click_to_delete_assignment(){
+      console.log('Assignment deleted!');
+      console.log(this.docid);
+      this.fileLocationPath = "/assignment/" + this.docid + "/";
+      const data = await this.crudservice.readByDocId('assignments', this.docid).pipe(first()).toPromise();
+      console.log(data)
+      for(var file of data["file_names"]){
+        console.log("file to be delete:" + file)
+        this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + file).delete();
+      }
+      this.crudservice.delete('assignments', this.docid);
+      this.showMessageSuccess('The following assignment, title: ' + this.assignmentName + ' has been successfully deleted');
+      this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/instructor/assignment/edit']);
+    });
   }
+
+  /*
+  async delete_assignment_from_storage(docid){
+    console.log(docid)
+    this.fileLocationPath = "/assignment/" + docid + "/";
+    const data = await this.crudservice.readByDocId('assignments', docid).pipe(first()).toPromise();
+    console.log(data)
+    for(var file of data["file_names"]){
+      console.log("file to be delete:" + file)
+      this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + file).delete();
+    }
+  }
+  */
 
   acquire_file(){
     const arr = this.fileName.split('.');
