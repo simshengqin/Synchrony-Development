@@ -66,7 +66,7 @@ export class FreelanceWageComponent implements OnInit {
       // console.log(ele)
       const instructorData = await this.crudservice.readByDocId('accounts',ele.account_doc_id).pipe(first()).toPromise();
       this.create_wage(ele, instructorData)
-      this.set_distint_school(ele.school_abbreviation)
+      this.set_distint_school(ele.school)
     }
     this.dataSource = this.wages
     // console.log(this.dataSource);
@@ -74,7 +74,7 @@ export class FreelanceWageComponent implements OnInit {
 
   create_wage(data:any, instructorData:any){
     //const instructor = await this.crudservice.readByDocId('accounts',data.account_doc_id).pipe(first()).toPromise();
-    //console.log(instructor)
+    console.log(data.school)
     var wage:any = {
       docId: data.docId,
       first_name: instructorData.first_name,
@@ -82,7 +82,7 @@ export class FreelanceWageComponent implements OnInit {
       account_doc_id: data.account_doc_id,
       month: data.month,
       number_of_minutes: data.number_of_minutes,
-      school_abbreviation: data.school_abbreviation,
+      school_abbreviation: data.school,
       year: data.year
     }
     this.wages.push(wage);
@@ -107,7 +107,7 @@ export class FreelanceWageComponent implements OnInit {
   async filter_wages_by_selected_school(){
     this.dataSource = [];
     this.wages = [];
-    const data = await this.crudservice.read('wages','school_abbreviation','in',this.selectedSchools).pipe(first()).toPromise();
+    const data = await this.crudservice.read('wages','school','in',this.selectedSchools).pipe(first()).toPromise();
     // console.log(data)
     for(var ele of data){
       // console.log(ele)
