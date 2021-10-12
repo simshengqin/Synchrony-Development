@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Account } from 'src/app/core/models/account';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -23,11 +24,11 @@ export class LoginComponent implements OnInit {
   isValidUsernamePasswordCombi = true;
   role!: String;
 
-
   constructor(
     private fb: FormBuilder,
     private crudservice: CrudService,
-    private router:Router
+    private router:Router,
+    private toastr:ToastrService
     ) { }
 
   ngOnInit(): void {
@@ -93,14 +94,17 @@ export class LoginComponent implements OnInit {
 
           // Check if account has been deleted 
           if (account[0].is_delete){
-            alert("Account has been deactivated. Please seek the admin to reset your account");
+            //alert("Account has been deactivated. Please seek the admin to reset your account");
+            this.error("Account has been deactivated","Account has been deactivated. Please seek the admin to reset your account")
             return;
           }
 
           // Check if user has logged in for the first time. If so, redirect to update password
           if (account[0].first_login){
             // If user has logged in for the first time, redirect to update password page
-            alert("You have logged in for the first time. You will be redirected to change your password");
+            //alert("You have logged in for the first time. You will be redirected to change your password");
+            this.notify("logged in for the first time", "You have logged in for the first time. You are required to change your password.")
+            console.log("Test the button!")
             this.router.navigate(["/update_password"]);
           } else {
             // If user has logged in before, direct to web page based on role
@@ -124,4 +128,31 @@ export class LoginComponent implements OnInit {
       })
     }
   }
+
+  notify(title:string,message:string) {
+    title = "Notification"
+    message = "<h2>" + message + "</h2> <p> please click here to close </p>"
+    this.toastr.info(message,title,{
+      easeTime: 0,
+      positionClass: 'toast-top-full-width',
+      enableHtml: true,
+      closeButton: true,
+      timeOut: 0,
+      disableTimeOut: true,
+    });
+  }
+
+  error(title:string,message:string) {
+    message = "<h1>" + message + "</h1>" 
+    this.toastr.error(message,title,{
+      easeTime: 0,
+      positionClass: 'toast-top-full-width',
+      enableHtml: true,
+      closeButton: true,
+    });
+  }
+
 }
+
+
+

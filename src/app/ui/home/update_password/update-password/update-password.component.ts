@@ -10,6 +10,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { FormGroupDirective } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-password',
@@ -32,7 +33,8 @@ export class UpdatePasswordComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private crudservice: CrudService,
-    private router:Router
+    private router:Router,
+    private toastr:ToastrService
     ) { }
 
   ngOnInit(): void {
@@ -104,7 +106,8 @@ export class UpdatePasswordComponent implements OnInit {
           this.account = account[0];
 
           if (account[0].is_delete){
-            alert("Account has been deactivated. Please seek the admin to reset your account");
+            //alert("Account has been deactivated. Please seek the admin to reset your account");
+            this.error("Account has been deactivated","Account has been deactivated. Please seek the admin to reset your account")
             this.router.navigate(["/login"]);
             return;
           }
@@ -114,7 +117,8 @@ export class UpdatePasswordComponent implements OnInit {
           this.account.first_login = false;
           // console.log(this.account);
           this.crudservice.update("accounts",this.account.docId, this.account);
-          alert("Update successful! Please login again");
+          this.success("Update successful!","Update successful! Please login again")
+          //alert("Update successful! Please login again");
           this.router.navigate(["/login"]);
           return;
         }
@@ -124,6 +128,39 @@ export class UpdatePasswordComponent implements OnInit {
       }
     }
   }
+
+  notify(title:string,message:string) {
+    message = "<h1> Notification Alert! </h1> <h2>" + message + "</h2> <p> please click here to close </p>"
+    this.toastr.info(message,title,{
+      easeTime: 0,
+      positionClass: 'toast-top-full-width',
+      enableHtml: true,
+      closeButton: true,
+      timeOut: 0,
+      disableTimeOut: true,
+    });
+  }
+
+  error(title:string,message:string) {
+    message = "<h1>" + message + "</h1>" 
+    this.toastr.error(message,title,{
+      easeTime: 0,
+      positionClass: 'toast-top-full-width',
+      enableHtml: true,
+      closeButton: true,
+    });
+  }
+
+  success(title:string,message:string) {
+    message = "<h1>" + message + "</h1>" 
+    this.toastr.success(message,title,{
+      easeTime: 0,
+      positionClass: 'toast-top-full-width',
+      enableHtml: true,
+      closeButton: true,
+    });
+  }
+
 }
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
