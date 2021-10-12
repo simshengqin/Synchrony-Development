@@ -67,8 +67,8 @@ export class AssignmentMarkComponent implements OnInit {
         assignmentSubmission.assignment_name = assignmentSubmission.assignment?.name;
         assignmentSubmission.student = await this.crudService.readByDocId(
           'accounts', assignmentSubmission.student_doc_id).pipe(first()).toPromise();
-        assignmentSubmission.student_name = assignmentSubmission.student.last_name + ' ' +
-          assignmentSubmission.student.first_name;
+        assignmentSubmission.student_name = assignmentSubmission.student.first_name + ' ' +
+          assignmentSubmission.student.last_name;
         assignmentSubmission.submission_status = 'Last submitted on ' +
           datePipe.transform(assignmentSubmission.submitted_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
         assignmentSubmission.feedback_status = 'Not reviewed';

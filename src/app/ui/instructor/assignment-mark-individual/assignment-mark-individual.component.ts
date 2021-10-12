@@ -16,6 +16,7 @@ import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {ConfirmModalComponent} from '../../../shared/components/confirm-modal/confirm-modal.component';
+import {Wage} from "../../../core/models/wage";
 // import {VideoPlayerComponent} from '../../../shared/components/video-player/video-player.component';
 @Component({
   selector: 'app-assignment-mark-individual',
@@ -23,7 +24,7 @@ import {ConfirmModalComponent} from '../../../shared/components/confirm-modal/co
   styleUrls: ['./assignment-mark-individual.component.scss']
 })
 export class AssignmentMarkIndividualComponent implements OnInit {
-
+  loggedInAccount: Account;
   @ViewChild(ConfirmModalComponent) confirmModalComponent: ConfirmModalComponent;
   @Input() assignmentSubmissionDocId: string;
   assignmentSubmission: AssignmentSubmission;
@@ -32,6 +33,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
   @ViewChild('scoresheet') scoresheet: ElementRef;
   @ViewChild('feedbackAttachment') feedbackAttachment: ElementRef;
   recordedVideo: Blob;
+  seconds: number;
   @ViewChild(VideojsRecordComponent) videojsRecordComponent: VideojsRecordComponent;
   // @ViewChild(VideoPlayerComponent) videoPlayerComponent: VideoPlayerComponent;
   @ViewChild('videoInput') videoInput: ElementRef;
@@ -57,6 +59,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
 
   }
   async ngOnInit(): Promise<void> {
+    this.loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
     this.assignmentSubmission = await this.crudService.readByDocId(
       'assignment_submissions', this.assignmentSubmissionDocId).pipe(first()).toPromise();
     this.assignment = await this.crudService.readByDocId(
@@ -143,6 +146,23 @@ export class AssignmentMarkIndividualComponent implements OnInit {
           this.assignmentSubmission.grade = input[1];
           this.assignmentSubmission.feedback_datetime = Timestamp.fromDate(new Date());
           await this.crudService.update('assignment_submissions', this.assignmentSubmission.docId, this.assignmentSubmission);
+          const newWage: Wage = {
+            instructor_account_doc_id: this.loggedInAccount.docId,
+            assignment_submission_doc_id: this.assignmentSubmission.docId,
+            feedback_datetime: Timestamp.fromDate(new Date()),
+            seconds: this.seconds,
+          };
+          const wage: Wage[] = await this.crudService.read('wages',
+            'instructor_account_doc_id', '==', this.loggedInAccount.docId,
+            'assignment_submission_doc_id', '==', this.assignmentSubmission.school,
+          ).pipe(first()).toPromise();
+          if (wage.length > 0) {
+            await this.crudService.update('wages', wage[0].docId, newWage);
+          }
+          else {
+            await this.crudService.create('wages', newWage);
+          }
+          await this.crudService.update('assignment_submissions', this.assignmentSubmission.docId, this.assignmentSubmission);
           // this.assignmentSubmissionService.updateAssignmentSubmission(this.assignmentSubmission.docId, this.assignmentSubmission)
           //   .then(r => console.log(r));
           this.toastrService.success('Added feedback successfully!', '', {positionClass: 'toast-top-center'});
@@ -198,12 +218,13 @@ export class AssignmentMarkIndividualComponent implements OnInit {
   submitFeedback(): void {
     this.confirmModalComponent.open('Submit Feedback', '', ['close', 'submit'], null, this.assignmentSubmission);
   }
-  updateFeedbackAttachment($event: any): void {
-    this.recordedVideo = $event;
+  updateFeedbackAttachment(input: Array<any>): void {
+    this.recordedVideo = input[0];
+    this.seconds = input[1];
     this.isRecording = false;
     this.isRecorded = true;
     this.recordedOption = this.selectedRecordingOption;
-    this.feedbackAttachment.nativeElement.href = URL.createObjectURL($event);
+    this.feedbackAttachment.nativeElement.href = URL.createObjectURL(this.recordedVideo);
     this.feedbackAttachment.nativeElement.download = 'feedback.mp4';
   }
 

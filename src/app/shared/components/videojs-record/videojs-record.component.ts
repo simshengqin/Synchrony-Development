@@ -37,7 +37,7 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
   // reference to the element itself: used to access events and methods
   // private _elementRef: ElementRef;
   @Output() startedRecordingEmit: EventEmitter<any> = new EventEmitter<any>();
-  @Output() recordingEmit: EventEmitter<Blob> = new EventEmitter<Blob>();
+  @Output() recordingEmit: EventEmitter<any> = new EventEmitter<any>();
   @Output() feedbackEmit: EventEmitter<any> = new EventEmitter<any>();
   // index to create unique ID for component
   idx = 'clip1';
@@ -148,7 +148,8 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
       // const recordedDataMp4 = this.player.record().saveAs({video: 'my-video-file-name.mp4'}, 'convert');
       // console.log(recordedDataMp4);
       // this.recordingEmit.emit(recordedDataMp4);
-      this.recordingEmit.emit(this.player.recordedData);
+      this.recordingEmit.emit([this.player.recordedData, this.player.record().streamCurrentTime]);
+      // this.feedbackEmit.emit([this.feedback, this.grade]);
     });
 
     // error handling
