@@ -88,7 +88,7 @@ export class AccountCreateComponent implements OnInit {
               username: csvRecord.username,
               role: csvRecord.role.toLowerCase(),
               school: csvRecord.school.split(','),
-              school_instrument_level: csvRecord.school_instrument_level.split(','),
+              school_instrument_level: csvRecord.school_instrument_level.toLowerCase().split(','),
               first_name: csvRecord.first_name,
               last_name: csvRecord.last_name,
               password: csvRecord.password,

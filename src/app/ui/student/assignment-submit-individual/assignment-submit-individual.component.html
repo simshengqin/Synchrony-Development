@@ -1,10 +1,10 @@
 <app-header></app-header>
 <div class="assignment-submit-individual-wrapper wrapper-padding max-width-section">
   <h1 class="mb-3" *ngIf="assignment">{{assignment.name}} Submission</h1>
-  <h3 class="mb-3">Assignment Description</h3>
+  <h3 class="mb-3"><b>Assignment Description</b></h3>
   <p class="mb-3" *ngIf="assignment">{{assignment.description}}</p>
-  <h3 class="mb-3">Assignment Attachments</h3>
-  <div class="mb-2" *ngIf="assignment && assignment.file_names" >
+  <h3 class="mb-3" *ngIf="assignment && assignment.file_names.length > 0" ><b>Assignment Attachments</b></h3>
+  <div class="mb-2" *ngIf="assignment && assignment.file_names.length > 0" >
 
     <div *ngFor="let file_name of assignment.file_names" class="mb-1">
       <mat-icon class="mr-2">attachment</mat-icon>
@@ -13,7 +13,7 @@
         {{file_name}}</a>
     </div>
   </div>
-  <h3 class="mb-3">Assignment Submission</h3>
+  <h3 class="mb-3"><b>Assignment Submission</b></h3>
 
   <div class="form-group mb-3">
     <label>Attach Music Score Sheet</label>

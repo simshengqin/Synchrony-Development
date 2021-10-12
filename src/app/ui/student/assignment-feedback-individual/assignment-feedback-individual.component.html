@@ -2,6 +2,8 @@
 <div class="assignment-feedback-individual-wrapper wrapper-padding max-width-section">
 
   <h1 *ngIf="assignment" class="mb-3">{{assignment.name}}'s Feedback</h1><br>
+  <h3 class="form-text mb-3"><b>Assignment Description</b></h3>
+  <p class="mb-3" *ngIf="assignment">{{assignment.description}}</p>
   <div class='container'>
     <div class='row'>
       <div class='col'>
