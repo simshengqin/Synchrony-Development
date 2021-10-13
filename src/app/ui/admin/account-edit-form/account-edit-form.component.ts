@@ -109,13 +109,24 @@ export class AccountEditFormComponent implements OnInit {
 
 
       if(school!='') {
-        this.crudservice.update("accounts", this.docId, {"school": school});
+        if(school.match(/,/g)) {
+          let delimit = school.split(",");
+          this.crudservice.update("accounts", this.docId, {"school": delimit});
+        } else {
+          let arr = [];
+          arr.push(school);
+          this.crudservice.update("accounts", this.docId, {"school": arr});
+        }
       }
 
       if(schoolInstrumentLevel!='') {
-        let delimit = schoolInstrumentLevel.split(","); // it's an array
-        this.crudservice.update("accounts", this.docId, {"school_instrument_level": delimit});
-        // check if the entry follows the sch_inst_lvl format!
+        for(let i=0; i<schoolInstrumentLevel.length; i++) {
+          // check for number of _
+          if (schoolInstrumentLevel[i].match(/_/g).length == 2) {
+            // check if the entry follows the sch_inst_lvl format!
+            this.crudservice.update("accounts", this.docId, {"school_instrument_level": schoolInstrumentLevel});
+          }
+        }
       }
 
       this.router.navigate(['/admin/account/edit']);
