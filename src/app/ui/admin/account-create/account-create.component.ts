@@ -68,7 +68,7 @@ export class AccountCreateComponent implements OnInit {
         .pipe().subscribe(async (result: any) => {
         // console.log('Result', result);
         this.csvRecords = result;
-        if (this.csvRecords.length < 2) {
+        if (this.csvRecords.length < 1) {
             this.errors.push('Less than 2 rows of data (1 row for column header and 1 row for the actual account data)');
         }
         else {
