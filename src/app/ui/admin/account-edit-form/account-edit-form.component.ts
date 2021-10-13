@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { CrudService } from 'src/app/core/services/crud.service';
 import { Router } from "@angular/router";
 import { first } from 'rxjs/operators';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-account-edit-form',
@@ -27,7 +28,8 @@ export class AccountEditFormComponent implements OnInit {
     private route: ActivatedRoute,
     private crudservice: CrudService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService,
   ){}
 
   ngOnInit(): void {
@@ -128,7 +130,7 @@ export class AccountEditFormComponent implements OnInit {
           }
         }
       }
-
+      this.toastrService.success('Updated account details successfully!', '', {positionClass: 'toast-top-center'});
       this.router.navigate(['/admin/account/edit']);
 
     } catch(e) {
