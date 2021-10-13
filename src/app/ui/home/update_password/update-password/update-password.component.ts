@@ -130,7 +130,8 @@ export class UpdatePasswordComponent implements OnInit {
   }
 
   notify(title:string,message:string) {
-    message = "<h1> Notification Alert! </h1> <h2>" + message + "</h2> <p> please click here to close </p>"
+    title = "Notification"
+    message = "<h4>" + message + "</h4> <p> please click here to close </p>"
     this.toastr.info(message,title,{
       easeTime: 0,
       positionClass: 'toast-top-full-width',
