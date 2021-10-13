@@ -131,7 +131,7 @@ export class LoginComponent implements OnInit {
 
   notify(title:string,message:string) {
     title = "Notification"
-    message = "<h2>" + message + "</h2> <p> please click here to close </p>"
+    message = "<h4>" + message + "</h4> <p> please click here to close </p>"
     this.toastr.info(message,title,{
       easeTime: 0,
       positionClass: 'toast-top-full-width',
