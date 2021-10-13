@@ -104,7 +104,6 @@ export class LoginComponent implements OnInit {
             // If user has logged in for the first time, redirect to update password page
             //alert("You have logged in for the first time. You will be redirected to change your password");
             this.notify("logged in for the first time", "You have logged in for the first time. You are required to change your password.")
-            console.log("Test the button!")
             this.router.navigate(["/update_password"]);
           } else {
             // If user has logged in before, direct to web page based on role
@@ -143,7 +142,7 @@ export class LoginComponent implements OnInit {
   }
 
   error(title:string,message:string) {
-    message = "<h1>" + message + "</h1>" 
+    message = "<h4>" + message + "</h4>" 
     this.toastr.error(message,title,{
       easeTime: 0,
       positionClass: 'toast-top-full-width',
