@@ -111,13 +111,12 @@ export class AccountEditFormComponent implements OnInit {
 
 
       if(school!='') {
-        if(school.match(/,/g)) {
-          let delimit = school.split(",");
-          this.crudservice.update("accounts", this.docId, {"school": delimit});
-        } else {
+        if(school.isArray == false) {
           let arr = [];
           arr.push(school);
           this.crudservice.update("accounts", this.docId, {"school": arr});
+        } else {
+          this.crudservice.update("accounts", this.docId, {"school": school});
         }
       }
 
@@ -134,7 +133,7 @@ export class AccountEditFormComponent implements OnInit {
       this.router.navigate(['/admin/account/edit']);
 
     } catch(e) {
-      // console.log(e);
+      console.log(e);
     }
   }
 
