@@ -35,8 +35,8 @@
                     <input type="text" size=50 [ngModel]="school_instrument_level" formControlName="school_instrument_level">
                     <br>
 
-                <button name="Submit" value="Submit" (click)="edit()">Submit</button>
-                <!-- <button type="button" value="Return" routerLink="/admin/account/edit">Return</button> -->
+                <button mdbBtn type="button" color="danger" routerLink="/admin/account/edit">Back</button>
+                <button mdbBtn type="button" color="success" (click)="edit()">Submit</button>
         </form>
     </div>
 </div>
