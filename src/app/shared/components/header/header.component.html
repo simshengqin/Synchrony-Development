@@ -1,28 +1,14 @@
-<!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark indigo">
-
+<!------------------>
+<!-- Navbar Admin -->
+<mdb-navbar *ngIf="userRole=='admin'" SideClass="navbar navbar-expand-lg navbar-dark indigo">
     <!-- Navbar brand -->
     <mdb-navbar-brand>
         <a class="navbar-brand" *ngIf="userRole=='admin'">
             <img src="../../../../../assets/images/logo.png" routerLink="/admin/home" height="40" alt="">
         </a>
-        <a class="navbar-brand" *ngIf="userRole=='instructor'">
-            <img src="../../../../../assets/images/logo.png" routerLink="/instructor/home" height="40" alt="">
-        </a>
-        <a class="navbar-brand" *ngIf="userRole=='student'">
-            <img src="../../../../../assets/images/logo.png" routerLink="/student/assignment/view" height="40" alt="">
-        </a>
     </mdb-navbar-brand>
 
-    <!-- Collapsible content -->
     <links>
-
-    <!--
-    <li class="nav-item active" [ngClass]="{'active': url == '/my-task'}">
-        <a class="nav-link waves-light" routerLink="/my-task" mdbWavesEffect> Account & Grouping Creation </a>
-    </li>
-    -->
-
         <!-- ADMIN -->
         <ul class="navbar-nav mr-auto" *ngIf="userRole=='admin'">
             <li class="nav-item" [ngClass]="{'active': url == '/admin/account/create'}">
@@ -38,11 +24,32 @@
                 <a class="nav-link waves-light" routerLink="/admin/freelance" mdbWavesEffect> Calculate Wage </a>
             </li>
         </ul>
-        <!-- END OF ADMIN -->
 
-        <!-- INSTRUCTOR -->
+        <ul class="navbar-nav ml-auto nav-flex-icons">
+            <li class="nav-item dropdown" dropdown>
+                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+                  <mdb-icon fas icon="user"></mdb-icon> Profile<span class="caret"></span></a>
+                <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+                  <!-- <a class="dropdown-item waves-light" mdbWavesEffect href="#">My account</a> -->
+                  <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/login">Log out</a>
+                </div>
+            </li>
+        </ul>
+    </links>
+</mdb-navbar>
+<!-- END OF ADMIN -->
+<!------------------>
+
+<!-- Navbar Instructor -->
+<mdb-navbar *ngIf="userRole=='instructor'" SideClass="navbar navbar-expand-lg navbar-dark secondary-color">
+    <mdb-navbar-brand>
+        <a class="navbar-brand" *ngIf="userRole=='instructor'">
+            <img src="../../../../../assets/images/logo.png" routerLink="/instructor/home" height="40" alt="">
+        </a>
+    </mdb-navbar-brand>
+    <links>
+        <!-- Float Left -->
         <ul class="navbar-nav mr-auto" *ngIf="userRole=='instructor'">
-
             <li class="nav-item active" [ngClass]="{'active': url == '/instructor/assignment/create'}">
                 <a class="nav-link waves-light" routerLink="/instructor/assignment/create" mdbWavesEffect> New Assignment </a>
             </li>
@@ -52,18 +59,8 @@
             <li class="nav-item" [ngClass]="{'active': url == '/instructor/assignment/mark'}">
                 <a class="nav-link waves-light" routerLink="/instructor/assignment/mark" mdbWavesEffect> Mark Assignment </a>
             </li>
-
         </ul>
-        <!-- END OF INSTRUCTOR -->
-
-        <!-- STUDENT -->
-        <ul class="navbar-nav mr-auto" *ngIf="userRole=='student'">
-          <li class="nav-item active" [ngClass]="{'active': url == '/student/assignment/view'}">
-            <a class="nav-link waves-light" routerLink="/student/assignment/view" mdbWavesEffect> My Assignments </a>
-          </li>
-        </ul>
-        <!-- END OF INSTRUCTOR -->
-
+        <!-- Float Right -->
         <ul class="navbar-nav ml-auto nav-flex-icons">
             <li class="nav-item dropdown" dropdown>
                 <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
@@ -74,8 +71,42 @@
                 </div>
               </li>
         </ul>
+
     </links>
+</mdb-navbar>
+<!-- End of Instructor -->
+<!----------------------->
+
+<!-- Navbar Student -->
+<mdb-navbar *ngIf="userRole=='student'" SideClass="navbar navbar-expand-lg navbar-dark orange">
+
+    <!-- Navbar brand -->
+    <mdb-navbar-brand>
+        <a class="navbar-brand" *ngIf="userRole=='student'">
+            <img src="../../../../../assets/images/logo.png" routerLink="/student/assignment/view" height="40" alt="">
+        </a>
+    </mdb-navbar-brand>
+
     <!-- Collapsible content -->
+    <links>
+        <!-- STUDENT -->
+        <ul class="navbar-nav mr-auto" *ngIf="userRole=='student'">
+          <li class="nav-item active" [ngClass]="{'active': url == '/student/assignment/view'}">
+            <a class="nav-link waves-light" routerLink="/student/assignment/view" mdbWavesEffect> My Assignments </a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto nav-flex-icons">
+            <li class="nav-item dropdown" dropdown>
+                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+                  <mdb-icon fas icon="user"></mdb-icon> Profile<span class="caret"></span></a>
+                <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+                  <!-- <a class="dropdown-item waves-light" mdbWavesEffect href="#">My account</a> -->
+                  <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/login">Log out</a>
+                </div>
+            </li>
+        </ul>
+    </links>
 
 </mdb-navbar>
 <!--/.Navbar-->
