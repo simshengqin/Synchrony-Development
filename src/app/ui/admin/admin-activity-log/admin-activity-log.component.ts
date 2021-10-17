@@ -5,13 +5,12 @@ import { Wage } from '../../../core/models/wage';
 import { first } from 'rxjs/operators';
 import { AssignmentSubmission } from 'src/app/core/models/assignment-submission';
 
-
 @Component({
-  selector: 'app-freelance-wage',
-  templateUrl: './freelance-wage.component.html',
-  styleUrls: ['./freelance-wage.component.scss']
+  selector: 'app-admin-activity-log',
+  templateUrl: './admin-activity-log.component.html',
+  styleUrls: ['./admin-activity-log.component.scss']
 })
-export class FreelanceWageComponent implements OnInit {
+export class AdminActivityLogComponent implements OnInit {
 
   wages:any = [];
   wagesByInstructorSchool:any = [];
@@ -99,5 +98,4 @@ export class FreelanceWageComponent implements OnInit {
     this.wagesByInstructorSchool = [];
   }
 
-  
 }

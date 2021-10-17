@@ -73,6 +73,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
   }
 
   async retrieve_all_accounts(){
+    this.dataSource = [];
     const data = await this.crudservice.read('accounts').pipe(first()).toPromise();
     if(data!=undefined||data!=null){
       //this.dataSource = data
@@ -146,6 +147,8 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     if(this.selectSubSchools.length == 0){
       this.sub_display_instrument = false
       this.sub_display_levels = false
+      this.accounts = [];
+      this.retrieve_all_accounts()
     } else {
       this.sub_display_instrument = true
       this.sub_display_levels = false

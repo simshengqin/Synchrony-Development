@@ -12,9 +12,20 @@ export class CardsComponent implements OnInit {
   @Input('imgsrc') public imgsrc: any;
   @Input('href') public href: any;
 
+  userRole!: any;
+  accountDetail!:any;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.validate_session()
+  }
+
+  validate_session(): void {
+    if(sessionStorage.getItem('account') != null){
+      this.accountDetail = JSON.parse(sessionStorage.getItem('account'));
+      this.userRole = this.accountDetail.role;
+    }
   }
 
 }

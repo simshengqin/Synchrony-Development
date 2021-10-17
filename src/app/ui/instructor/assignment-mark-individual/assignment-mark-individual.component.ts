@@ -151,6 +151,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
             assignment_submission_doc_id: this.assignmentSubmission.docId,
             feedback_datetime: Timestamp.fromDate(new Date()),
             seconds: this.seconds,
+            school: this.assignmentSubmission.school
           };
           const wage: Wage[] = await this.crudService.read('wages',
             'instructor_account_doc_id', '==', this.loggedInAccount.docId,
