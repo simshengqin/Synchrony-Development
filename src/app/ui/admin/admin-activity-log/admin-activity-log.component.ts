@@ -21,13 +21,16 @@ export class AdminActivityLogComponent implements OnInit {
   //displayedColumns:string[] = ['month', 'number_of_minutes', 'school_abbreviation', 'year'];
   actionType:string = "wage";
   @ViewChild('app-table') appTable: ElementRef | undefined;
+  
   // set filter data
   schools:string[] = [];
+  instrustors:string[] = [];
   // set filter name
-  nameSchool:string = "School"
+  nameSchool:string = "School";
+  nameInstrustor:string = "Instrustor";
   // selected schools
   selectedSchools:string[] = [];
-
+  selectedInstrustors:string[] = [];
 
   constructor(
     private crudservice: CrudService
@@ -53,8 +56,8 @@ export class AdminActivityLogComponent implements OnInit {
           if(ele["key"] == this.wagesByInstructorSchool[i]["key"]){
           isExist = true
           //console.log("this is index: " + i + " with a duration of " + this.wagesByInstructorSchool[i]["duration"])
-          var tempSecond:number = ele["duration"]
-          this.wagesByInstructorSchool[i]["duration"] += tempSecond
+          //var tempSecond:number = ele["duration"]
+          //this.wagesByInstructorSchool[i]["duration"] += tempSecond
           break
         }
         if(isExist){ break }
@@ -63,12 +66,14 @@ export class AdminActivityLogComponent implements OnInit {
       }
     }
     this.dataSource = this.wagesByInstructorSchool
-    console.log(this.wagesByInstructorSchool)
   }
 
   private create_custom_wage(wage:Wage, account:Account, assignmentSybmission:AssignmentSubmission){
+    if(this.schools.indexOf(wage.school[0])==-1){
+      this.schools.push(wage.school[0])
+    }
     let data:any = {
-      key: account.docId + "-" + wage.school[0],
+      key: account.docId + "_" + wage.school[0],
       instructor_id: account.docId,
       first_name: account.first_name,
       last_name: account.last_name,
@@ -92,10 +97,31 @@ export class AdminActivityLogComponent implements OnInit {
     return data
   }
 
+  get_query_schools($event:any){
+    console.log($event.value);
+    this.selectedSchools = $event.value;
+    this.query_table_with_filter();
+  }
+
+  async query_table_with_filter(){
+    this.reset();
+    if(this.selectedSchools.length != 0){
+      var result:any[] = []
+      for(var ele of this.wagesByInstructorSchool){
+        for(var school of this.selectedSchools){
+          if(ele["school_abbreviation"] == school){
+            result.push(ele)
+          }
+        }
+      }
+      this.dataSource = result
+    } else {
+      this.dataSource = this.wagesByInstructorSchool
+    }
+  }
+
   private reset(){
     this.dataSource = [];
-    this.wages = [];
-    this.wagesByInstructorSchool = [];
   }
 
 }

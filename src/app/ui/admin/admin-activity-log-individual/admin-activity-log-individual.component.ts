@@ -8,6 +8,7 @@ import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
+import { Assignment } from 'src/app/core/models/assignment';
 
 @Component({
   selector: 'app-admin-activity-log-individual',
@@ -25,7 +26,7 @@ export class AdminActivityLogIndividualComponent implements OnInit {
   activity_logs:any[] = []
 
   dataSource = [];
-  displayedColumns:string[] = ['assignment_submission_doc_id', 'feedback_datetime', 'minutes'];
+  displayedColumns:string[] = ['name', 'first_name', 'last_name','feedback_datetime', 'minutes'];
 
   accumulated_time:number = 0;
 
@@ -54,8 +55,8 @@ export class AdminActivityLogIndividualComponent implements OnInit {
   async get_activity_log() {
     this.reset()
     const key = this.route.snapshot.paramMap.get('key');
-    this.instructor_id = key.split("-")[0]
-    this.school.push(key.split("-")[1])
+    this.instructor_id = key.split("_")[0]
+    this.school.push(key.split("_")[1])
 
     this.instructor_data = await this.crudservice.readByDocId('accounts',this.instructor_id).pipe(first()).toPromise();
     this.instructor_name = this.instructor_data.first_name + " " + this.instructor_data.last_name
@@ -64,29 +65,33 @@ export class AdminActivityLogIndividualComponent implements OnInit {
     const data = await this.crudservice.read('wages', 'instructor_account_doc_id', '==', this.instructor_id, 'school', 'array-contains-any', this.school).pipe(first()).toPromise();
     for (var wage of data){
       var instructorData = await this.crudservice.readByDocId('accounts', this.instructor_id).pipe(first()).toPromise();
-      //var assignmentSubmissionData = await this.crudservice.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
-      //var studentData = await this.crudservice.readByDocId('accounts', assignmentSubmissionData.student_doc_id).pipe(first()).toPromise();
+      var assignmentSubmissionData = await this.crudservice.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
+      var studentData = await this.crudservice.readByDocId('accounts', assignmentSubmissionData.student_doc_id).pipe(first()).toPromise();
+      var assignmentData = await this.crudservice.readByDocId('assignments', assignmentSubmissionData.assignment_doc_id).pipe(first()).toPromise();
       //this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData)
-      this.activity_logs.push(this.create_custom_wage(wage,instructorData,null,null))
+      this.activity_logs.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData,assignmentData))
     }
     this.dataSource = this.activity_logs;
   }
 
-  private create_custom_wage(wage:Wage, instructor:Account, assignmentSubmission:AssignmentSubmission, student:Account){
+  private create_custom_wage(wage:Wage, instructor:Account, assignmentSubmission:AssignmentSubmission, student:Account, assignmentData:Assignment){
     var date = this.convert_date(wage.feedback_datetime)
     var time = this.convert_time(wage.feedback_datetime)
     var date_filter = this.convert_datefilter(wage.feedback_datetime)
-    var minutes = (Math.round((wage.seconds / 60) * 100) / 100).toFixed(2);
+    var minutes = (Math.round((wage.seconds / 60) * 1000) / 1000).toFixed(3);
     this.accumulated_time += parseFloat(minutes)
 
     let data:any = {
       date_filter: date_filter,
       //feedback_date: wage.feedback_datetime,
       feedback_datetime: wage.feedback_datetime,
-      assignment_submission_doc_id: wage.assignment_submission_doc_id,
+      //assignment_submission_doc_id: wage.assignment_submission_doc_id,
       //minutes: minutes + " mins"
-      seconds: wage.seconds
-      //student_username: student.username
+      //seconds: wage.seconds,
+      seconds: (Math.round((wage.seconds) * 1000) / 1000).toFixed(3),
+      first_name: student.first_name,
+      last_name: student.last_name,
+      name: assignmentData.name
     }
 
     return data
@@ -151,7 +156,7 @@ export class AdminActivityLogIndividualComponent implements OnInit {
       for (var ele of this.activity_logs){
         for(var query of this.query_by_year_month)
         if(ele["date_filter"] == query){
-          this.accumulated_time += parseFloat((Math.round((ele["seconds"]  / 60) * 100) / 100).toFixed(2))
+          this.accumulated_time += parseFloat((Math.round((ele["seconds"]  / 60) * 1000) / 1000).toFixed(3))
           result.push(ele)
         }
       }
