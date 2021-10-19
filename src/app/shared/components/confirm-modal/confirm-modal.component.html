@@ -8,7 +8,7 @@
     </div>
     <div  class="modal-body">
       {{description}}
-      <div *ngIf="title == 'Submit Feedback'">
+      <div *ngIf="title == 'Submit Feedback'|| title == 'Confirm Feedback Submission'">
         <h3>Score</h3>
         <mat-form-field class="example-full-width" appearance="fill">
           <mat-label>Please input score (0 to 100)</mat-label>
@@ -20,7 +20,15 @@
           Score cannot be empty
         </mat-error>
         <h3>Feedback</h3>
-        <textarea class="modal-content form-control mt-3" placeholder="Enter your feedback here (Optional)" [(ngModel)]="feedback"></textarea>
+<!--        <textarea class="modal-content form-control mt-3" placeholder="Enter your feedback here (Optional)" [(ngModel)]="feedback"></textarea>-->
+        <mat-form-field appearance="fill"  class="w-100">
+          <mat-label>Enter your feedback (Optional) </mat-label>
+          <textarea [(ngModel)]="feedback" matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="4"></textarea>
+        </mat-form-field>
         <small *ngIf="assignmentSubmission && assignmentSubmission.feedback" class="form-text text-muted" >
           Previous Score: {{assignmentSubmission.grade}} &nbsp;
           Previous Feedback: {{assignmentSubmission.feedback}}

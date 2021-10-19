@@ -35,9 +35,11 @@ export class ConfirmModalComponent implements OnInit {
 
   ) {}
   async open(title: string, description: string, buttons: Array<string>, assignment: Assignment = null,
-             assignmentSubmission: AssignmentSubmission = null, account: Account = null, assignmentDocId: string = ''): Promise<void> {
+             assignmentSubmission: AssignmentSubmission = null, account: Account = null, assignmentDocId: string = '',
+             feedback: string = null): Promise<void> {
     this.title = title;
     this.description = description;
+    this.feedback = feedback;
     this.buttons = buttons;
     this.assignmentSubmission = assignmentSubmission;
     if (assignmentDocId !== '') {

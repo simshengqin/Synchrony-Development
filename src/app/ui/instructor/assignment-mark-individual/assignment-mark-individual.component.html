@@ -51,32 +51,58 @@
 <!--    <button *ngIf="isRecording"  class="btn btn-danger mr-3" (click)="stopRecording()">Stop</button>-->
 <!--  </div>-->
   <div *ngIf="!isRecording" fxLayout="row" fxLayoutAlign="center" class="w-100">
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="mr-2">
       <mat-label> Select a recording option </mat-label>
       <mat-select  [(value)]="selectedRecordingOption" placeholder="Recording option">
         <mat-option [value]="'Screen Recording'" >Screen Recording</mat-option>
         <mat-option [value]="'Camera Recording'">Camera Recording</mat-option>
+        <mat-option [value]="'No Recording'" >No Recording</mat-option>
       </mat-select>
     </mat-form-field>
+<!--    <mat-form-field *ngIf ="selectedRecordingOption == 'No Recording'" appearance="fill">-->
+<!--      <mat-label> Select a recording option </mat-label>-->
+<!--      <mat-select  [(value)]="selectedRecordingOption" placeholder="Recording option">-->
+<!--        <mat-option [value]="'Screen Recording'" >Screen Recording</mat-option>-->
+<!--        <mat-option [value]="'Camera Recording'">Camera Recording</mat-option>-->
+<!--        <mat-option [value]="'No Recording'" >No Recording</mat-option>-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
   </div>
   <div fxLayout="row" fxLayoutAlign="center" class="w-100 mb-2">
-    <button *ngIf="!isRecording" type="button" mdbBtn color="success"
+    <button *ngIf="!isRecording && selectedRecordingOption !== 'No Recording'" type="button" mdbBtn color="success"
             (click)="startRecording(isRecorded)">
       {{isRecorded ? 'Record again' : 'Record'}}
     </button>
+
     <button *ngIf="isRecording && !isPaused" type="button" mdbBtn color="warning"
             (click)="pauseRecording()">Pause</button>
     <button *ngIf="isRecording && isPaused" type="button" mdbBtn color="success"
             (click)="resumeRecording()">Resume</button>
     <button *ngIf="isRecording && !isPaused" type="button" mdbBtn color="danger"
             (click)="stopRecording()">Stop</button>
-
     <div fxLayout="row" fxLayoutAlign="center">
       <button *ngIf="!isRecording && isRecorded" type="button" mdbBtn color="info" rounded="true" (click)="submitFeedback()" mdbWavesEffect>
         Submit Feedback</button>
     </div>
-
   </div>
+    <div fxLayout="row" fxLayoutAlign="center" class="w-100">
+      <ng-container *ngIf ="selectedRecordingOption == 'No Recording'">
+        <mat-form-field appearance="fill" class="w-50">
+          <mat-label>Enter your feedback</mat-label>
+          <textarea [(ngModel)]="feedback" matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="4"></textarea>
+        </mat-form-field>
+        <div>
+          <button type="button" mdbBtn color="info" rounded="true" (click)="submitTextFeedback()" mdbWavesEffect>
+          Submit Feedback</button>
+        </div>
+
+      </ng-container>
+
+    </div>
   <div  fxLayout="row" fxLayoutAlign="center" class="form-text mb-3" ><!-- *ngIf="recorded"-->
 <!--    <div fxLayout="column" fxLayoutAlign="start" class="go-back-section" (click)="onGoBackClick()">-->
 <!--      <mat-icon class="mr-1">arrow_back</mat-icon>-->

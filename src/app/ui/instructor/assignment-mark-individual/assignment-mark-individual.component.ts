@@ -48,6 +48,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
   isPaused = false;
   isRecorded = false;
   recordedOption = '';
+  feedback = '';
   constructor(
     private router: Router,
     private toastrService: ToastrService,
@@ -133,43 +134,48 @@ export class AssignmentMarkIndividualComponent implements OnInit {
     }
   }
   async onFeedback(input: Array<any>): Promise<void>  {
-    const filename = this.assignment.name + ' - ' + this.student.last_name + ' ' + this.student.first_name + '\'s Feedback.mp4';
-    const path = 'feedbacks/' + filename;
-    this.assignmentSubmission.instructor_feedback_attachment_name = filename;
-    const task = this.afStorage.upload(path, this.recordedVideo);
-    await task.then(async (result) => {
-      await result.ref.getDownloadURL().then(
-        async (downloadUrl) => {
-          // console.log(downloadUrl);
-          this.assignmentSubmission.instructor_feedback_attachment = downloadUrl;
-          this.assignmentSubmission.feedback = input[0];
-          this.assignmentSubmission.grade = input[1];
-          this.assignmentSubmission.feedback_datetime = Timestamp.fromDate(new Date());
-          await this.crudService.update('assignment_submissions', this.assignmentSubmission.docId, this.assignmentSubmission);
-          const newWage: Wage = {
-            instructor_account_doc_id: this.loggedInAccount.docId,
-            assignment_submission_doc_id: this.assignmentSubmission.docId,
-            feedback_datetime: Timestamp.fromDate(new Date()),
-            seconds: this.seconds,
-          };
-          const wage: Wage[] = await this.crudService.read('wages',
-            'instructor_account_doc_id', '==', this.loggedInAccount.docId,
-            'assignment_submission_doc_id', '==', this.assignmentSubmission.school,
-          ).pipe(first()).toPromise();
-          if (wage.length > 0) {
-            await this.crudService.update('wages', wage[0].docId, newWage);
-          }
-          else {
-            await this.crudService.create('wages', newWage);
-          }
-          await this.crudService.update('assignment_submissions', this.assignmentSubmission.docId, this.assignmentSubmission);
-          // this.assignmentSubmissionService.updateAssignmentSubmission(this.assignmentSubmission.docId, this.assignmentSubmission)
-          //   .then(r => console.log(r));
-          this.toastrService.success('Added feedback successfully!', '', {positionClass: 'toast-top-center'});
-          this.router.navigate(['instructor/assignment/mark']);
-          // console.log(this.assignmentSubmission);
-        });
-    });
+    console.log(this.recordedVideo);
+    // If its not text feedback only, upload the recorded video
+    if (this.recordedVideo != null) {
+      const filename = this.assignment.name + ' - ' + this.student.last_name + ' ' + this.student.first_name + '\'s Feedback.mp4';
+      const path = 'feedbacks/' + filename;
+      this.assignmentSubmission.instructor_feedback_attachment_name = filename;
+      const task = this.afStorage.upload(path, this.recordedVideo);
+      await task.then(async (result) => {
+        await result.ref.getDownloadURL().then(
+          async (downloadUrl) => {
+            // console.log(downloadUrl);
+            this.assignmentSubmission.instructor_feedback_attachment = downloadUrl;
+            const newWage: Wage = {
+              instructor_account_doc_id: this.loggedInAccount.docId,
+              assignment_submission_doc_id: this.assignmentSubmission.docId,
+              feedback_datetime: Timestamp.fromDate(new Date()),
+              seconds: this.seconds,
+              school: this.assignmentSubmission.school
+            };
+            const wage: Wage[] = await this.crudService.read('wages',
+              'instructor_account_doc_id', '==', this.loggedInAccount.docId,
+              'assignment_submission_doc_id', '==', this.assignmentSubmission.school,
+            ).pipe(first()).toPromise();
+            if (wage.length > 0) {
+              await this.crudService.update('wages', wage[0].docId, newWage);
+            }
+            else {
+              await this.crudService.create('wages', newWage);
+            }
+          });
+      });
+    }
+
+    this.assignmentSubmission.feedback = input[0];
+    this.assignmentSubmission.grade = input[1];
+    this.assignmentSubmission.feedback_datetime = Timestamp.fromDate(new Date());
+    await this.crudService.update('assignment_submissions', this.assignmentSubmission.docId, this.assignmentSubmission);
+    // this.assignmentSubmissionService.updateAssignmentSubmission(this.assignmentSubmission.docId, this.assignmentSubmission)
+    //   .then(r => console.log(r));
+    this.toastrService.success('Added feedback successfully!', '', {positionClass: 'toast-top-center'});
+    await this.router.navigate(['instructor/assignment/mark']);
+    // console.log(this.assignmentSubmission);
   }
   onRecordClick(): void {
     if (this.isRecorded) {
@@ -217,6 +223,10 @@ export class AssignmentMarkIndividualComponent implements OnInit {
   }
   submitFeedback(): void {
     this.confirmModalComponent.open('Submit Feedback', '', ['close', 'submit'], null, this.assignmentSubmission);
+  }
+  submitTextFeedback(): void {
+    this.confirmModalComponent.open('Confirm Feedback Submission', '', ['close', 'submit'], null, this.assignmentSubmission, null
+      , '', this.feedback);
   }
   updateFeedbackAttachment(input: Array<any>): void {
     this.recordedVideo = input[0];
