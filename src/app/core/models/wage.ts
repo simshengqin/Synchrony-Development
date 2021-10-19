@@ -8,6 +8,7 @@ export interface Wage {
     assignment_submission_doc_id: string;
     feedback_datetime?: Timestamp;
     seconds: number;
+    school: Array<string>;
     // Manually created
     instructor?: Account;
     assignment_submission?: AssignmentSubmission;

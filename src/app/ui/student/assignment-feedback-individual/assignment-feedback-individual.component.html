@@ -27,11 +27,14 @@
     </div>
   </div>
   <br>
-  <h3 class="mb-3"><b>Attachments</b></h3>
-  <video controls [src]="videoUrl" class="instructor-feedback-video"></video>
-  <div *ngIf="assignmentSubmission && assignmentSubmission.instructor_feedback_attachment" class="form-text mb-3" >
+  <ng-container *ngIf="assignmentSubmission.instructor_feedback_attachment != ''">
+    <h3 class="mb-3"><b>Attachments</b></h3>
+    <video controls [src]="videoUrl" class="instructor-feedback-video"></video>
+    <div *ngIf="assignmentSubmission && assignmentSubmission.instructor_feedback_attachment" class="form-text mb-3" >
       Click to download: <a [href]="assignmentSubmission.instructor_feedback_attachment">{{assignmentSubmission.instructor_feedback_attachment_name}}</a>
-  </div>
+    </div>
+
+  </ng-container>
   <div class="go-back-section" (click)="onGoBackClick()">
     <mat-icon class="mr-1">arrow_back</mat-icon>
     <span class="go-back-text">Back</span>
