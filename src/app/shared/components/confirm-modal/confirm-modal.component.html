@@ -62,7 +62,7 @@
           <div class="form-text" >
             <div> Score: {{assignmentSubmission.grade}}</div>
             <div> Feedback: {{assignmentSubmission.feedback == '' ? "No Feedback" : assignmentSubmission.feedback}} </div>
-            <div> Feedback Recording:
+            <div *ngIf="assignmentSubmission.instructor_feedback_attachment != ''"> Feedback Recording:
               <a target="_blank" [href]="assignmentSubmission?.instructor_feedback_attachment">
                 {{assignmentSubmission?.instructor_feedback_attachment_name}}
               </a>

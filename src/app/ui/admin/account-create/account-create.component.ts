@@ -4,6 +4,7 @@ import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
 import {ToastrService} from 'ngx-toastr';
 import {CrudService} from '../../../core/services/crud.service';
 import {Account, Role} from '../../../../app/core/models/account';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-account-create',
@@ -24,6 +25,7 @@ export class AccountCreateComponent implements OnInit {
     private toastrService: ToastrService,
     private ngxCsvParser: NgxCsvParser,
     private crudService: CrudService,
+    private router: Router,
   ) {}
   async ngOnInit(): Promise<void> {
     const singleAccount: Account = await this.crudService.readByDocId('accounts', '7hQyZTken7p6eSAR8MQB')
@@ -128,6 +130,7 @@ export class AccountCreateComponent implements OnInit {
           }
           if (this.errors.length === 0) {
             this.toastrService.success('Uploaded data to database successfully!', '', {positionClass: 'toast-top-center'});
+            this.router.navigate(['/admin/account/edit']);
           }
           else {
             this.toastrService.error('Errors encountered uploading the file!', '', {positionClass: 'toast-top-center'});
