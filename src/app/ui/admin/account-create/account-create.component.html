@@ -14,7 +14,7 @@
 <!--    <i class="fa fa-image"></i> Choose File-->
 <!--    <input #file type="file" accept="text/csv"  class="d-none" [textContent]="'Choose File'"/>-->
 <!--  </label>-->
-  <app-dropzone [label]="'Please drag and drop your attachment files for this assignment here. (Accepted format: .pdf)'"
+  <app-dropzone [label]="'Please drag and drop your attachment files for this assignment here. (Accepted format: .csv)'"
                 [acceptedFileTypes] = "'.csv'"
                 [acceptMultipleFiles]=false (fileEmit)="accountFile = $event[0]"></app-dropzone>
 <!--  <input #file class="mb-3 form-control" accept=".csv" type="file">-->
