@@ -1,25 +1,31 @@
 <!--<app-header [role]="'admin'"></app-header>-->
 <app-header></app-header>
 <div class="account-create-wrapper wrapper-padding">
-  <h1 class="mb-3">Account & Grouping Creation</h1>
-  <div class="mb-2">Please upload a file with account data in accordance to the format provided in the sample .csv file below.
+  <h1 class="mb-3">{{ isAdmin ? "Account & Grouping Creation" : "Create student"}}</h1>
+  <div class="mb-2">
+    {{ isAdmin ? "Please upload a file with account data in accordance to the format provided in the sample .csv file below."
+    : "Please upload a file with students' account data in accordance to the format provided in the sample .csv file below."}}
      <div class="mt-2 form-text text-muted" >
-      Sample file:<a [href]="'https://firebasestorage.googleapis.com/v0/b/synchrony-581ed.appspot.com/o/accounts_sample.csv?alt=media&token=7cf13a49-fd34-4018-b55e-f153e3b5e3cc'">
+       <ng-container *ngIf="isAdmin">
+         Sample file:<a [href]="'https://firebasestorage.googleapis.com/v0/b/synchrony-581ed.appspot.com/o/accounts_sample.csv?alt=media&token=7cf13a49-fd34-4018-b55e-f153e3b5e3cc'">
          {{"accounts_sample.csv"}}
        </a>
+       </ng-container>
+       <ng-container *ngIf="!isAdmin">
+         Sample file:<a [href]="'https://firebasestorage.googleapis.com/v0/b/synchrony-581ed.appspot.com/o/accounts_sample_students.csv?alt=media&token=3f819ef0-ff30-40e5-98d9-3919630eba8e'">
+         {{"accounts_sample_students.csv"}}
+       </a>
+       </ng-container>
     </div>
   </div>
 
-<!--  <label class="btn primary-btn">-->
-<!--    <i class="fa fa-image"></i> Choose File-->
-<!--    <input #file type="file" accept="text/csv"  class="d-none" [textContent]="'Choose File'"/>-->
-<!--  </label>-->
-  <app-dropzone [label]="'Please drag and drop your attachment files for this assignment here. (Accepted format: .csv)'"
+  <app-dropzone [label]="'Please drag and drop your accounts files here. (Accepted format: .csv)'"
+
                 [acceptedFileTypes] = "'.csv'"
                 [acceptMultipleFiles]=false (fileEmit)="accountFile = $event[0]"></app-dropzone>
-<!--  <input #file class="mb-3 form-control" accept=".csv" type="file">-->
   <div class="mt-3 mb-3">
-    <button class="btn btn-info" (click)="uploadFile()">Upload</button>
+    <button class="btn btn-info mr-2" (click)="onInstructionsClick()">View Instructions</button>
+    <button class="btn btn-success" (click)="uploadFile()">Upload</button>
   </div>
   <div *ngIf="isUploading">
     Uploading in process: <mat-progress-bar id="progress-bar" mode="indeterminate" class="mt-3 mb-3"></mat-progress-bar>
@@ -33,5 +39,5 @@
       </div>
   </ng-container>
 
-<!--  <app-confirm-modal (responseEmit)="onCloseModal($event)"></app-confirm-modal>-->
+  <app-confirm-modal (responseEmit)="onCloseModal($event)"></app-confirm-modal>
 </div>
