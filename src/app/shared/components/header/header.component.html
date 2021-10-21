@@ -74,6 +74,7 @@
                 <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
                   <!-- <a class="dropdown-item waves-light" mdbWavesEffect href="#">My account</a> -->
                   <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/login">Log out</a>
+                  <a class="dropdown-item waves-light" mdbWavesEffect data-toggle="modal" data-target="#basicExampleModal"> Change Password </a>
                 </div>
               </li>
         </ul>
@@ -109,6 +110,7 @@
                 <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
                   <!-- <a class="dropdown-item waves-light" mdbWavesEffect href="#">My account</a> -->
                   <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/login">Log out</a>
+                  <a class="dropdown-item waves-light" mdbWavesEffect data-toggle="modal" data-target="#basicExampleModal"> Change Password </a>
                 </div>
             </li>
         </ul>
@@ -116,3 +118,26 @@
 
 </mdb-navbar>
 <!--/.Navbar-->
+
+
+<!-- Modal -->
+<div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel"> Password Reset </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3> Resetting your password would require you to logout, are you sure you would like to reset your password now? </h3>
+      </div>
+      <div class="modal-footer">
+        <button type="button" mdbBtn color="warning" class="btn btn-warning" routerLink="/update_password" data-dismiss="modal"> proceed to reset </button>
+        <button type="button" mdbBtn color="light" class="btn btn-light" data-mdb-ripple-color="dark" data-dismiss="modal"> close </button>
+      </div>
+    </div>
+  </div>
+</div>

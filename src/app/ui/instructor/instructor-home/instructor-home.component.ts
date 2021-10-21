@@ -10,16 +10,19 @@ export class InstructorHomeComponent implements OnInit {
   newTitle: string = "New Assignment";
   editTitle: string = "Edit Assignment";
   markTitle: string = "Mark Assignment";
+  activityTitle: string = "My Activity"
 
   createStudentDescription: string = "Create new accounts for students.";
   newDescription: string = "Create new assignments for students to complete.";
   editDescription: string = "Edit created assignments' deadline, attachments and more.";
   markDescription: string = "Mark or re-mark assignment submissions by students.";
+  activityDescription: string = "View my activity logs, based on graded feedback on student."
 
   createStudentLink: string = "instructor/account/create";
   newLink: string = "instructor/assignment/create";
   editLink: string = "instructor/assignment/edit";
   markLink: string = "instructor/assignment/mark";
+  activityLink: string = "instructor/activitylog";
 
   constructor() { }
 
