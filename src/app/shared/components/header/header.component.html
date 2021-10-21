@@ -50,6 +50,9 @@
     <links>
         <!-- Float Left -->
         <ul class="navbar-nav mr-auto" *ngIf="userRole=='instructor'">
+            <li class="nav-item active" [ngClass]="{'active': url == '/instructor/account/create'}">
+              <a class="nav-link waves-light" routerLink="/instructor/account/create" mdbWavesEffect> Create Student </a>
+            </li>
             <li class="nav-item active" [ngClass]="{'active': url == '/instructor/assignment/create'}">
                 <a class="nav-link waves-light" routerLink="/instructor/assignment/create" mdbWavesEffect> New Assignment </a>
             </li>

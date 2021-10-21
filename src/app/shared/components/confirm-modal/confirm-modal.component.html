@@ -1,7 +1,7 @@
 <div class="confirm-modal-wrapper">
   <ng-template #confirmModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">{{title}}</h4>
+      <h3 class="modal-title" id="modal-basic-title">{{title}}</h3>
       <button type="button" class="close" (click)="modal.dismiss('cross')">
         <span aria-hidden="true">×</span>
       </button>
@@ -11,11 +11,11 @@
       <div *ngIf="title == 'Submit Feedback'|| title == 'Confirm Feedback Submission'">
         <h3>Score</h3>
         <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Please input score (0 to 100)</mat-label>
+          <mat-label>Please input score</mat-label>
           <input matInput placeholder="" value=""
-                 type="number" min="0" max="100" [(ngModel)]="grade"
-                 (change)= "grade < 0 ? grade = 0 : grade; grade > 100 ? grade = 100 : grade;">
+                 [(ngModel)]="grade">
         </mat-form-field>
+<!--        type="number" min="0" max="100" (change)= "grade < 0 ? grade = 0 : grade; grade > 100 ? grade = 100 : grade;"-->
         <mat-error *ngIf="isGradeError && !grade">
           Score cannot be empty
         </mat-error>
@@ -33,6 +33,31 @@
           Previous Score: {{assignmentSubmission.grade}} &nbsp;
           Previous Feedback: {{assignmentSubmission.feedback}}
         </small>
+      </div>
+      <div *ngIf="title == 'Account Creation Instructions' || title == 'Student\'s Account Creation Instructions'">
+        <p> 1. Download the accounts sample file on the top of this page</p>
+        <p> 2. Remove the sample accounts in the file and add accounts (new rows) that you want to create/update </p>
+        <p> 3. Ensure that the below rules are met: </p>
+        <div *ngIf="title == 'Account Creation Instructions'" class="ml-3">
+          <p> a. The file must be .csv format </p>
+          <p> b. The first row should contain all 7 columns headers: (username, role,	school,	school_instrument_level,	first_name,	last_name,	password)</p>
+          <p> c. At least 1 row should be present (excluding the column headers) </p>
+          <p> d. Every field values needs to be filled (Except for school and school_instrument_level column for admin accounts) </p>
+          <p> e. The username should not be taken </p>
+          <p> f. The password should be at least 5 characters long </p>
+          <p> g. The role should only be 1 of these 3 values: admin, instructor, student </p>
+
+        </div>
+        <div *ngIf="title == 'Student\'s Account Creation Instructions'" class="ml-3">
+          <p> a. The file must be .csv format </p>
+          <p> b. The first row should contain all 6 columns headers: (username,	school,	school_instrument_level, first_name,	last_name,	password)</p>
+          <p> c. At least 1 row should be present (excluding the column headers) </p>
+          <p> d. Every field values needs to be filled </p>
+          <p> e. The username should not be taken </p>
+          <p> f. The password should be at least 5 characters long </p>
+        </div>
+        <p> 4. Click on the dotted box above and select this newly created file  </p>
+        <p> 5. Click the upload button </p>
       </div>
       <div *ngIf="title == 'Recording Instructions'">
         <h4> Recording Steps </h4>

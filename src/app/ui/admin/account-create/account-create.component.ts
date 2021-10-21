@@ -4,8 +4,9 @@ import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
 import {ToastrService} from 'ngx-toastr';
 import {CrudService} from '../../../core/services/crud.service';
 import {Account, Role} from '../../../../app/core/models/account';
-import {Router} from "@angular/router";
 import * as bcrypt from 'bcryptjs';
+import {ActivatedRoute, Router} from "@angular/router";
+import {ConfirmModalComponent} from "../../../shared/components/confirm-modal/confirm-modal.component";
 
 @Component({
   selector: 'app-account-create',
@@ -21,14 +22,17 @@ export class AccountCreateComponent implements OnInit {
   @ViewChild('fileImportInput', { static: false }) fileImportInput: any;
   errors: string[] = [];
   isUploading = false;
-
+  isAdmin: boolean;
+  @ViewChild(ConfirmModalComponent) confirmModalComponent: ConfirmModalComponent;
   constructor(
     private toastrService: ToastrService,
     private ngxCsvParser: NgxCsvParser,
     private crudService: CrudService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) {}
   async ngOnInit(): Promise<void> {
+    this.isAdmin = this.router.url === '/admin/account/create';
     const singleAccount: Account = await this.crudService.readByDocId('accounts', '7hQyZTken7p6eSAR8MQB')
       .pipe(first())
       .toPromise();
@@ -64,7 +68,8 @@ export class AccountCreateComponent implements OnInit {
     if (this.accountFile) {
       this.errors = [];
       // column is not found at all
-      let missingColumns = ['username',	'role', 'school',	'school_instrument_level', 'first_name',	'last_name',	'password'];
+      let missingColumns = this.isAdmin ? ['username',	'role', 'school',	'school_instrument_level', 'first_name',	'last_name',	'password']
+      : ['username', 'school',	'school_instrument_level', 'first_name',	'last_name',	'password'];
       this.isUploading = true;
       // Parse the file you want to select for the operation along with the configuration
       await this.ngxCsvParser.parse(this.accountFile, {header: true, delimiter: ','})
@@ -77,6 +82,9 @@ export class AccountCreateComponent implements OnInit {
         else {
           for (const [key, value] of Object.entries(this.csvRecords[0])) {
             missingColumns = missingColumns.filter(val => val !== key);
+            if (!this.isAdmin && key === 'role') {
+              this.errors.push('The file should not contain a role column as instructors are only allowed to upload student accounts');
+            }
           }
           if (missingColumns.length > 0) {
             this.errors.push('Missing columns headers: ' + Array.from(missingColumns).join(', '));
@@ -89,7 +97,7 @@ export class AccountCreateComponent implements OnInit {
             // console.log(accounts);
             const account: Account = {
               username: csvRecord.username,
-              role: csvRecord.role.toLowerCase(),
+              role: this.isAdmin ? csvRecord.role.toLowerCase() : 'student',
               school: csvRecord.school.split(','),
               school_instrument_level: csvRecord.school_instrument_level.toLowerCase().split(','),
               first_name: csvRecord.first_name,
@@ -112,20 +120,29 @@ export class AccountCreateComponent implements OnInit {
             if (emptyColumns.length > 0) {
               this.errors.push('Row ' + i + ' has missing values for the following columns: ' + Array.from(emptyColumns).join(', '));
             }
-            if (account.role !== Role.invalid &&  !['admin', 'instructor', 'student'].includes(account.role)) {
-              this.errors.push('Row ' + i + ' has illegal values for role column (Only admin, instructor or student is accepted)');
+            if (account.role !== Role.invalid) {
+              if (this.isAdmin && !['admin', 'instructor', 'student'].includes(account.role)) {
+                this.errors.push('Row ' + i + ' has illegal values for role column (Only admin, instructor or student is accepted)');
+              }
+              if (!this.isAdmin && account.role !== 'student') {
+                this.errors.push('Row ' + i + ' has illegal values for role column (Only student is accepted)');
+              }
+            }
+            if (accounts.length > 0) {
+              this.errors.push('Row ' + i + ' \'s username (' + account.username + ') is already taken');
             }
             if (account.password.length > 0 && account.password.length < 5) {
               this.errors.push('Row ' + i + ' does not meet the minimum length requirement for password (5)');
             }
             // Stop the creation/updating of ALL accounts as long as there is a problem with 1 of the account
             if (this.errors.length === 0) {
-              if (accounts.length === 0) {
-                // console.log(account);
-                await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
-              } else {
-                await this.crudService.update('accounts', accounts[0].docId, account);
-              }
+              await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
+              // if (accounts.length === 0) {
+              //   // console.log(account);
+              //   await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
+              // } else {
+              //   await this.crudService.update('accounts', accounts[0].docId, account);
+              // }
             }
             i++;
           }
@@ -152,5 +169,9 @@ export class AccountCreateComponent implements OnInit {
     }
 
 
+  }
+  onInstructionsClick(): void {
+    this.isAdmin ? this.confirmModalComponent.open('Account Creation Instructions', '', ['ok'])
+    : this.confirmModalComponent.open('Student\'s Account Creation Instructions', '', ['ok']);
   }
 }

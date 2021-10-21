@@ -87,6 +87,11 @@ const routes: Routes = [{
       component: InstructorHomeComponent
     },
     {
+      path: 'instructor/account/create',
+      pathMatch: 'full',
+      component: AccountCreateComponent
+    },
+    {
       path: 'instructor/assignment/create',
       pathMatch: 'full',
       component: AssignmentCreateComponent
