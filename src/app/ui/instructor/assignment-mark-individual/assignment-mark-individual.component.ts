@@ -49,6 +49,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
   isRecorded = false;
   recordedOption = '';
   feedback = '';
+  startDatetime = null;
   constructor(
     private router: Router,
     private toastrService: ToastrService,
@@ -60,6 +61,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
 
   }
   async ngOnInit(): Promise<void> {
+    this.startDatetime = new Date ();
     this.loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
     this.assignmentSubmission = await this.crudService.readByDocId(
       'assignment_submissions', this.assignmentSubmissionDocId).pipe(first()).toPromise();
@@ -146,25 +148,27 @@ export class AssignmentMarkIndividualComponent implements OnInit {
           async (downloadUrl) => {
             // console.log(downloadUrl);
             this.assignmentSubmission.instructor_feedback_attachment = downloadUrl;
-            const newWage: Wage = {
-              instructor_account_doc_id: this.loggedInAccount.docId,
-              assignment_submission_doc_id: this.assignmentSubmission.docId,
-              feedback_datetime: Timestamp.fromDate(new Date()),
-              seconds: this.seconds,
-              school: this.assignmentSubmission.school
-            };
-            const wage: Wage[] = await this.crudService.read('wages',
-              'instructor_account_doc_id', '==', this.loggedInAccount.docId,
-              'assignment_submission_doc_id', '==', this.assignmentSubmission.school,
-            ).pipe(first()).toPromise();
-            if (wage.length > 0) {
-              await this.crudService.update('wages', wage[0].docId, newWage);
-            }
-            else {
-              await this.crudService.create('wages', newWage);
-            }
           });
       });
+    }
+    console.log( (new Date().getTime() - this.startDatetime.getTime()) / 1000);
+    const newWage: Wage = {
+      instructor_account_doc_id: this.loggedInAccount.docId,
+      assignment_submission_doc_id: this.assignmentSubmission.docId,
+      feedback_datetime: Timestamp.fromDate(new Date()),
+      seconds: (new Date().getTime() - this.startDatetime.getTime()) / 1000,
+      // seconds: (Date().getTime() - this.secondst2.getTime()) / 1000;
+      school: this.assignmentSubmission.school
+    };
+    const wage: Wage[] = await this.crudService.read('wages',
+      'instructor_account_doc_id', '==', this.loggedInAccount.docId,
+      'assignment_submission_doc_id', '==', this.assignmentSubmission.school,
+    ).pipe(first()).toPromise();
+    if (wage.length > 0) {
+      await this.crudService.update('wages', wage[0].docId, newWage);
+    }
+    else {
+      await this.crudService.create('wages', newWage);
     }
 
     this.assignmentSubmission.feedback = input[0];
