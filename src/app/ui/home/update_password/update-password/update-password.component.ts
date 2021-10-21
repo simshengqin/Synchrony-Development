@@ -11,6 +11,7 @@ import { FormGroupDirective } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
+import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-update-password',
@@ -92,18 +93,22 @@ export class UpdatePasswordComponent implements OnInit {
         // console.log("Login Validation triggered!");
         this.firstTime = false;
         // Validate login
-        this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).pipe(first()).subscribe(async (account:any) => {
-        // console.log(account);
+        this.crudservice.read("accounts","username","==",this.loginForm.value.username).pipe(first()).subscribe(async (account:any) => {
+        console.log(account);
 
-        if (account.length==0){
-          // username and password does not exist on the database
-          // console.log("Login denied");
+        if (account.length==0 || !bcrypt.compareSync(this.loginForm.value.password, account[0].password)){
+          // username and password does not exist on the database or password fails 
+          console.log("Login denied");
+          console.log(bcrypt.compareSync(this.loginForm.value.password, account[0].password));
           this.isValidUsernamePasswordCombi = false;
+
+          // Next, validate if password matches 
         } else {
           // Login is successful
-          // console.log("Login successful");
+          console.log("Login successful");
           this.isValidUsernamePasswordCombi = true;
           this.account = account[0];
+          console.log(this.account)
 
           if (account[0].is_delete){
             //alert("Account has been deactivated. Please seek the admin to reset your account");
@@ -113,18 +118,23 @@ export class UpdatePasswordComponent implements OnInit {
           }
 
           // Update password
-          this.account.password = this.loginForm.value.newPassword;
+          // Hashing password
+          console.log("Hashing function has been reached")
+          this.account.password = bcrypt.hashSync(this.loginForm.value.newPassword, 10);
+          // this.account.password = this.loginForm.value.newPassword;
           this.account.first_login = false;
-          // console.log(this.account);
+
+          
+          // console.log(this.account.password)
+          console.log(this.account);
           this.crudservice.update("accounts",this.account.docId, this.account);
           this.success("Update successful!","Update successful! Please login again")
-          //alert("Update successful! Please login again");
           this.router.navigate(["/login"]);
           return;
         }
       })
     } else {
-      // console.log("Update rejected");
+      this.error("Your update has been rejected","Your update has been rejected. Please see the error message or seek the the SynChrony team for more information.")
       }
     }
   }

@@ -6,6 +6,8 @@ import { CrudService } from 'src/app/core/services/crud.service';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
+import * as bcrypt from 'bcryptjs';
+
 
 @Component({
   selector: 'app-login',
@@ -73,28 +75,24 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
 
       // Calling firebase service
-      this.crudservice.read("accounts","username","==",this.loginForm.value.username,"password","==",this.loginForm.value.password).pipe(first()).subscribe(async (account:any) => {
+      this.crudservice.read("accounts","username","==",this.loginForm.value.username).pipe(first()).subscribe(async (account:any) => {
         // console.log(account);
 
-        if (account.length==0){
+        if (account.length==0 || !bcrypt.compareSync(this.loginForm.value.password, account[0].password)){
           // username and password does not exist on the database
-          // console.log("Login denied");
           this.isValidUsernamePasswordCombi = false;
+
         } else {
           // Login is successful
-          // console.log("Login successful");
 
           // Remove password from object
           delete account[0].password;
 
           // Store account details as session
-          // console.log(account[0]);
-          //sessionStorage.setItem('account',account[0]);
           sessionStorage.setItem('account', JSON.stringify(account[0]));
 
           // Check if account has been deleted 
           if (account[0].is_delete){
-            //alert("Account has been deactivated. Please seek the admin to reset your account");
             this.error("Account has been deactivated","Account has been deactivated. Please seek the admin to reset your account")
             return;
           }
@@ -102,18 +100,17 @@ export class LoginComponent implements OnInit {
           // Check if user has logged in for the first time. If so, redirect to update password
           if (account[0].first_login){
             // If user has logged in for the first time, redirect to update password page
-            //alert("You have logged in for the first time. You will be redirected to change your password");
+            
             this.notify("logged in for the first time", "You have logged in for the first time. You are required to change your password.")
             console.log("Test the button!")
             this.router.navigate(["/update_password"]);
           } else {
             // If user has logged in before, direct to web page based on role
             this.role = account[0].role;
-            // console.log(this.role);
 
             if (this.role=="instructor"){
                 // Redirect to instructor page
-                // console.log("teacher's page");
+            
                 this.router.navigate(["instructor/home"]);
               } else if (this.role == "student"){
                 // Redirect to student page

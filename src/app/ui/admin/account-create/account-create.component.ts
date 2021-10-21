@@ -5,6 +5,7 @@ import {ToastrService} from 'ngx-toastr';
 import {CrudService} from '../../../core/services/crud.service';
 import {Account, Role} from '../../../../app/core/models/account';
 import {Router} from "@angular/router";
+import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-account-create',
@@ -93,7 +94,7 @@ export class AccountCreateComponent implements OnInit {
               school_instrument_level: csvRecord.school_instrument_level.toLowerCase().split(','),
               first_name: csvRecord.first_name,
               last_name: csvRecord.last_name,
-              password: csvRecord.password,
+              password: bcrypt.hashSync(csvRecord.password, 10),
               first_login: true,
               is_delete: false
             };
