@@ -140,7 +140,8 @@ export class UpdatePasswordComponent implements OnInit {
   }
 
   notify(title:string,message:string) {
-    message = "<h1> Notification Alert! </h1> <h2>" + message + "</h2> <p> please click here to close </p>"
+    title = "Notification"
+    message = "<h4>" + message + "</h4> <p> please click here to close </p>"
     this.toastr.info(message,title,{
       easeTime: 0,
       positionClass: 'toast-top-full-width',
@@ -152,7 +153,7 @@ export class UpdatePasswordComponent implements OnInit {
   }
 
   error(title:string,message:string) {
-    message = "<h1>" + message + "</h1>" 
+    message = "<h4>" + message + "</h4>" 
     this.toastr.error(message,title,{
       easeTime: 0,
       positionClass: 'toast-top-full-width',
@@ -162,7 +163,7 @@ export class UpdatePasswordComponent implements OnInit {
   }
 
   success(title:string,message:string) {
-    message = "<h1>" + message + "</h1>" 
+    message = "<h4>" + message + "</h4>" 
     this.toastr.success(message,title,{
       easeTime: 0,
       positionClass: 'toast-top-full-width',

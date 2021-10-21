@@ -104,19 +104,21 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
     if(data.school_instrument_level[0] == "-"){
       data.school_instrument_level[0] = "NA";
     }
-    var account: Account = {
-      docId: data.docId,
-      username: data.username,
-      role: data.role,
-      school: data.school,
-      school_instrument_level: data.school_instrument_level,
-      first_name: data.first_name,
-      last_name: data.last_name,
-      password: data.password,
-      first_login: data.first_login,
-      is_delete: data.is_delete
-    };
-    this.accounts.push(account);
+    if(!data.is_delete){
+      var account: Account = {
+        docId: data.docId,
+        username: data.username,
+        role: data.role,
+        school: data.school,
+        school_instrument_level: data.school_instrument_level,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        password: data.password,
+        first_login: data.first_login,
+        is_delete: data.is_delete
+      };
+      this.accounts.push(account);
+    }
   }
 
    // Method:

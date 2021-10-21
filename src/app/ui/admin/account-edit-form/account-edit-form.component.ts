@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { CrudService } from 'src/app/core/services/crud.service';
 import { Router } from "@angular/router";
 import { first } from 'rxjs/operators';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-account-edit-form',
@@ -27,7 +28,8 @@ export class AccountEditFormComponent implements OnInit {
     private route: ActivatedRoute,
     private crudservice: CrudService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService,
   ){}
 
   ngOnInit(): void {
@@ -83,6 +85,9 @@ export class AccountEditFormComponent implements OnInit {
 
   async edit() {
     // let username = this.editForm.value.username;
+
+    console.log(this.editForm.value);
+
     let firstName = this.editForm.value.first_name;
     let lastName = this.editForm.value.last_name;
     let role = this.editForm.value.role;
@@ -107,21 +112,44 @@ export class AccountEditFormComponent implements OnInit {
         this.crudservice.update("accounts", this.docId, {"role": role});
       }
 
-
       if(school!='') {
-        this.crudservice.update("accounts", this.docId, {"school": school});
+        if(Array.isArray(school) == false) {
+          let arr = [];
+          arr.push(school);
+          this.crudservice.update("accounts", this.docId, {"school": arr});
+        } else {
+          this.crudservice.update("accounts", this.docId, {"school": school});
+        }
       }
+
+      console.log(schoolInstrumentLevel);
 
       if(schoolInstrumentLevel!='') {
-        let delimit = schoolInstrumentLevel.split(","); // it's an array
-        this.crudservice.update("accounts", this.docId, {"school_instrument_level": delimit});
-        // check if the entry follows the sch_inst_lvl format!
-      }
+        if(Array.isArray(schoolInstrumentLevel) == false) {
+          let arr = [];
+          arr.push(schoolInstrumentLevel);
+          schoolInstrumentLevel = arr;
+        }
 
+        let result = [];
+
+        for(let i=0; i<schoolInstrumentLevel.length; i++) {
+          // check for number of _
+          if (schoolInstrumentLevel[i].match(/_/g).length == 2) {
+            // check if the entry follows the sch_inst_lvl format!
+            // make all lowercase alphabet
+            result.push(schoolInstrumentLevel[i].toLowerCase());
+          } else {
+            console.log("Error: Number of underscores is higher or lower than 2!");
+          }
+        }
+        this.crudservice.update("accounts", this.docId, {"school_instrument_level": result});
+      }
+      this.toastrService.success('Updated account details successfully!', '', {positionClass: 'toast-top-center'});
       this.router.navigate(['/admin/account/edit']);
 
     } catch(e) {
-      // console.log(e);
+      console.log(e);
     }
   }
 

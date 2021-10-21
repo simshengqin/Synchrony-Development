@@ -121,7 +121,7 @@
         Please insert an assignment title!
       </mat-error>
 
-      <br><button type="submit">Add Class</button>
+      <br><button mdbBtn color="info" type="submit">Add Class</button>
 
       <br>
       <label for = "description"> Assignment Description: </label>
@@ -139,7 +139,7 @@
       </div>
 
       <br>
-      <button [disabled]="!createAssignmentButtonClickable" class="create_assignment" (click)="createAssignment()">Create Assignment</button>
+      <button mdbBtn color="success" [disabled]="!createAssignmentButtonClickable" class="create_assignment" (click)="createAssignment()">Create Assignment</button>
     </form>
 
 

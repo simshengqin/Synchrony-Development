@@ -10,6 +10,7 @@ import { CrudService } from 'src/app/core/services/crud.service';
 import { Router } from '@angular/router';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-assignment-create',
@@ -52,7 +53,8 @@ export class AssignmentCreateComponent implements OnInit {
     private fb: FormBuilder,
     private afStorage: AngularFireStorage,
     private crudService: CrudService,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService,
   ) {
   }
 
@@ -183,7 +185,8 @@ export class AssignmentCreateComponent implements OnInit {
       // .then(()=>this.updateAssignment())
       // .catch(()=>this.toastr.error("Unable to Upload Assignment!"))
     }
-    alert('Assignment has been created!');
+    this.toastrService.success('Assignment has been created!', '', {positionClass: 'toast-top-center'});
+
     this.router.navigate(['/instructor/home']);
   }
 

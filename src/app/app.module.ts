@@ -89,6 +89,8 @@ import {DropzoneComponent} from "./shared/components/dropzone/dropzone.component
 import { AssignmentEditIndividualComponent } from './ui/instructor/assignment-edit-individual/assignment-edit-individual.component';
 import {ConfirmModalComponent} from './shared/components/confirm-modal/confirm-modal.component';
 import { AccountEditFormComponent } from './ui/admin/account-edit-form/account-edit-form.component';
+import { AdminActivityLogIndividualComponent } from './ui/admin/admin-activity-log-individual/admin-activity-log-individual.component';
+import { AdminActivityLogComponent } from './ui/admin/admin-activity-log/admin-activity-log.component';
 // import {VideoPlayerComponent} from './shared/components/video-player/video-player.component';
 
 @NgModule({
@@ -120,7 +122,9 @@ import { AccountEditFormComponent } from './ui/admin/account-edit-form/account-e
     DropzoneComponent,
     AssignmentEditIndividualComponent,
     ConfirmModalComponent,
-    AccountEditFormComponent
+    AccountEditFormComponent,
+    AdminActivityLogIndividualComponent,
+    AdminActivityLogComponent
   ],
   imports: [
     BrowserModule,
