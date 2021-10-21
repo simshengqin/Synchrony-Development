@@ -166,6 +166,8 @@
           <!-- routerLink="/instructor/assignment/edit/assignment/{{ element.docId }}" -->
           <button *ngIf="actionType=='wage'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/admin/activitylog/instructor/{{ element.key }}"> View Activity Log </button>
 
+          <button *ngIf="actionType=='instructorActivityLog'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/instructor/activitylog/{{ element.key }}"> View Activity Log </button>
+
           <button *ngIf="actionType=='instructorAssignmentEdit'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/instructor/assignment/edit/assignment/{{ element.docId }}"> Edit </button>
 
           <app-dialog-box *ngIf="actionType=='instructorAssignmentEdit' && element.canDelete == true" [actionType]="actionType" [docid]="element.docId" [assignmentName]="element.name"></app-dialog-box>

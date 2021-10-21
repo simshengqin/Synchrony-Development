@@ -12,22 +12,28 @@ import { first } from 'rxjs/operators';
 })
 export class AssignmentEditComponent implements OnInit {
 
+  // instructor information 
   account!:Account;
   accountDocId!:string;
   instructorSchools:string[]=[];
+  
+  // set filter data for user selection
+  assignmentStatus:string[] = ["Assignments without submissions","Assignments with submissions"];
+  viewMyAssignment:string[] = ["My assignments"]
   sub_schools:string[]=[]
   sub_instrument:string[]=[];
   sub_levels:string[]=[];
   
+  // boolean display information
   sub_display_instrument:boolean = false
   sub_display_levels:boolean = false
 
   // set filter name
-  assignmentStatus:string[] = ["new assignment(s)","assignment(s) with submission status"];
   nameSchool:string = "School"
   nameInstrument:string = "Instrument"
   nameLevels:string = "Levels"
   nameStatus:string = "Assignment Status"
+  nameViewAssignment:string = "My assignments"
   
   // get filter data
   select_Combine_SchoolInstrumentLevels:string[] = [];
@@ -35,11 +41,13 @@ export class AssignmentEditComponent implements OnInit {
   selectSubInstruments:string[] = [];
   selectSubLevels:string[] = [];
   selectAssignmentStatus:string[] = [];
+  selectViewAssignments:string[] = [];
 
   // Mat Table
   dataSource!:any;
   displayedColumns:string[] = ['name', 'due_datetime', 'school_instrument_level', 'action'];
   actionType:string = "instructorAssignmentEdit";
+  
   // Assignment
   assignments:any[]=[];
 
@@ -63,6 +71,12 @@ export class AssignmentEditComponent implements OnInit {
     }
   }
 
+  
+  get_query_data_view_assignment($event:any):void{
+    this.selectViewAssignments = $event.value
+    this.get_all_instructor_assignments()
+  }
+
   // Get filter data by submission status
   get_assignment_statues($event:any):void{
     console.log($event.value)
@@ -77,8 +91,12 @@ export class AssignmentEditComponent implements OnInit {
   async get_all_instructor_assignments(){
     this.dataSource = [];
     this.assignments = [];
-    const data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId).pipe(first()).toPromise()
-    // console.log(data)
+    var data:any[] = []
+    if(this.selectViewAssignments.length > 0){
+      data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId).pipe(first()).toPromise()
+    } else {
+      data = await this.crudservice.read("assignments","school_instrument_level","array-contains-any",this.account.school_instrument_level).pipe(first()).toPromise()
+    }
     for(var ele of data){
       var canDelete = true
       const checkAssignmentSubmission = await this.crudservice.read("assignment_submissions","assignment_doc_id","==",ele.docId).pipe(first()).toPromise()
@@ -88,12 +106,12 @@ export class AssignmentEditComponent implements OnInit {
       if(this.selectAssignmentStatus.length == 0){
         this.create_assignment(ele,canDelete)
       } else {
-        if (this.selectAssignmentStatus.indexOf("new assignment(s)")!=-1) {
+        if (this.selectAssignmentStatus.indexOf("Assignments without submissions")!=-1) {
           if(canDelete){
             this.create_assignment(ele,canDelete)
           }
         }
-        if (this.selectAssignmentStatus.indexOf("assignment(s) with submission status")!=-1){
+        if (this.selectAssignmentStatus.indexOf("Assignments with submissions")!=-1){
           if(!canDelete){
             this.create_assignment(ele,canDelete)
           }
@@ -205,7 +223,12 @@ export class AssignmentEditComponent implements OnInit {
   // Method: 
   async filtering_by_school_instrument_levels(filter:string[]){
     this.assignments = [];
-    const data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId,"school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
+    var data:any[] = []
+    if(this.selectViewAssignments.length > 0){
+      data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId,"school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
+    } else {
+      data = await this.crudservice.read("assignments","school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
+    }
     for(var ele of data){
       var canDelete = true
       const checkAssignmentSubmission = await this.crudservice.read("assignment_submissions","assignment_doc_id","==",ele.docId).pipe(first()).toPromise()
@@ -215,12 +238,12 @@ export class AssignmentEditComponent implements OnInit {
       if(this.selectAssignmentStatus.length == 0){
         this.create_assignment(ele,canDelete)
       } else {
-        if (this.selectAssignmentStatus.indexOf("new assignment(s)")!=-1) {
+        if (this.selectAssignmentStatus.indexOf("Assignments without submissions")!=-1) {
           if(canDelete){
             this.create_assignment(ele,canDelete)
           }
         }
-        if (this.selectAssignmentStatus.indexOf("assignment(s) with submission status")!=-1){
+        if (this.selectAssignmentStatus.indexOf("Assignments with submissions")!=-1){
           if(!canDelete){
             this.create_assignment(ele,canDelete)
           }

@@ -3,8 +3,8 @@
         <!-- <img [src]="imgsrc" class="card-image-top"><br> -->
         <h2 class="card-title">{{title}}</h2>
         <h4 class="card-text">{{description}}</h4>
-        <a *ngIf="userRole=='admin'" [href]="href" class="btn btn-primary stretched-link">{{title}}</a>
-        <a *ngIf="userRole=='instructor'" [href]="href" class="btn btn-secondary ripple-surface stretched-link">{{title}}</a>
-        <a *ngIf="userRole=='student'" [href]="href" class="btn btn-warning stretched-link">{{title}}</a>
+        <a *ngIf="userRole=='admin'" mdbBtn color="primary" [href]="href" class="btn btn-primary stretched-link">{{title}}</a>
+        <a *ngIf="userRole=='instructor'" mdbBtn color="secondary" [href]="href" class="btn btn-secondary ripple-surface stretched-link">{{title}}</a>
+        <a *ngIf="userRole=='student'" mdbBtn color="warning" [href]="href" class="btn btn-warning stretched-link">{{title}}</a>
     </div>
 </div>

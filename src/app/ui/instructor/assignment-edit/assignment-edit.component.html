@@ -3,6 +3,7 @@
     
     <h1 class="mb-3"> Edit Assignment </h1>
     <app-input-dropdown-select [inputDataList]="assignmentStatus" [name]="nameStatus" (outputData)="get_assignment_statues($event)"></app-input-dropdown-select>
+    <app-input-dropdown-select [inputDataList]="viewMyAssignment" [name]="nameViewAssignment" (outputData)="get_query_data_view_assignment($event)"></app-input-dropdown-select>
     <br>
     <ng-container><app-input-dropdown-select [inputDataList]="sub_schools" [name]="nameSchool" (outputData)="get_query_data_sub_schools($event)"></app-input-dropdown-select></ng-container>
     <ng-container *ngIf="sub_display_instrument"><app-input-dropdown-select [inputDataList]="sub_instrument" [name]="nameInstrument" (outputData)="get_query_data_sub_instruments($event)"></app-input-dropdown-select></ng-container>

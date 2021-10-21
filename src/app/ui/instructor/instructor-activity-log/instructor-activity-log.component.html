@@ -1,0 +1,13 @@
+<app-header></app-header>
+<div class="account-create-wrapper wrapper-padding">
+  <h1 class="mb-3">My Activity Log</h1>
+ 
+  <!-- <app-input-dropdown-select [inputDataList]="roles" [name]="nameRole"  (outputData)="get_query_data_roles($event)"></app-input-dropdown-select>
+  <br>
+  <ng-container><app-input-dropdown-select [inputDataList]="sub_schools" [name]="nameSchool" (outputData)="get_query_data_sub_schools($event)"></app-input-dropdown-select></ng-container>
+  <ng-container *ngIf="sub_display_instrument"><app-input-dropdown-select [inputDataList]="sub_instrument" [name]="nameInstrument" (outputData)="get_query_data_sub_instruments($event)"></app-input-dropdown-select></ng-container>
+  <ng-container *ngIf="sub_display_levels"><app-input-dropdown-select [inputDataList]="sub_levels" [name]="nameLevels" (outputData)="get_query_data_sub_levels($event)"></app-input-dropdown-select></ng-container>
+  <br> -->
+  
+  <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType"></app-table>
+</div>

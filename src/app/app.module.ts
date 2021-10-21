@@ -91,6 +91,8 @@ import {ConfirmModalComponent} from './shared/components/confirm-modal/confirm-m
 import { AccountEditFormComponent } from './ui/admin/account-edit-form/account-edit-form.component';
 import { AdminActivityLogIndividualComponent } from './ui/admin/admin-activity-log-individual/admin-activity-log-individual.component';
 import { AdminActivityLogComponent } from './ui/admin/admin-activity-log/admin-activity-log.component';
+import { InstructorActivityLogComponent } from './ui/instructor/instructor-activity-log/instructor-activity-log.component';
+import { InstructorActivityLogIndividualComponent } from './ui/instructor/instructor-activity-log-individual/instructor-activity-log-individual.component';
 // import {VideoPlayerComponent} from './shared/components/video-player/video-player.component';
 
 @NgModule({
@@ -124,7 +126,9 @@ import { AdminActivityLogComponent } from './ui/admin/admin-activity-log/admin-a
     ConfirmModalComponent,
     AccountEditFormComponent,
     AdminActivityLogIndividualComponent,
-    AdminActivityLogComponent
+    AdminActivityLogComponent,
+    InstructorActivityLogComponent,
+    InstructorActivityLogIndividualComponent
   ],
   imports: [
     BrowserModule,
