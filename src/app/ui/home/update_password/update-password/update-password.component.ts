@@ -98,8 +98,8 @@ export class UpdatePasswordComponent implements OnInit {
 
         if (account.length==0 || !bcrypt.compareSync(this.loginForm.value.password, account[0].password)){
           // username and password does not exist on the database or password fails 
-          console.log("Login denied");
-          console.log(bcrypt.compareSync(this.loginForm.value.password, account[0].password));
+          // console.log("Login denied");
+          // console.log(bcrypt.compareSync(this.loginForm.value.password, account[0].password));
           this.isValidUsernamePasswordCombi = false;
 
           // Next, validate if password matches 
@@ -134,7 +134,7 @@ export class UpdatePasswordComponent implements OnInit {
         }
       })
     } else {
-      this.error("Your update has been rejected","Your update has been rejected. Please see the error message or seek the the SynChrony team for more information.")
+      this.isValidUsernamePasswordCombi = false;
       }
     }
   }
