@@ -9,6 +9,9 @@ import Timestamp = firebase.firestore.Timestamp;
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import { Assignment } from 'src/app/core/models/assignment';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+
 
 @Component({
   selector: 'app-instructor-activity-log-individual',
@@ -28,6 +31,7 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
   dataSource = [];
   displayedColumns:string[] = ['name', 'first_name', 'last_name','feedback_datetime', 'minutes'];
 
+  display_accumulated_time:number = 0; // display_accumulated_time will change constantly 
   accumulated_time:number = 0;
 
   // filter
@@ -60,7 +64,7 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
 
     this.instructor_data = await this.crudservice.readByDocId('accounts',this.instructor_id).pipe(first()).toPromise();
     this.instructor_name = this.instructor_data.first_name + " " + this.instructor_data.last_name
-    this.instructor_school = this.school[0];
+    this.instructor_school = this.school[0].toUpperCase();
 
     const data = await this.crudservice.read('wages', 'instructor_account_doc_id', '==', this.instructor_id, 'school', 'array-contains-any', this.school).pipe(first()).toPromise();
     for (var wage of data){
@@ -71,6 +75,7 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
       //this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData)
       this.activity_logs.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData,assignmentData))
     }
+    this.display_accumulated_time = this.accumulated_time
     this.dataSource = this.activity_logs;
   }
 
@@ -78,22 +83,26 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
     var date = this.convert_date(wage.feedback_datetime)
     var time = this.convert_time(wage.feedback_datetime)
     var date_filter = this.convert_datefilter(wage.feedback_datetime)
-    var minutes = (Math.round((wage.seconds / 60) * 1000) / 1000).toFixed(3);
-    this.accumulated_time += parseFloat(minutes)
+    //var minutes = (Math.round((wage.seconds / 60) * 1000) / 1000).toFixed(3);
+    var minutes = parseFloat((wage.seconds / 60).toFixed(3))
+    //this.accumulated_time += parseFloat(minutes)
+    this.accumulated_time += minutes
 
     let data:any = {
       date_filter: date_filter,
+      date: date,
       //feedback_date: wage.feedback_datetime,
       feedback_datetime: wage.feedback_datetime,
       //assignment_submission_doc_id: wage.assignment_submission_doc_id,
       //minutes: minutes + " mins"
       //seconds: wage.seconds,
-      seconds: (Math.round((wage.seconds) * 1000) / 1000).toFixed(3),
+      //seconds: (Math.round((wage.seconds) * 1000) / 1000).toFixed(3),
+      //seconds: parseFloat(Math.round(wage.seconds).toFixed(3)),
+      seconds: parseFloat(wage.seconds.toFixed(3)),
       first_name: student.first_name,
       last_name: student.last_name,
       name: assignmentData.name
     }
-
     return data
   }
 
@@ -132,21 +141,24 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
     }
   }
 
+  // Method: get the year filter result
   get_query_data_year($event:any):void{
     this.selectedYears = $event.value
     this.query_table_with_filter()
   }
 
+  // Method: get the month filter result
   get_query_data_month($event:any):void{
     this.selectedMonths = $event.value
     this.query_table_with_filter()
   }
 
+  // Method: Query the Database
   query_table_with_filter(){
     var result:any = []
     this.query_by_year_month = []
     if(this.selectedYears.length !=0 && this.selectedMonths.length !=0){
-      this.accumulated_time = 0;
+      this.display_accumulated_time = 0;
       for(var year of this.selectedYears){
         for(var month of this.selectedMonths){
           console.log(year + "-" + month)
@@ -156,13 +168,16 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
       for (var ele of this.activity_logs){
         for(var query of this.query_by_year_month)
         if(ele["date_filter"] == query){
-          this.accumulated_time += parseFloat((Math.round((ele["seconds"]  / 60) * 1000) / 1000).toFixed(3))
+          //this.accumulated_time += parseFloat((Math.round((ele["seconds"]  / 60) * 1000) / 1000).toFixed(3))
+          this.display_accumulated_time += parseFloat((ele["seconds"] / 60).toFixed(3));
           result.push(ele)
         }
       }
       this.dataSource = result;
     } else{
-      this.get_activity_log()
+      //this.get_activity_log()
+      this.dataSource = this.activity_logs
+      this.display_accumulated_time = this.accumulated_time
     }
   }
 
@@ -176,10 +191,59 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
     return strNum
   }
 
+  // Method: Reset global variables
   private reset(){
+    this.display_accumulated_time = 0;
     this.accumulated_time = 0;
     this.activity_logs = [];
     this.dataSource = [];
+  }
+
+  // Method: Create PDF
+  createPdf() {
+    
+    var filter_result = ""
+    if (this.query_by_year_month.length == 0){
+      filter_result = "All"
+    } else {
+      var index = 0;
+      for(var ele of this.query_by_year_month){
+        if(index > 0){
+          filter_result += ", " + ele
+        } else {
+          filter_result += ele
+        }
+      }
+    }
+    
+    var doc = new jsPDF();
+    doc.setFontSize(14);
+    doc.text('ACTIVITY LOG: ' + this.instructor_name + ", " + this.instructor_school.toUpperCase() + " (" + filter_result + ")" + " ACCUMULATED TIME: " + this.display_accumulated_time + "Mins", 11, 8);
+    doc.setFontSize(8);
+    doc.setTextColor(100);
+
+    let headerData:any[] = [["No.","Assignment Name", "Student Name", "Student Surname", "Feedback Date", "Duration(Minutes)"]];
+    let bodyData:any[] = this.getBodyPDF();
+    
+    (doc as any).autoTable({
+      head: headerData,
+      body: bodyData,
+      theme: 'plain',
+      didDrawCell: data => {
+        console.log(data.column.index)
+      }
+    })
+    doc.save("Activity Log - " + this.instructor_name + " - " + this.instructor_school + ".pdf")
+  }
+  // Method: manipulate PDF Body result
+  private getBodyPDF(){
+    var result:any[] = []
+    var index:number = 0;
+    for(var ele of this.dataSource){
+      index += 1
+      result.push([ index, ele["name"], ele["first_name"], ele["last_name"], ele["date"], parseFloat((ele["seconds"] / 60).toFixed(3)) ])
+    }
+    return result
   }
 
 }
