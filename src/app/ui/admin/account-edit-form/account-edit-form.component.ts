@@ -86,11 +86,11 @@ export class AccountEditFormComponent implements OnInit {
   async edit() {
     // let username = this.editForm.value.username;
 
-    console.log(this.editForm.value);
+    // console.log(this.editForm.value);
 
     let firstName = this.editForm.value.first_name;
     let lastName = this.editForm.value.last_name;
-    let role = this.editForm.value.role;
+    // let role = this.editForm.value.role;
     let school = this.editForm.value.school;
     let schoolInstrumentLevel = this.editForm.value.school_instrument_level;
 
@@ -108,9 +108,9 @@ export class AccountEditFormComponent implements OnInit {
         this.crudservice.update("accounts", this.docId, {"last_name": lastName});
       }
 
-      if(role!='') {
-        this.crudservice.update("accounts", this.docId, {"role": role});
-      }
+      // if(role!='') {
+      //   this.crudservice.update("accounts", this.docId, {"role": role});
+      // }
 
       if(school!='') {
         if(Array.isArray(school) != true) {
