@@ -113,21 +113,15 @@ export class AccountEditFormComponent implements OnInit {
       }
 
       if(school!='') {
-        if(Array.isArray(school) == false) {
-          let arr = [];
-          arr.push(school);
+        if(Array.isArray(school) != true) {
+          let arr = school.split(",");
           this.crudservice.update("accounts", this.docId, {"school": arr});
-        } else {
-          this.crudservice.update("accounts", this.docId, {"school": school});
         }
       }
 
-      console.log(schoolInstrumentLevel);
-
       if(schoolInstrumentLevel!='') {
-        if(Array.isArray(schoolInstrumentLevel) == false) {
-          let arr = [];
-          arr.push(schoolInstrumentLevel);
+        if(Array.isArray(schoolInstrumentLevel) != true) {
+          let arr = schoolInstrumentLevel.split(",");
           schoolInstrumentLevel = arr;
         }
 

@@ -49,11 +49,11 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   populateTable(): void{
-    console.log(this.dataSource);
+    // console.log(this.dataSource);
     this.matTableDataSource = new MatTableDataSource(this.dataSource);
     this.matTableDataSource.paginator = this.paginator;
     this.matTableDataSource.sort = this.sort;
-    console.log(this.matTableDataSource);
+    // console.log(this.matTableDataSource);
   }
 
   applyFilter(event: Event): void {
