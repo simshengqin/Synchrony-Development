@@ -156,7 +156,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
       instructor_account_doc_id: this.loggedInAccount.docId,
       assignment_submission_doc_id: this.assignmentSubmission.docId,
       feedback_datetime: Timestamp.fromDate(new Date()),
-      seconds: (new Date().getTime() - this.startDatetime.getTime()) / 1000,
+      seconds: parseFloat(((new Date().getTime() - this.startDatetime.getTime()) / 1000).toFixed(3)),
       // seconds: (Date().getTime() - this.secondst2.getTime()) / 1000;
       school: this.assignmentSubmission.school
     };
