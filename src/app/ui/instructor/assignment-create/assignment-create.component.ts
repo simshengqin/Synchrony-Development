@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 import {ToastrService} from "ngx-toastr";
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-assignment-create',
@@ -55,6 +56,7 @@ export class AssignmentCreateComponent implements OnInit {
     private crudService: CrudService,
     private router: Router,
     private toastrService: ToastrService,
+    private sharedService:SharedService
   ) {
   }
 
@@ -62,7 +64,7 @@ export class AssignmentCreateComponent implements OnInit {
     this.initForm();
 
     // Populate school dropdown list
-    this.sessionAccount = JSON.parse(sessionStorage.getItem('account')!);
+    this.sessionAccount = JSON.parse(this.sharedService.getAccount()!);
     // console.log(this.sessionAccount);
     this.schoolOptions = this.sessionAccount.school;
     // console.log(this.schoolOptions);

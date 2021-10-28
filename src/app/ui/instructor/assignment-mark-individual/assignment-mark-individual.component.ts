@@ -18,6 +18,8 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {ConfirmModalComponent} from '../../../shared/components/confirm-modal/confirm-modal.component';
 import {Wage} from "../../../core/models/wage";
 // import {VideoPlayerComponent} from '../../../shared/components/video-player/video-player.component';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
+
 @Component({
   selector: 'app-assignment-mark-individual',
   templateUrl: './assignment-mark-individual.component.html',
@@ -56,13 +58,14 @@ export class AssignmentMarkIndividualComponent implements OnInit {
     // private httpClient: HttpClient,
     private afStorage: AngularFireStorage,
     private crudService: CrudService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private sharedService: SharedService
   ) {
 
   }
   async ngOnInit(): Promise<void> {
     this.startDatetime = new Date ();
-    this.loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
+    this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
     this.assignmentSubmission = await this.crudService.readByDocId(
       'assignment_submissions', this.assignmentSubmissionDocId).pipe(first()).toPromise();
     this.assignment = await this.crudService.readByDocId(

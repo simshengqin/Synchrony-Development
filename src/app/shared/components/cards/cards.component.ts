@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-cards',
@@ -15,15 +16,17 @@ export class CardsComponent implements OnInit {
   userRole!: any;
   accountDetail!:any;
 
-  constructor() { }
+  constructor(
+    private sharedservice:SharedService,
+  ) { }
 
   ngOnInit(): void {
     this.validate_session()
   }
 
   validate_session(): void {
-    if(sessionStorage.getItem('account') != null){
-      this.accountDetail = JSON.parse(sessionStorage.getItem('account'));
+    if(JSON.parse(this.sharedservice.getAccount()) != null){
+      this.accountDetail = JSON.parse(this.sharedservice.getAccount());
       this.userRole = this.accountDetail.role;
     }
   }

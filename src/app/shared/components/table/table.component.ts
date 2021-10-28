@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import {Router} from "@angular/router";
 import {CrudService} from "../../../core/services/crud.service";
 import {Account} from "../../../core/models/account";
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-table',
@@ -38,6 +39,7 @@ export class TableComponent implements OnInit, OnChanges {
   constructor(
     private router: Router,
     private crudService: CrudService,
+    private sharedService: SharedService
   ) { }
 
   ngOnChanges(): void {
@@ -90,13 +92,17 @@ export class TableComponent implements OnInit, OnChanges {
     console.log(event);
   }
 
+  onClickPassParameter(route:string, data:any): void {
+    this.sharedService.setComponentParameter(data);
+    this.router.navigate([route]);
+  }
 
-  onSubmitClick(assignmentDocId: string): void {
+  /* onSubmitClick(assignmentDocId: string): void {
     this.router.navigate(['student/assignment/submit'], { queryParams: { assignmentDocId }});
-  }
-  onFeedbackClick(assignmentSubmissionDocId: string): void {
+  } */
+  /* onFeedbackClick(assignmentSubmissionDocId: string): void {
     this.router.navigate(['student/assignment/feedback'], { queryParams: { assignmentSubmissionDocId }});
-  }
+  } */ 
   onMarkClick(assignmentSubmissionDocId: string): void {
     this.router.navigate(['instructor/assignment/mark'], { queryParams: { assignmentSubmissionDocId }});
   }

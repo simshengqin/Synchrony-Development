@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
 import * as bcrypt from 'bcryptjs';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 
 @Component({
@@ -30,13 +31,17 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private crudservice: CrudService,
     private router:Router,
-    private toastr:ToastrService
+    private toastr:ToastrService,
+    private sharedservice:SharedService
     ) { }
 
   ngOnInit(): void {
     // Initialize formbuilder
     this.initForm();
     sessionStorage.clear()
+    this.sharedservice.reset()
+    console.log(this.sharedservice.getAccount())
+    console.log(this.sharedservice.getComponentParameter())
   }
 
   initForm(): void{
@@ -89,7 +94,8 @@ export class LoginComponent implements OnInit {
           delete account[0].password;
 
           // Store account details as session
-          sessionStorage.setItem('account', JSON.stringify(account[0]));
+          //sessionStorage.setItem('account', JSON.stringify(account[0]));
+          this.sharedservice.setAccount(JSON.stringify(account[0]))
 
           // Check if account has been deleted 
           if (account[0].is_delete){

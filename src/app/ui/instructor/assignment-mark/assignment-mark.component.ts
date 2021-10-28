@@ -7,6 +7,7 @@ import {Account} from "../../../core/models/account";
 import {TranslateService} from "@ngx-translate/core";
 import {DatePipe} from "@angular/common";
 import {Assignment} from "../../../core/models/assignment";
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-assignment-mark',
@@ -45,15 +46,16 @@ export class AssignmentMarkComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private crudService: CrudService,
     private translateService: TranslateService,
+    private sharedService: SharedService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
+    this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
     // const dataSource = await this.crudService.read('assignment_submissions').pipe(first()).toPromise();
     // console.log(dataSource);
     this.translateService.use('en');
     const datePipe = new DatePipe(this.translateService.currentLang);
-    const loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
+    const loggedInAccount = JSON.parse(this.sharedService.getAccount());
     this.activatedRoute.queryParams.subscribe(async params => {
       this.assignmentSubmissionDocId = params.assignmentSubmissionDocId;
       this.assignmentSubmissions = await this.crudService.read('assignment_submissions',

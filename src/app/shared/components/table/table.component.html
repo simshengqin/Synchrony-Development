@@ -162,26 +162,31 @@
             <app-dialog-box *ngIf="actionType=='accountEdit'" [actionType]="actionType" [docid]="element.docId" [username]="element.username" (click)="test(element)"></app-dialog-box>
           </ng-container>
 
-          <!-- <app-dialog-box *ngIf="actionType=='wage'" [actionType]="actionType"></app-dialog-box> -->
-          <!-- routerLink="/instructor/assignment/edit/assignment/{{ element.docId }}" -->
-          <button *ngIf="actionType=='wage'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/admin/activitylog/instructor/{{ element.key }}"> View Activity Log </button>
+          <!-- <button *ngIf="actionType=='adminActivityLog'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/admin/activitylog/instructor/{{ element.key }}"> View Activity Log </button> -->
+          <button *ngIf="actionType=='adminActivityLog'" type="button" mdbBtn color="info" mdbWavesEffect (click)="onClickPassParameter('/admin/activitylog/instructor/', element.key)"> View Activity Log </button>
 
-          <button *ngIf="actionType=='instructorActivityLog'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/instructor/activitylog/{{ element.key }}"> View Activity Log </button>
+          <!-- <button *ngIf="actionType=='instructorActivityLog'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/instructor/activitylog/{{ element.key }}"> View Activity Log </button> -->
+          <button *ngIf="actionType=='instructorActivityLog'" type="button" mdbBtn color="info" mdbWavesEffect (click)="onClickPassParameter('/instructor/activitylog/school/', element.key)"> View Activity Log </button>
 
-          <button *ngIf="actionType=='instructorAssignmentEdit'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/instructor/assignment/edit/assignment/{{ element.docId }}"> Edit </button>
+          <!-- <button *ngIf="actionType=='instructorAssignmentEdit'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/instructor/assignment/edit/assignment/{{ element.docId }}"> Edit </button> -->
+          <button *ngIf="actionType=='instructorAssignmentEdit'" type="button" mdbBtn color="info" mdbWavesEffect (click)="onClickPassParameter('/instructor/assignment/edit/assignment/', element.docId)"> Edit </button>
 
           <app-dialog-box *ngIf="actionType=='instructorAssignmentEdit' && element.canDelete == true" [actionType]="actionType" [docid]="element.docId" [assignmentName]="element.name"></app-dialog-box>
 
-          <button *ngIf="actionType=='assignmentSubmit'" type="button" mdbBtn color="info" rounded="true" (click)="onSubmitClick(element.docId)" mdbWavesEffect>
+          <!-- <button *ngIf="actionType=='assignmentSubmit'" type="button" mdbBtn color="info" rounded="true" (click)="onSubmitClick(element.docId)" mdbWavesEffect>
+            {{element.submission_status == 'Pending Submission' ? "Submit" : "Resubmit"}} </button> -->
+          <button *ngIf="actionType=='assignmentSubmit'" type="button" mdbBtn color="info" rounded="true" (click)="onClickPassParameter('student/assignment/submit', element.docId)" mdbWavesEffect>
             {{element.submission_status == 'Pending Submission' ? "Submit" : "Resubmit"}} </button>
 
+
           <ng-container *ngIf="actionType=='assignmentView'">
-            <button *ngIf="!element.isOverDueDate" type="button" mdbBtn color="info" rounded="true" (click)="onSubmitClick(element.docId)" mdbWavesEffect>
-              {{element.submission_status == 'Pending Submission' ? "Submit" : "Resubmit"}} </button>
-            <button *ngIf="element.assignmentSubmission?.feedback_datetime != null" type="button" mdbBtn color="info" rounded="true" (click)="onFeedbackClick(element.assignmentSubmission.docId)" mdbWavesEffect>
+            <button *ngIf="!element.isOverDueDate" type="button" mdbBtn color="info" rounded="true" (click)="onClickPassParameter('student/assignment/submit', element.docId)" mdbWavesEffect>
+              {{element.submission_status == 'Pending Submission' ? "Submit" : "Resubmit"}} </button> 
+            <button *ngIf="element.assignmentSubmission?.feedback_datetime != null" type="button" mdbBtn color="info" rounded="true" (click)="onClickPassParameter('student/assignment/feedback', element.assignmentSubmission.docId)" mdbWavesEffect>
               View Feedback </button>
           </ng-container>
 
+          <!-- onClickPassParameter('instructor/assignment/mark' , element.docId) -->
           <button *ngIf="actionType=='assignmentMark'" type="button" mdbBtn color="info" rounded="true" (click)="onMarkClick(element.docId)" mdbWavesEffect>
             {{element.feedback_datetime == null ? "Mark" : "Re-mark"}} </button>
 

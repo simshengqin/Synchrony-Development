@@ -11,6 +11,7 @@ import {ToastrService} from 'ngx-toastr';
 import { Assignment } from 'src/app/core/models/assignment';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 
 @Component({
@@ -50,6 +51,7 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
     private router: Router,
     private crudservice:CrudService,
     private toastr: ToastrService,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +60,9 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
 
   async get_activity_log() {
     this.reset()
-    const key = this.route.snapshot.paramMap.get('key');
+    //const key = this.route.snapshot.paramMap.get('key');
+    const key = this.sharedService.getComponentParameter();
+    console.log(key)
     this.instructor_id = key.split("_")[0]
     this.school.push(key.split("_")[1])
 

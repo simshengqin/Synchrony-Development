@@ -19,7 +19,7 @@ export class AdminActivityLogComponent implements OnInit {
   displayedColumns:string[] = ['first_name', 'last_name', 'school_abbreviation', 'action'];
   // displayedColumns:string[] = ['first_name', 'last_name' , 'month', 'number_of_minutes', 'school_abbreviation', 'year'];
   //displayedColumns:string[] = ['month', 'number_of_minutes', 'school_abbreviation', 'year'];
-  actionType:string = "wage";
+  actionType:string = "adminActivityLog";
   @ViewChild('app-table') appTable: ElementRef | undefined;
   
   // set filter data

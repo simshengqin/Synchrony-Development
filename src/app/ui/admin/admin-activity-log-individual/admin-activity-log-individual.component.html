@@ -2,7 +2,7 @@
 <div class="account-create-wrapper wrapper-padding">
   <h1 class="mb-3"> Activity Log: {{instructor_name}} / {{instructor_school}}</h1>
   <br>
-  <h4 class="mb-6"> Accumulated time: {{ accumulated_time }} mins </h4>
+  <h4 class="mb-6"> Accumulated time: {{ display_accumulated_time }} mins </h4>
   <h4 class="mb-6" *ngIf="query_by_year_month.length == 0"> Filtered by: All </h4>
   <h4 class="mb-6" *ngIf="query_by_year_month.length != 0"> Filtered by: {{query_by_year_month}}</h4>
   <br>

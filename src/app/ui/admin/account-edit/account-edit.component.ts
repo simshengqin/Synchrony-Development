@@ -7,6 +7,7 @@ import { TableComponent } from 'src/app/shared/components/table/table.component'
 import { Account } from '../../../core/models/account';
 import { first } from 'rxjs/operators';
 import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-account-edit',
@@ -58,12 +59,13 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   selectSubLevels:string[] = [];
 
   constructor(
-    private crudservice:CrudService
+    private crudservice:CrudService,
+    private sharedService:SharedService
   ) { }
 
   ngOnInit(): void {
     this.retrieve_all_accounts();
-    this.accountDetail = JSON.parse(sessionStorage.getItem("account")!);
+    this.accountDetail = JSON.parse(this.sharedService.getAccount()!);
     this.accountUsername = this.accountDetail.username
   }
 

@@ -19,6 +19,7 @@ import {AssignmentSubmission} from '../../../core/models/assignment-submission';
 import {AngularFireStorage} from '@angular/fire/storage';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-assignment-submit-individual',
@@ -43,33 +44,31 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
     private router: Router,
     private toastrService: ToastrService,
     private afStorage: AngularFireStorage,
+    private sharedService: SharedService
   ) { }
 
-  ngOnInit(): void {
-    this.loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
-    this.activatedRoute.queryParams.subscribe(async params => {
-      this.assignmentDocId = params.assignmentDocId;
-      this.assignment = await this.crudService.readByDocId('assignments', params.assignmentDocId)
-        .pipe(first())
-        .toPromise();
-      // this.assignment = await this.assignmentService.getAssignment(this.assignmentDocId)
-      //   .pipe(first())
-      //   .toPromise();
-      // const assignmentSubmission: Array<AssignmentSubmission> =
-      const data = await this.crudService.read('assignment_submissions',
-        'student_doc_id', '==', this.loggedInAccount.docId,
-        'assignment_doc_id', '==', this.assignment.docId).pipe(first()).toPromise();
-      if (data && data.length > 0) {
-        this.assignmentSubmission = data[0];
-      }
-      // this.assignmentSubmissionService.getAssignmentSubmissionsByStudentAndAssignment(
-      //   localStorage.getItem('activeDocId'), this.assignmentDocId)
-      //   .subscribe(async (assignmentSubmissions) => {
-      //   this.assignmentSubmission = assignmentSubmissions[assignmentSubmissions.length - 1];
-      // console.log(this.assignmentSubmission);
-      // });
-    });
-
+  async ngOnInit(): Promise<void> {
+    this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
+    this.assignmentDocId = this.sharedService.getComponentParameter();
+    this.assignment = await this.crudService.readByDocId('assignments', this.assignmentDocId)
+      .pipe(first())
+      .toPromise();
+    // this.assignment = await this.assignmentService.getAssignment(this.assignmentDocId)
+    //   .pipe(first())
+    //   .toPromise();
+    // const assignmentSubmission: Array<AssignmentSubmission> =
+    const data = await this.crudService.read('assignment_submissions',
+      'student_doc_id', '==', this.loggedInAccount.docId,
+      'assignment_doc_id', '==', this.assignment.docId).pipe(first()).toPromise();
+    if (data && data.length > 0) {
+      this.assignmentSubmission = data[0];
+    }
+    // this.assignmentSubmissionService.getAssignmentSubmissionsByStudentAndAssignment(
+    //   localStorage.getItem('activeDocId'), this.assignmentDocId)
+    //   .subscribe(async (assignmentSubmissions) => {
+    //   this.assignmentSubmission = assignmentSubmissions[assignmentSubmissions.length - 1];
+    // console.log(this.assignmentSubmission);
+    // });
   }
   onGoBackClick(assignment: Assignment): void {
     this.router.navigate(['student/assignment/view']);
