@@ -10,7 +10,7 @@ export class InstructorHomeComponent implements OnInit {
   newTitle: string = "New Assignment";
   editTitle: string = "Edit Assignment";
   markTitle: string = "Mark Assignment";
-  activityTitle: string = "My Activity"
+  activityTitle: string = "My Activity Log"
 
   createStudentDescription: string = "Create new accounts for students.";
   newDescription: string = "Create new assignments for students to complete.";
