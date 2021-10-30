@@ -7,9 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminHomeComponent implements OnInit {
 
-  createTitle: string = "Account Create";
-  editTitle: string = "Account Edit";
-  deleteTitle: string = "Account Delete";
+  createTitle: string = "Account & Grouping Creation";
+  editTitle: string = "Edit Account & Grouping";
+  deleteTitle: string = "Delete Account";
   activityTitle: string = "Activity Log";
 
   createDescription: string = "Create new user accounts by uploading .csv files.";
