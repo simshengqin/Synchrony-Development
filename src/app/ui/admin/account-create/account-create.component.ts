@@ -128,21 +128,21 @@ export class AccountCreateComponent implements OnInit {
                 this.errors.push('Row ' + i + ' has illegal values for role column (Only student is accepted)');
               }
             }
-            if (accounts.length > 0) {
-              this.errors.push('Row ' + i + ' \'s username (' + account.username + ') is already taken');
-            }
+            // if (accounts.length > 0) {
+            //   this.errors.push('Row ' + i + ' \'s username (' + account.username + ') is already taken');
+            // }
             if (account.password.length > 0 && account.password.length < 5) {
               this.errors.push('Row ' + i + ' does not meet the minimum length requirement for password (5)');
             }
             // Stop the creation/updating of ALL accounts as long as there is a problem with 1 of the account
             if (this.errors.length === 0) {
               await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
-              // if (accounts.length === 0) {
-              //   // console.log(account);
-              //   await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
-              // } else {
-              //   await this.crudService.update('accounts', accounts[0].docId, account);
-              // }
+              if (accounts.length === 0) {
+                // console.log(account);
+                await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
+              } else {
+                await this.crudService.update('accounts', accounts[0].docId, account);
+              }
             }
             i++;
           }
