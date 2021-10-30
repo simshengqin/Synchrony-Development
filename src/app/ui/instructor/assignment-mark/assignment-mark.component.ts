@@ -32,7 +32,6 @@ export class AssignmentMarkComponent implements OnInit {
   // filterActions?: Array<FilterAction> = [FilterAction.assignment_school, FilterAction.assignment_group, FilterAction.assignment_feedback];
   assignmentSubmissions: Array<AssignmentSubmission>;
   // instructorDocId = localStorage.getItem('activeDocId');
-  assignmentSubmissionDocId: '';
   // @ViewChild(CommonTableComponent) commonTableComponent: CommonTableComponent;
   schoolOptions: string[] = [];
   instrumentOptions: string[] = [];
@@ -51,40 +50,38 @@ export class AssignmentMarkComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
+    console.log(this.loggedInAccount)
     // const dataSource = await this.crudService.read('assignment_submissions').pipe(first()).toPromise();
     // console.log(dataSource);
     this.translateService.use('en');
     const datePipe = new DatePipe(this.translateService.currentLang);
     const loggedInAccount = JSON.parse(this.sharedService.getAccount());
-    this.activatedRoute.queryParams.subscribe(async params => {
-      this.assignmentSubmissionDocId = params.assignmentSubmissionDocId;
+    
       this.assignmentSubmissions = await this.crudService.read('assignment_submissions',
         'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();
       const filteredAssignmentSubmissions = [];
       for (const assignmentSubmission of this.assignmentSubmissions) {
-
-        assignmentSubmission.assignment = await this.crudService.readByDocId(
-          'assignments', assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
-        if (assignmentSubmission.assignment == null || new Date() < assignmentSubmission.assignment.due_datetime.toDate()) { continue; }
-        assignmentSubmission.assignment_name = assignmentSubmission.assignment?.name;
-        assignmentSubmission.student = await this.crudService.readByDocId(
-          'accounts', assignmentSubmission.student_doc_id).pipe(first()).toPromise();
-        assignmentSubmission.student_name = assignmentSubmission.student.first_name + ' ' +
-          assignmentSubmission.student.last_name;
-        assignmentSubmission.submission_status = 'Last submitted on ' +
-          datePipe.transform(assignmentSubmission.submitted_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
-        assignmentSubmission.feedback_status = 'Not reviewed';
-        if (assignmentSubmission.feedback_datetime != null) {
-          assignmentSubmission.feedback_status = 'Last marked on ' +
-            datePipe.transform(assignmentSubmission.feedback_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
-        }
-        filteredAssignmentSubmissions.push(assignmentSubmission);
+      assignmentSubmission.assignment = await this.crudService.readByDocId(
+        'assignments', assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
+      if (assignmentSubmission.assignment == null || new Date() < assignmentSubmission.assignment.due_datetime.toDate()) { continue; }
+      assignmentSubmission.assignment_name = assignmentSubmission.assignment?.name;
+      assignmentSubmission.student = await this.crudService.readByDocId(
+        'accounts', assignmentSubmission.student_doc_id).pipe(first()).toPromise();
+      assignmentSubmission.student_name = assignmentSubmission.student.first_name + ' ' +
+        assignmentSubmission.student.last_name;
+      assignmentSubmission.submission_status = 'Last submitted on ' +
+        datePipe.transform(assignmentSubmission.submitted_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
+      assignmentSubmission.feedback_status = 'Not reviewed';
+      if (assignmentSubmission.feedback_datetime != null) {
+        assignmentSubmission.feedback_status = 'Last marked on ' +
+          datePipe.transform(assignmentSubmission.feedback_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
       }
-      this.assignmentSubmissions = filteredAssignmentSubmissions;
-      this.dataSource = this.assignmentSubmissions;
-      this.updateSelectOptions();
-      // console.log(this.dataSource);
-    });
+      filteredAssignmentSubmissions.push(assignmentSubmission);
+    }
+    this.assignmentSubmissions = filteredAssignmentSubmissions;
+    this.dataSource = this.assignmentSubmissions;
+    this.updateSelectOptions();
+    // console.log(this.dataSource);
   }
   filterData($event: any, type: string): void {
     // console.log($event.value);

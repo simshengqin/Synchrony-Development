@@ -19,6 +19,7 @@ import { InstructorHomeComponent } from './ui/instructor/instructor-home/instruc
 import { AssignmentCreateComponent } from './ui/instructor/assignment-create/assignment-create.component';
 import { AssignmentEditComponent } from './ui/instructor/assignment-edit/assignment-edit.component';
 import { AssignmentMarkComponent } from './ui/instructor/assignment-mark/assignment-mark.component';
+import { AssignmentMarkIndividualComponent } from './ui/instructor/assignment-mark-individual/assignment-mark-individual.component';
 import { AssignmentEditIndividualComponent } from './ui/instructor/assignment-edit-individual/assignment-edit-individual.component';
 import { InstructorActivityLogComponent } from './ui/instructor/instructor-activity-log/instructor-activity-log.component';
 import { InstructorActivityLogIndividualComponent } from './ui/instructor/instructor-activity-log-individual/instructor-activity-log-individual.component';
@@ -112,6 +113,11 @@ const routes: Routes = [{
       path: 'instructor/assignment/mark',
       pathMatch: 'full',
       component: AssignmentMarkComponent
+    },
+    {
+    path: 'instructor/assignment/mark/individual',
+    pathMatch: 'full',
+    component: AssignmentMarkIndividualComponent
     },
     {
       path: 'instructor/activitylog',

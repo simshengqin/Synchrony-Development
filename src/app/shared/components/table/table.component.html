@@ -190,7 +190,7 @@
           </ng-container>
 
           <!-- onClickPassParameter('instructor/assignment/mark' , element.docId) -->
-          <button *ngIf="actionType=='assignmentMark'" type="button" mdbBtn color="info" rounded="true" (click)="onMarkClick(element.docId)" mdbWavesEffect>
+          <button *ngIf="actionType=='assignmentMark'" type="button" mdbBtn color="info" rounded="true" (click)="onClickPassParameter('instructor/assignment/mark/individual', element.docId)" mdbWavesEffect>
             {{element.feedback_datetime == null ? "Mark" : "Re-mark"}} </button>
 
         </td>

@@ -18,11 +18,11 @@ export class InstructorHomeComponent implements OnInit {
   markDescription: string = "Mark or re-mark assignment submissions by students.";
   activityDescription: string = "View my activity logs, based on graded feedback on student."
 
-  createStudentLink: string = "instructor/account/create";
-  newLink: string = "instructor/assignment/create";
-  editLink: string = "instructor/assignment/edit";
-  markLink: string = "instructor/assignment/mark";
-  activityLink: string = "instructor/activitylog";
+  createStudentLink: string = "/instructor/account/create/";
+  newLink: string = "/instructor/assignment/create/";
+  editLink: string = "/instructor/assignment/edit/";
+  markLink: string = "/instructor/assignment/mark/";
+  activityLink: string = "/instructor/activitylog/";
 
   constructor() { }
 

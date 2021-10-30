@@ -17,10 +17,10 @@ export class AdminHomeComponent implements OnInit {
   deleteDescription: string = "Delete existing user accounts to remove user access to this application.";
   activityDescription: string = "Access the activity log for instuctors.";
 
-  createLink: string = "admin/account/create";
-  editLink: string = "admin/account/edit";
-  deleteLink: string = "admin/account/delete";
-  activityLink: string = "admin/activitylog";
+  createLink: string = "/admin/account/create/";
+  editLink: string = "/admin/account/edit/";
+  deleteLink: string = "/admin/account/delete/";
+  activityLink: string = "/admin/activitylog/";
 
   constructor() { }
 

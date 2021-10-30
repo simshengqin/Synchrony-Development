@@ -28,7 +28,7 @@ import { SharedService } from 'src/app/core/services/sharedservice.service';
 export class AssignmentMarkIndividualComponent implements OnInit {
   loggedInAccount: Account;
   @ViewChild(ConfirmModalComponent) confirmModalComponent: ConfirmModalComponent;
-  @Input() assignmentSubmissionDocId: string;
+  assignmentSubmissionDocId: string;
   assignmentSubmission: AssignmentSubmission;
   assignment: Assignment;
   student: Account;
@@ -64,6 +64,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
 
   }
   async ngOnInit(): Promise<void> {
+    this.assignmentSubmissionDocId = this.sharedService.getComponentParameter();
     this.startDatetime = new Date ();
     this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
     this.assignmentSubmission = await this.crudService.readByDocId(
