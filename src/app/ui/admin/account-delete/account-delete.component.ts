@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { TableComponent } from 'src/app/shared/components/table/table.component';
 import { Account } from '../../../core/models/account';
 import { first } from 'rxjs/operators';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 
 @Component({
@@ -59,12 +60,12 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
 
   constructor(
     private crudservice:CrudService,
-    
+    private sharedservice:SharedService
   ) { }
 
   ngOnInit(): void {
     this.retrieve_all_accounts();
-    this.accountDetail = JSON.parse(sessionStorage.getItem("account")!);
+    this.accountDetail = JSON.parse(this.sharedservice.getAccount()!);
     this.accountUsername = this.accountDetail.username
   }
 

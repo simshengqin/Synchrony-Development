@@ -78,7 +78,7 @@ const routes: Routes = [{
       component: AdminActivityLogComponent
     },
     {
-      path: 'admin/activitylog/instructor/:key',
+      path: 'admin/activitylog/instructor',
       pathMatch: 'full',
       component: AdminActivityLogIndividualComponent
     },
@@ -104,7 +104,7 @@ const routes: Routes = [{
       component: AssignmentEditComponent
     },
     {
-      path: 'instructor/assignment/edit/assignment/:docId',
+      path: 'instructor/assignment/edit/assignment',
       pathMatch: 'full',
       component: AssignmentEditIndividualComponent
     },
@@ -119,7 +119,7 @@ const routes: Routes = [{
       component: InstructorActivityLogComponent
     },
     {
-      path: 'instructor/activitylog/:key',
+      path: 'instructor/activitylog/school',
       pathMatch: 'full',
       component: InstructorActivityLogIndividualComponent
     },

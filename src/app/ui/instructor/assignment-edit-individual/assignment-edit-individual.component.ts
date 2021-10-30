@@ -15,9 +15,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormControl } from '@angular/forms';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
-import { validateBasis } from '@angular/flex-layout';
-
-
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-assignment-edit-individual',
@@ -93,6 +91,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
     //private afStorage: AngularFireStorage,
     private fb: FormBuilder,
     private toastr: ToastrService,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
@@ -102,8 +101,8 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   // Get the account information
   get_account_information(): void {
-    if(sessionStorage.getItem('account') != null){
-      this.account = JSON.parse(sessionStorage.getItem('account'));
+    if(JSON.parse(this.sharedService.getAccount()) != null){
+      this.account = JSON.parse(this.sharedService.getAccount());
       this.accountDocId = this.account.docId;
       this.instructorSchools = this.account.school;
       this.addSchoolInstrumentsLevels = true
@@ -113,7 +112,9 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   // Get the assignment information
   async get_assignment_information() {
-    const assignmentid = this.route.snapshot.paramMap.get('docId');
+    //const assignmentid = this.route.snapshot.paramMap.get('docId');
+    const assignmentid = this.sharedService.getComponentParameter();
+    console.log(assignmentid)
     this.assignmentDocId = assignmentid;
     const data = await this.crudservice.readByDocId('assignments', assignmentid).pipe(first()).toPromise();
     this.assignment = data

@@ -6,6 +6,7 @@ import {CrudService} from '../../../core/services/crud.service';
 import {AssignmentSubmission} from '../../../core/models/assignment-submission';
 import {DatePipe} from '@angular/common';
 import {TranslateService} from '@ngx-translate/core';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-assignment-view',
@@ -25,10 +26,11 @@ export class AssignmentViewComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private crudservice: CrudService,
     private translateService: TranslateService,
+    private sharedService:SharedService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    const loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
+    const loggedInAccount = JSON.parse(this.sharedService.getAccount());
     // console.log(loggedInAccount);
     this.assignments = await this.crudservice.read('assignments',
     'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();

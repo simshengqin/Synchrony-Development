@@ -93,6 +93,7 @@ import { AdminActivityLogIndividualComponent } from './ui/admin/admin-activity-l
 import { AdminActivityLogComponent } from './ui/admin/admin-activity-log/admin-activity-log.component';
 import { InstructorActivityLogComponent } from './ui/instructor/instructor-activity-log/instructor-activity-log.component';
 import { InstructorActivityLogIndividualComponent } from './ui/instructor/instructor-activity-log-individual/instructor-activity-log-individual.component';
+import { SharedService } from './core/services/sharedservice.service';
 // import {VideoPlayerComponent} from './shared/components/video-player/video-player.component';
 
 @NgModule({
@@ -191,7 +192,7 @@ import { InstructorActivityLogIndividualComponent } from './ui/instructor/instru
     VgOverlayPlayModule,
     VgBufferingModule
   ],
-  providers: [],
+  providers: [SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

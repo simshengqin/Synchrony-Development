@@ -3,6 +3,7 @@ import { Wage } from 'src/app/core/models/wage';
 import { Account } from 'src/app/core/models/account';
 import { first } from 'rxjs/operators';
 import { CrudService } from 'src/app/core/services/crud.service'; 
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-instructor-activity-log',
@@ -21,7 +22,9 @@ export class InstructorActivityLogComponent implements OnInit {
   actionType:string = "instructorActivityLog"
 
   constructor(
-    private crudservice:CrudService) 
+    private crudservice:CrudService,
+    private sharedService:SharedService
+    ) 
     { }
 
   ngOnInit(): void {
@@ -30,7 +33,7 @@ export class InstructorActivityLogComponent implements OnInit {
   }
 
   get_instrustor_account_details(){
-    this.instrustor = JSON.parse(sessionStorage.getItem("account")!);
+    this.instrustor = JSON.parse(this.sharedService.getAccount()!);
   }
 
   async retrieve_wage(){

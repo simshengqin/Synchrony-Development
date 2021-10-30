@@ -10,6 +10,7 @@ import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 // import {ActivatedRoute, Router} from '@angular/router';
 // import {Assignment} from '../../../core/models/assignment';
 // import {AssignmentService} from '../../../core/services/assignment.service';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-assignment-feedback-individual',
@@ -28,11 +29,11 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
     private router: Router,
     private crudService: CrudService,
     private domSanitizer: DomSanitizer,
+    private sharedService: SharedService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.activatedRoute.queryParams.subscribe(async params => {
-      this.assignmentSubmissionDocId = params.assignmentSubmissionDocId;
+      this.assignmentSubmissionDocId = this.sharedService.getComponentParameter();
       this.assignmentSubmission = await this.crudService.readByDocId(
         'assignment_submissions', this.assignmentSubmissionDocId).pipe(first()).toPromise();
       this.assignment = await this.crudService.readByDocId(
@@ -46,8 +47,6 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
       //   .pipe(first())
       //   .toPromise();
       // console.log(this.assignmentSubmission);
-    });
-
   }
   onGoBackClick(): void {
     this.router.navigate(['student/assignment/view']);

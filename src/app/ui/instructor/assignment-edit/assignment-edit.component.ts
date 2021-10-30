@@ -4,6 +4,7 @@ import { TableComponent } from 'src/app/shared/components/table/table.component'
 import { Account } from '../../../core/models/account';
 import { Assignment } from '../../../core/models/assignment'
 import { first } from 'rxjs/operators';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-assignment-edit',
@@ -52,7 +53,9 @@ export class AssignmentEditComponent implements OnInit {
   assignments:any[]=[];
 
   constructor(
-    private crudservice:CrudService) 
+    private crudservice:CrudService,
+    private sharedService:SharedService
+    ) 
     { }
 
   ngOnInit(): void {
@@ -61,8 +64,8 @@ export class AssignmentEditComponent implements OnInit {
 
   // Get the account doc Id
   get_account_information(): void {
-    if(sessionStorage.getItem('account') != null){
-      this.account = JSON.parse(sessionStorage.getItem('account'));
+    if(JSON.parse(this.sharedService.getAccount()) != null){
+      this.account = JSON.parse(this.sharedService.getAccount());
       this.accountDocId = this.account.docId;
       this.instructorSchools = this.account.school;
       //console.log(this.accountDocId);

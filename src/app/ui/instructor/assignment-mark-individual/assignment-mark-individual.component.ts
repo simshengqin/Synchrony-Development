@@ -18,6 +18,8 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {ConfirmModalComponent} from '../../../shared/components/confirm-modal/confirm-modal.component';
 import {Wage} from "../../../core/models/wage";
 // import {VideoPlayerComponent} from '../../../shared/components/video-player/video-player.component';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
+
 @Component({
   selector: 'app-assignment-mark-individual',
   templateUrl: './assignment-mark-individual.component.html',
@@ -56,13 +58,14 @@ export class AssignmentMarkIndividualComponent implements OnInit {
     // private httpClient: HttpClient,
     private afStorage: AngularFireStorage,
     private crudService: CrudService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private sharedService: SharedService
   ) {
 
   }
   async ngOnInit(): Promise<void> {
     this.startDatetime = new Date ();
-    this.loggedInAccount = JSON.parse(sessionStorage.getItem('account'));
+    this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
     this.assignmentSubmission = await this.crudService.readByDocId(
       'assignment_submissions', this.assignmentSubmissionDocId).pipe(first()).toPromise();
     this.assignment = await this.crudService.readByDocId(
@@ -156,7 +159,7 @@ export class AssignmentMarkIndividualComponent implements OnInit {
       instructor_account_doc_id: this.loggedInAccount.docId,
       assignment_submission_doc_id: this.assignmentSubmission.docId,
       feedback_datetime: Timestamp.fromDate(new Date()),
-      seconds: (new Date().getTime() - this.startDatetime.getTime()) / 1000,
+      seconds: parseFloat(((new Date().getTime() - this.startDatetime.getTime()) / 1000).toFixed(3)),
       // seconds: (Date().getTime() - this.secondst2.getTime()) / 1000;
       school: this.assignmentSubmission.school
     };

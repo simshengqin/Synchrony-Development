@@ -57,7 +57,9 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
               "./node_modules/wavesurfer.js/dist/wavesurfer.js",
-              "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.regions.js"
+              "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.regions.js",
+              "node_modules/jspdf/dist/jspdf.node.min.js",
+              "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
             ]
           },
           "configurations": {

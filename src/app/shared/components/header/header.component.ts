@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-header',
@@ -11,9 +12,11 @@ export class HeaderComponent implements OnInit {
   url!: string;
   userRole!: any;
   accountDetail!:any;
+  account!:any;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private sharedservice:SharedService
   ) { }
 
   ngOnInit(): void {
@@ -22,21 +25,13 @@ export class HeaderComponent implements OnInit {
   }
 
   validate_session(): void {
-    if(sessionStorage.getItem('account') != null){
-      this.accountDetail = JSON.parse(sessionStorage.getItem('account'));
+    if(JSON.parse(this.sharedservice.getAccount()) != null){
+      this.accountDetail = JSON.parse(this.sharedservice.getAccount());
       this.userRole = this.accountDetail.role;
-      // console.log(this.accountDetail);
+      console.log(this.userRole);
     }else {
       this.router.navigate(['/login']);
     }
-    /* // === to be deleted (KIV) === //
-    if(sessionStorage.getItem('role') != undefined || sessionStorage.getItem('role') != null){
-        this.userRole = sessionStorage.getItem('role')
-        console.log(this.userRole)
-    } else {
-        this.router.navigate(['/login'])
-    }
-    */
   }
 
 }
