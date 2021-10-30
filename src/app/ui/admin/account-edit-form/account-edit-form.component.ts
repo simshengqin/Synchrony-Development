@@ -5,6 +5,7 @@ import { CrudService } from 'src/app/core/services/crud.service';
 import { Router } from "@angular/router";
 import { first } from 'rxjs/operators';
 import {ToastrService} from "ngx-toastr";
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-account-edit-form',
@@ -30,21 +31,20 @@ export class AccountEditFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private toastrService: ToastrService,
+    private sharedService:SharedService
   ){}
 
-  ngOnInit(): void {
-
-    this.route.queryParams.subscribe(params => {
-      let data = params;
-      this.docId = data.docId;
-      this.username = data.username;
-      this.first_name = data.first_name;
-      this.last_name = data.last_name;
-      this.role = data.role;
-      this.school = data.school;
-      this.school_instrument_level = data.school_instrument_level
-      this.selectedItem = data.role;
-    })
+  async ngOnInit() {
+    var docid = this.sharedService.getComponentParameter()
+    const data = await this.crudservice.readByDocId('accounts',docid).pipe(first()).toPromise();
+    this.docId = data.docId;
+    this.username = data.username;
+    this.first_name = data.first_name;
+    this.last_name = data.last_name;
+    this.role = data.role;
+    this.school = data.school;
+    this.school_instrument_level = data.school_instrument_level
+    this.selectedItem = data.role;
     this.initForm();
   }
 
