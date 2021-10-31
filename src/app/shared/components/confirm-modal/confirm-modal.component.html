@@ -46,7 +46,8 @@
 <!--          <p> e. The username should not be taken </p>-->
           <p> e. The password should be at least 5 characters long </p>
           <p> f. The role should only be 1 of these 3 values: admin, instructor, student </p>
-
+          <p> g. If the account's username already exists, the account's info will be auto overriden with the newly uploaded info. However, roles of existing
+          users cannot be changed</p>
         </div>
         <div *ngIf="title == 'Student\'s Account Creation Instructions'" class="ml-3">
           <p> a. The file must be .csv format </p>
@@ -55,6 +56,7 @@
           <p> d. Every field values needs to be filled </p>
 <!--          <p> e. The username should not be taken </p>-->
           <p> e. The password should be at least 5 characters long </p>
+          <p> f. Instructors can only upload students with the same school_instrument_level as them (Students can have fewer school_instrument_level then instructors)</p>
         </div>
         <p> 4. Click on the dotted box above and select this newly created file  </p>
         <p> 5. Click the upload button </p>
@@ -67,6 +69,9 @@
         <p> 3. Enable screen sharing/camera permissions </p>
         <p> 4. The recording will begin. Pause when necessary. </p>
         <p> 5. After recording, press stop and click submit feedback to send it to the respective student</p>
+        <hr>
+        <h4> Text feedback without recording </h4>
+        <p> Alternatively, choose "No recording" for recording option to submit text feedback without recording screen/video</p>
         <hr>
         <h4> Student attachments </h4>
         <div class="form-text" >
