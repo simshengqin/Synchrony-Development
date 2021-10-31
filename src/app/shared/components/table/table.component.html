@@ -158,7 +158,7 @@
             <app-dialog-box *ngIf="actionType=='accountDelete'" [actionType]="actionType" [docid]="element.docId" [username]="element.username"></app-dialog-box>
           </ng-container>
 
-          <button *ngIf="actionType=='accountEdit'" type="button" mdbBtn color="info" mdbWavesEffect (click)="onClickPassParameter('/admin/account/edit/form', element.key)"></button>
+          <button *ngIf="actionType=='accountEdit'" type="button" mdbBtn color="info" mdbWavesEffect (click)="onClickPassParameter('/admin/account/edit/form/', element.docId)"> Edit </button>
 
           <!-- <button *ngIf="actionType=='adminActivityLog'" type="button" mdbBtn color="info" mdbWavesEffect routerLink="/admin/activitylog/instructor/{{ element.key }}"> View Activity Log </button> -->
           <button *ngIf="actionType=='adminActivityLog'" type="button" mdbBtn color="info" mdbWavesEffect (click)="onClickPassParameter('/admin/activitylog/instructor/', element.key)"> View Activity Log </button>
