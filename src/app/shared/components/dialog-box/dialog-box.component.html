@@ -1,6 +1,8 @@
 
 <button *ngIf="actionType=='accountDelete'" type="button" mdbBtn color="danger" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()"  mdbWavesEffect> Delete </button>
 
+<button *ngIf="actionType=='accountEdit'" type="button" mdbBtn color="danger" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()"  mdbWavesEffect> Back </button>
+
 <button *ngIf="actionType=='wage'" type="button" mdbBtn color="info" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()" mdbWavesEffect> View </button>
 
 <button *ngIf="actionType=='instructorAssignmentEdit'" type="button" mdbBtn color="danger" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()" mdbWavesEffect> Delete </button>
@@ -45,7 +47,7 @@
         <div  class="modal-content">
 
             <div class="modal-header">
-                <p class="heading lead"> Edit User ? </p>
+                <p class="heading lead"> Leave this page? </p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
                     <span aria-hidden="true" class="white-text">&times;</span>
                 </button>
@@ -54,13 +56,12 @@
             <div class="modal-body">
                 <div class="text-center">
                     <mdb-icon fas icon="user-alt-slash" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
-                    <p>Are you sure you would want to modify this user <b> {{username}} </b> <br> ? this action cannot be undo </p>
+                    <p>Are you sure you want to leave this page? Changes will not be saved.</p>
                 </div>
             </div>
 
             <div class="modal-footer justify-content-center">
-            <a type="button" mdbBtn color="danger" class="waves-light" (click)="click_to_delete_assignment()" mdbWavesEffect> Confirm
-                <mdb-icon far icon="times-circle" class="ml-1"></mdb-icon>
+            <a type="button" mdbBtn color="danger" class="waves-light" (click)="goBack()" mdbWavesEffect> Confirm
             </a>
             <a type="button" mdbBtn color="primary" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide()"
                 data-dismiss="modal"> Cancel </a>

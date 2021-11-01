@@ -25,6 +25,9 @@ export class AccountEditFormComponent implements OnInit {
 
   editForm!: FormGroup;
 
+  actionType:string = "accountEdit";
+  show = false;
+
   constructor(
     private route: ActivatedRoute,
     private crudservice: CrudService,
@@ -35,8 +38,8 @@ export class AccountEditFormComponent implements OnInit {
   ){}
 
   async ngOnInit() {
-    var docid = this.sharedService.getComponentParameter()
-    const data = await this.crudservice.readByDocId('accounts',docid).pipe(first()).toPromise();
+    var doc = this.sharedService.getComponentParameter()
+    const data = await this.crudservice.readByDocId('accounts',doc).pipe(first()).toPromise();
     this.docId = data.docId;
     this.username = data.username;
     this.first_name = data.first_name;
@@ -143,12 +146,12 @@ export class AccountEditFormComponent implements OnInit {
               // make all lowercase alphabet
               result.push(schoolInstrumentLevel[i].toLowerCase());
             } else {
-              this.toastrService.error("Error: Check the format of school-instrument-level!", '', {positionClass: 'toast-top-center'});
-              return console.log("Error: Check the format of school-instrument-level!");
+              this.toastrService.error("Error: Check the format of School-Instrument-Level!", '', {positionClass: 'toast-top-center'});
+              return console.log("Error: Check the format of School-Instrument-Level!");
             }
           } else {
-            this.toastrService.error("Error: Number of underscores is higher or lower than 2!", '', {positionClass: 'toast-top-center'});
-            return console.log("Error: Number of underscores is higher or lower than 2!");
+            this.toastrService.error("Error: Number of underscores in School-Instrument-Level is higher or lower than 2!", '', {positionClass: 'toast-top-center'});
+            return console.log("Error: Number of underscores in School-Instrument-Level is higher or lower than 2!");
           }
         }
         this.crudservice.update("accounts", this.docId, {"school_instrument_level": result});

@@ -153,6 +153,11 @@ export class DialogBoxComponent implements OnInit {
     this.send_to_parent($event);
   }
 
+  goBack() {
+    console.log("dialogBox");
+    this.router.navigate(['/admin/account/edit']);
+  }
+
   // Method: auto generate a radnom password
   private genPassword(): string{
     const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
