@@ -31,6 +31,7 @@ export class UpdatePasswordComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   account: any;
   firstTime = true;
+  sessionAccount: any;
 
   constructor(
     private fb: FormBuilder,
@@ -42,13 +43,15 @@ export class UpdatePasswordComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // var test = this.sharedservice.getAccount();
-    // test = JSON.parse(test);
-    // console.log(JSON.parse(test));
+    // The user can only enter this page if he or she has logged in before. All logged in accounts are stored in sessions 
+    this.sessionAccount = JSON.parse(this.sharedservice.getAccount());
+    console.log(this.sessionAccount);
     
-    // if(test.length == 0 || test.length == null){
-    //   this.router.navigate(["/login"]);
-    // }
+    // If no session exists, then reroute the user back to the login page 
+    if(this.sessionAccount.username == null){
+      console.log("Reroute triggered")
+      this.router.navigate(["/login"]);
+    }
 
     // Initialize formbuilder
     this.initForm();

@@ -119,6 +119,7 @@ export class LoginComponent implements OnInit {
           // Store account details as session
           //sessionStorage.setItem('account', JSON.stringify(account[0]));
           this.sharedservice.setAccount(JSON.stringify(account[0]));
+          console.log(JSON.parse(this.sharedservice.getAccount()))
 
           // Check if account has been deleted 
           if (account[0].is_delete){
