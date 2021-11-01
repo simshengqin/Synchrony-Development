@@ -9,6 +9,7 @@ export interface Account {
   role: Role;
   first_login: boolean;
   is_delete: boolean;
+  login_fail_count?: number;
 }
 export enum Role {
   admin = 'admin',

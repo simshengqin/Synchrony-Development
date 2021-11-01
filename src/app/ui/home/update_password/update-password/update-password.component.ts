@@ -41,8 +41,16 @@ export class UpdatePasswordComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+
+    // var test = this.sharedservice.getAccount();
+    // test = JSON.parse(test);
+    // console.log(JSON.parse(test));
+    
+    // if(test.length == 0 || test.length == null){
+    //   this.router.navigate(["/login"]);
+    // }
+
     // Initialize formbuilder
-    this.sharedservice.reset()
     this.initForm();
   }
 

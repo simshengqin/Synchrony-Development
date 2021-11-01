@@ -38,10 +38,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     // Initialize formbuilder
     this.initForm();
-    sessionStorage.clear()
+    // sessionStorage.clear()
     this.sharedservice.reset()
-    console.log(this.sharedservice.getAccount())
-    console.log(this.sharedservice.getComponentParameter())
+    // console.log(this.sharedservice.getAccount())
+    // console.log(this.sharedservice.getComponentParameter())
   }
 
   initForm(): void{
@@ -83,23 +83,46 @@ export class LoginComponent implements OnInit {
       this.crudservice.read("accounts","username","==",this.loginForm.value.username).pipe(first()).subscribe(async (account:any) => {
         // console.log(account);
 
-        if (account.length==0 || !bcrypt.compareSync(this.loginForm.value.password, account[0].password)){
+        if (account.length==0){
           // username and password does not exist on the database
           this.isValidUsernamePasswordCombi = false;
 
+        } else if (!bcrypt.compareSync(this.loginForm.value.password, account[0].password)) {
+          // username does exist on the database, but password validation fails
+          // add to counter for failed password attempts 
+          this.isValidUsernamePasswordCombi = false;
+          account[0].login_fail_count += 1;
+
+          if (account[0].login_fail_count == 5){
+            // If account fails password validation 5 times, then it is suspended 
+            account[0].is_delete = true;
+            this.crudservice.update("accounts",account[0].docId, account[0]); 
+          } else if (account[0].login_fail_count < 5){
+            // else, add update to the database to up the login failure count
+            this.crudservice.update("accounts",account[0].docId, account[0]); 
+          }
+
+          // Check if account has been deleted 
+          if (account[0].is_delete){
+            this.error("Account has been suspended","Your account has been suspended. Please seek the admin to reset your account")
+          } 
+          
         } else {
           // Login is successful
+          // Reset login fail counter 
+          account[0].login_fail_count = 0;
+          this.crudservice.update("accounts",account[0].docId, account[0]); 
 
           // Remove password from object
           delete account[0].password;
 
           // Store account details as session
           //sessionStorage.setItem('account', JSON.stringify(account[0]));
-          this.sharedservice.setAccount(JSON.stringify(account[0]))
+          this.sharedservice.setAccount(JSON.stringify(account[0]));
 
           // Check if account has been deleted 
           if (account[0].is_delete){
-            this.error("Account has been deactivated","Account has been deactivated. Please seek the admin to reset your account")
+            this.error("Account has been suspended","Your account has been suspended. Please seek the admin to reset your account")
             return;
           }
 
@@ -107,7 +130,7 @@ export class LoginComponent implements OnInit {
           if (account[0].first_login){
             // If user has logged in for the first time, redirect to update password page
             
-            this.notify("logged in for the first time", "You have logged in for the first time. You are required to change your password.")
+            this.notify("Update Password", "You have logged in for the first time. You are required to change your password.")
             this.router.navigate(["/update_password"]);
           } else {
             // If user has logged in before, direct to web page based on role
