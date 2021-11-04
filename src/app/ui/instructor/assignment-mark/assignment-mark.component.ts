@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {first} from "rxjs/operators";
-import {AssignmentSubmission} from "../../../core/models/assignment-submission";
-import {CrudService} from "../../../core/services/crud.service";
-import {Account} from "../../../core/models/account";
-import {TranslateService} from "@ngx-translate/core";
-import {DatePipe} from "@angular/common";
-import {Assignment} from "../../../core/models/assignment";
+import {first} from 'rxjs/operators';
+import {AssignmentSubmission} from '../../../core/models/assignment-submission';
+import {CrudService} from '../../../core/services/crud.service';
+import {Account} from '../../../core/models/account';
+import {TranslateService} from '@ngx-translate/core';
+import {DatePipe} from '@angular/common';
+import {Assignment} from '../../../core/models/assignment';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
@@ -50,20 +50,22 @@ export class AssignmentMarkComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
-    console.log(this.loggedInAccount)
+    console.log(this.loggedInAccount);
     // const dataSource = await this.crudService.read('assignment_submissions').pipe(first()).toPromise();
     // console.log(dataSource);
     this.translateService.use('en');
     const datePipe = new DatePipe(this.translateService.currentLang);
     const loggedInAccount = JSON.parse(this.sharedService.getAccount());
-    
-      this.assignmentSubmissions = await this.crudService.read('assignment_submissions',
+    this.assignmentSubmissions = await this.crudService.read('assignment_submissions',
         'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();
-      const filteredAssignmentSubmissions = [];
-      for (const assignmentSubmission of this.assignmentSubmissions) {
+    const filteredAssignmentSubmissions = [];
+    for (const assignmentSubmission of this.assignmentSubmissions) {
       assignmentSubmission.assignment = await this.crudService.readByDocId(
         'assignments', assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
-      if (assignmentSubmission.assignment == null || new Date() < assignmentSubmission.assignment.due_datetime.toDate()) { continue; }
+      if (assignmentSubmission.assignment == null || new Date() < assignmentSubmission.assignment.due_datetime.toDate()
+       ||  Math.floor( Math.abs(new Date().getTime() -
+          assignmentSubmission.assignment.due_datetime.toDate().getTime()) / (1000 * 3600 * 24)) > 31
+      ) { continue; }
       assignmentSubmission.assignment_name = assignmentSubmission.assignment?.name;
       assignmentSubmission.student = await this.crudService.readByDocId(
         'accounts', assignmentSubmission.student_doc_id).pipe(first()).toPromise();

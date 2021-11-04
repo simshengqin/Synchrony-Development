@@ -12,7 +12,7 @@ export interface Assignment {
   school: Array<string>;
   school_instrument_level: Array<string>;
   file_names: Array<string>;
-
+  storaged_deleted?: boolean;
   // Not in database, manually created
   assignment_name?: string; // same as name, created for table component
   instructor?: Account;

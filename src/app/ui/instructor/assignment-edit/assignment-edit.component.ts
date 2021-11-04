@@ -13,18 +13,18 @@ import { SharedService } from 'src/app/core/services/sharedservice.service';
 })
 export class AssignmentEditComponent implements OnInit {
 
-  // instructor information 
+  // instructor information
   account!:Account;
   accountDocId!:string;
   instructorSchools:string[]=[];
-  
+
   // set filter data for user selection
   assignmentStatus:string[] = ["Assignments without submissions","Assignments with submissions"];
   viewMyAssignment:string[] = ["My assignments"]
   sub_schools:string[]=[]
   sub_instrument:string[]=[];
   sub_levels:string[]=[];
-  
+
   // boolean display information
   sub_display_instrument:boolean = false
   sub_display_levels:boolean = false
@@ -35,7 +35,7 @@ export class AssignmentEditComponent implements OnInit {
   nameLevels:string = "Levels"
   nameStatus:string = "Assignment Status"
   nameViewAssignment:string = "My assignments"
-  
+
   // get filter data
   select_Combine_SchoolInstrumentLevels:string[] = [];
   selectSubSchools:string[] = [];
@@ -48,14 +48,14 @@ export class AssignmentEditComponent implements OnInit {
   dataSource!:any;
   displayedColumns:string[] = ['name', 'due_datetime', 'school_instrument_level', 'action'];
   actionType:string = "instructorAssignmentEdit";
-  
+
   // Assignment
   assignments:any[]=[];
 
   constructor(
     private crudservice:CrudService,
     private sharedService:SharedService
-    ) 
+    )
     { }
 
   ngOnInit(): void {
@@ -74,7 +74,7 @@ export class AssignmentEditComponent implements OnInit {
     }
   }
 
-  
+
   get_query_data_view_assignment($event:any):void{
     this.selectViewAssignments = $event.value
     this.get_all_instructor_assignments()
@@ -89,18 +89,19 @@ export class AssignmentEditComponent implements OnInit {
     } else {
       this.filtering_by_school_instrument_levels(this.select_Combine_SchoolInstrumentLevels)
     }
-  } 
+  }
 
   async get_all_instructor_assignments(){
     this.dataSource = [];
     this.assignments = [];
-    var data:any[] = []
+    var data: Assignment[] = []
     if(this.selectViewAssignments.length > 0){
       data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId).pipe(first()).toPromise()
     } else {
       data = await this.crudservice.read("assignments","school_instrument_level","array-contains-any",this.account.school_instrument_level).pipe(first()).toPromise()
     }
-    for(var ele of data){
+    const filteredAssignments: Assignment[] = [];
+    for(const ele of data){
       var canDelete = true
       const checkAssignmentSubmission = await this.crudservice.read("assignment_submissions","assignment_doc_id","==",ele.docId).pipe(first()).toPromise()
       if (checkAssignmentSubmission.length > 0){
@@ -120,7 +121,12 @@ export class AssignmentEditComponent implements OnInit {
           }
         }
       }
+      if (Math.floor( Math.abs(new Date().getTime() -
+        ele.due_datetime.toDate().getTime()) / (1000 * 3600 * 24)) <= 31) {
+        filteredAssignments.push(ele);
+      }
     }
+    this.assignments = filteredAssignments;
     this.dataSource = this.assignments;
   }
 
@@ -162,7 +168,7 @@ export class AssignmentEditComponent implements OnInit {
         this.sub_levels.push(level)
       }
     }
-  } 
+  }
 
     // == get filter == //
     get_query_data_sub_schools($event:any):void{
@@ -178,7 +184,7 @@ export class AssignmentEditComponent implements OnInit {
         this.get_all_instructor_assignments();
       }
     }
-  
+
     get_query_data_sub_instruments($event:any):void{
       this.selectSubInstruments = $event.value
       if(this.selectSubInstruments.length == 0){
@@ -187,14 +193,14 @@ export class AssignmentEditComponent implements OnInit {
         this.sub_display_levels = true
       }
     }
-  
+
   get_query_data_sub_levels($event:any):void{
     this.selectSubLevels = $event.value
     this.combine_querry_search_data()
     this.query_table_with_filter()
   }
 
-  // Method: 
+  // Method:
   combine_querry_search_data(){
     this.select_Combine_SchoolInstrumentLevels = [];
     if(this.sub_display_instrument != false && this.sub_display_levels != false){
@@ -212,7 +218,7 @@ export class AssignmentEditComponent implements OnInit {
     }
   }
 
-  // Method: 
+  // Method:
   query_table_with_filter(){
     //var result:Account[] = [];
     //result = this.assignments;
@@ -223,7 +229,7 @@ export class AssignmentEditComponent implements OnInit {
     }
   }
 
-  // Method: 
+  // Method:
   async filtering_by_school_instrument_levels(filter:string[]){
     this.assignments = [];
     var data:any[] = []

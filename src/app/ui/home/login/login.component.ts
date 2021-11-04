@@ -8,6 +8,8 @@ import { first } from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
 import * as bcrypt from 'bcryptjs';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
+import {AngularFireStorage} from '@angular/fire/storage';
+import {environment} from '../../../../environments/environment.prod';
 
 
 @Component({
@@ -30,27 +32,69 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private crudservice: CrudService,
-    private router:Router,
-    private toastr:ToastrService,
-    private sharedservice:SharedService
+    private router: Router,
+    private toastr: ToastrService,
+    private sharedservice: SharedService,
+    private crudService: CrudService,
+    private angularFireStorage: AngularFireStorage,
     ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     // Initialize formbuilder
     this.initForm();
-    sessionStorage.clear()
-    this.sharedservice.reset()
-    console.log(this.sharedservice.getAccount())
-    console.log(this.sharedservice.getComponentParameter())
+    sessionStorage.clear();
+    this.sharedservice.reset();
+    console.log(this.sharedservice.getAccount());
+    console.log(this.sharedservice.getComponentParameter());
+    const assignments = await this.crudservice.read('assignments').pipe(first()).toPromise();
+    for (const assignment of assignments) {
+      const diff = Math.abs(new Date().getTime() - assignment.due_datetime.toDate().getTime());
+      const diffDays = Math.floor(diff / (1000 * 3600 * 24));
+      // console.log( assignment.due_datetime.toDate(), diffDays);
+      if (diffDays > 31 && !assignment.storaged_deleted) {
+        for (const filename of assignment.file_names) {
+          console.log('Deleting from ' + 'gs://' +
+            environment.firebase.storageBucket + '/assignment/' + assignment.docId + '/' + filename);
+          await this.angularFireStorage.storage.refFromURL('gs://' +
+            environment.firebase.storageBucket + '/assignment/' + assignment.docId + '/' + filename).delete();
+        }
+        const assignmentSubmissions = await this.crudservice.read('assignment_submissions',
+          'assignment_doc_id', '==', assignment.docId).pipe(first()).toPromise();
+        console.log(assignmentSubmissions);
+        for (const assignmentSubmission of assignmentSubmissions) {
+          try {
+            console.log('Deleting from ' + 'gs://' +
+              environment.firebase.storageBucket + '/assignment_submissions/' + assignmentSubmission.docId + '/' +
+              assignmentSubmission.student_attachment_scoresheet_name);
+            await this.angularFireStorage.storage.refFromURL('gs://' +
+              environment.firebase.storageBucket + '/assignment_submissions/' + assignmentSubmission.docId + '/' +
+              assignmentSubmission.student_attachment_scoresheet_name).delete();
+            console.log('Deleting from ' + 'gs://' +
+              environment.firebase.storageBucket + '/assignment_submissions/' + assignmentSubmission.docId + '/' +
+              assignmentSubmission.student_attachment_recording_name);
+            await this.angularFireStorage.storage.refFromURL('gs://' +
+              environment.firebase.storageBucket + '/assignment_submissions/' + assignmentSubmission.docId + '/' +
+              assignmentSubmission.student_attachment_recording_name).delete();
+          }
+          catch (error) {
+            console.log(error);
+          }
+
+        }
+        assignment.storaged_deleted = true;
+        this.crudservice.update('assignments', assignment.docId, assignment);
+      }
+
+    }
   }
 
   initForm(): void{
     this.loginForm = this.fb.group({
-      username:["",Validators.required],
-      password:["",Validators.required],
-      //Added to avoid error
-      newPassword:[""]
-    })
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      // Added to avoid error
+      newPassword: ['']
+    });
     // console.log(this.loginForm);
   }
 
@@ -59,8 +103,8 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('username') as FormControl;
   }
 
-  //Added to avoid error
-  get newPassword():FormControl{
+  // Added to avoid error
+  get newPassword(): FormControl{
     return this.loginForm.get('newPassword') as FormControl;
   }
 
@@ -80,10 +124,10 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
 
       // Calling firebase service
-      this.crudservice.read("accounts","username","==",this.loginForm.value.username).pipe(first()).subscribe(async (account:any) => {
+      this.crudservice.read('accounts', 'username', '==', this.loginForm.value.username).pipe(first()).subscribe(async (account: any) => {
         // console.log(account);
 
-        if (account.length==0 || !bcrypt.compareSync(this.loginForm.value.password, account[0].password)){
+        if (account.length == 0 || !bcrypt.compareSync(this.loginForm.value.password, account[0].password)){
           // username and password does not exist on the database
           this.isValidUsernamePasswordCombi = false;
 
@@ -94,47 +138,47 @@ export class LoginComponent implements OnInit {
           delete account[0].password;
 
           // Store account details as session
-          //sessionStorage.setItem('account', JSON.stringify(account[0]));
-          this.sharedservice.setAccount(JSON.stringify(account[0]))
+          // sessionStorage.setItem('account', JSON.stringify(account[0]));
+          this.sharedservice.setAccount(JSON.stringify(account[0]));
 
-          // Check if account has been deleted 
+          // Check if account has been deleted
           if (account[0].is_delete){
-            this.error("Account has been deactivated","Account has been deactivated. Please seek the admin to reset your account")
+            this.error('Account has been deactivated', 'Account has been deactivated. Please seek the admin to reset your account');
             return;
           }
 
           // Check if user has logged in for the first time. If so, redirect to update password
           if (account[0].first_login){
             // If user has logged in for the first time, redirect to update password page
-            
-            this.notify("logged in for the first time", "You have logged in for the first time. You are required to change your password.")
-            this.router.navigate(["/update_password"]);
+
+            this.notify('logged in for the first time', 'You have logged in for the first time. You are required to change your password.');
+            this.router.navigate(['/update_password']);
           } else {
             // If user has logged in before, direct to web page based on role
             this.role = account[0].role;
 
-            if (this.role=="instructor"){
+            if (this.role == 'instructor'){
                 // Redirect to instructor page
-            
-                this.router.navigate(["instructor/home"]);
-              } else if (this.role == "student"){
+
+                this.router.navigate(['instructor/home']);
+              } else if (this.role == 'student'){
                 // Redirect to student page
                 // console.log("student's page")
-                this.router.navigate(["student/assignment/view"]);
-              } else if (this.role == "admin"){
+                this.router.navigate(['student/assignment/view']);
+              } else if (this.role == 'admin'){
                 // console.log("admin page");
-                this.router.navigate(["admin/home"]);
+                this.router.navigate(['admin/home']);
             }
           }
         }
-      })
+      });
     }
   }
 
-  notify(title:string,message:string) {
-    title = "Notification"
-    message = "<h4>" + message + "</h4> <p> please click here to close </p>"
-    this.toastr.info(message,title,{
+  notify(title: string, message: string) {
+    title = 'Notification';
+    message = '<h4>' + message + '</h4> <p> please click here to close </p>';
+    this.toastr.info(message, title, {
       easeTime: 0,
       positionClass: 'toast-top-full-width',
       enableHtml: true,
@@ -144,9 +188,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  error(title:string,message:string) {
-    message = "<h4>" + message + "</h4>" 
-    this.toastr.error(message,title,{
+  error(title: string, message: string) {
+    message = '<h4>' + message + '</h4>';
+    this.toastr.error(message, title, {
       easeTime: 0,
       positionClass: 'toast-top-full-width',
       enableHtml: true,

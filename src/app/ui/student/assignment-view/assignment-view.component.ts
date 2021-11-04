@@ -36,6 +36,7 @@ export class AssignmentViewComponent implements OnInit {
     'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();
     this.translateService.use('en');
     const datePipe = new DatePipe(this.translateService.currentLang);
+    const filteredAssignments = [];
     for (const assignment of this.assignments) {
       assignment.assignment_name = assignment.name;
       assignment.instructor =  await this.crudservice.readByDocId(
@@ -55,7 +56,12 @@ export class AssignmentViewComponent implements OnInit {
       else {
         assignment.submission_status = assignment.isOverDueDate ? 'Missing Submission' : 'Pending Submission';
       }
+      if (Math.floor( Math.abs(new Date().getTime() -
+          assignment.due_datetime.toDate().getTime()) / (1000 * 3600 * 24)) <= 31) {
+        filteredAssignments.push(assignment);
+      }
     }
+    this.assignments = filteredAssignments;
     this.dataSource = this.assignments;
   }
 
