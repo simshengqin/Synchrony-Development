@@ -11,6 +11,7 @@ import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 // import {Assignment} from '../../../core/models/assignment';
 // import {AssignmentService} from '../../../core/services/assignment.service';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-assignment-feedback-individual',
@@ -22,9 +23,13 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
   assignmentSubmissionDocId: string;
   assignment: Assignment;
   videoUrl: SafeResourceUrl;
+
+  security_role_access: string = "student";
+
   constructor(
     // private assignmentSubmissionService: AssignmentSubmissionService,
     // private assignmentService: AssignmentService,
+    private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private crudService: CrudService,
@@ -33,6 +38,13 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
+
+      var loggedInAccount = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access != loggedInAccount.role){
+        this.router.navigate(['/login']);
+        this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
+
       this.assignmentSubmissionDocId = this.sharedService.getComponentParameter();
       this.assignmentSubmission = await this.crudService.readByDocId(
         'assignment_submissions', this.assignmentSubmissionDocId).pipe(first()).toPromise();

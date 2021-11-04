@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
   selector: 'app-admin-home',
@@ -22,9 +25,20 @@ export class AdminHomeComponent implements OnInit {
   deleteLink: string = "/admin/account/delete/";
   activityLink: string = "/admin/activitylog/";
 
-  constructor() { }
+  security_role_access: string = "admin";
+
+  constructor(
+    private router: Router,
+    private toastr: ToastrService,
+    private sharedService: SharedService
+  ) { }
 
   ngOnInit(): void {
+    var accountDetail = JSON.parse(this.sharedService.getAccount()!);
+    if(this.security_role_access != accountDetail.role){
+      this.router.navigate(['/login']);
+      this.toastr.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
   }
 
 }

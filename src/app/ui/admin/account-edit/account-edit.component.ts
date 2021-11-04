@@ -8,6 +8,8 @@ import { Account } from '../../../core/models/account';
 import { first } from 'rxjs/operators';
 import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
+import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-account-edit',
@@ -58,15 +60,23 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   selectSubInstruments:string[] = [];
   selectSubLevels:string[] = [];
 
+  security_role_access: string = "admin";
+
   constructor(
     private crudservice:CrudService,
-    private sharedService:SharedService
+    private sharedService:SharedService,
+    private router: Router,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
     this.retrieve_all_accounts();
     this.accountDetail = JSON.parse(this.sharedService.getAccount()!);
     this.accountUsername = this.accountDetail.username
+    if(this.security_role_access != this.accountDetail.role){
+      this.router.navigate(['/login']);
+      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
   }
 
   ngAfterViewInit(){

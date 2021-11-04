@@ -50,6 +50,8 @@ export class AssignmentCreateComponent implements OnInit {
   createAssignmentButtonClickable = false;
   docIdAfterUpload = '';
 
+  security_role_access_instructor:string = "instructor";
+
   constructor(
     private fb: FormBuilder,
     private afStorage: AngularFireStorage,
@@ -62,7 +64,7 @@ export class AssignmentCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-
+    
     // Populate school dropdown list
     this.sessionAccount = JSON.parse(this.sharedService.getAccount()!);
     // console.log(this.sessionAccount);

@@ -1,12 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {first} from 'rxjs/operators';
 import {Assignment} from '../../../core/models/assignment';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CrudService} from '../../../core/services/crud.service';
 import {AssignmentSubmission} from '../../../core/models/assignment-submission';
 import {DatePipe} from '@angular/common';
 import {TranslateService} from '@ngx-translate/core';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
+import {ToastrService} from 'ngx-toastr';
+
+
 
 @Component({
   selector: 'app-assignment-view',
@@ -22,15 +25,24 @@ export class AssignmentViewComponent implements OnInit {
   submissionStatusOptions: string[] = ['Pending Submission', 'Submitted'];
   selectedCompletionStatusOptions: string[] = [];
   selectedSubmissionStatusOptions: string[] = [];
+
+  security_role_access: string = "student";
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private crudservice: CrudService,
+    private router: Router,
     private translateService: TranslateService,
-    private sharedService:SharedService
+    private sharedService:SharedService,
+    private toastrService: ToastrService,
   ) { }
 
   async ngOnInit(): Promise<void> {
     const loggedInAccount = JSON.parse(this.sharedService.getAccount());
+    if(this.security_role_access != loggedInAccount.role){
+      this.router.navigate(['/login']);
+      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
     // console.log(loggedInAccount);
     this.assignments = await this.crudservice.read('assignments',
     'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();

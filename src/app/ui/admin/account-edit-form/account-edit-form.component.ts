@@ -28,6 +28,8 @@ export class AccountEditFormComponent implements OnInit {
   actionType:string = "accountEdit";
   show = false;
 
+  security_role_access: string = "admin";
+
   constructor(
     private route: ActivatedRoute,
     private crudservice: CrudService,
@@ -38,6 +40,11 @@ export class AccountEditFormComponent implements OnInit {
   ){}
 
   async ngOnInit() {
+    var accountDetail = JSON.parse(this.sharedService.getAccount()!);
+    if(this.security_role_access != accountDetail.role){
+      this.router.navigate(['/login']);
+      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
     var doc = this.sharedService.getComponentParameter()
     const data = await this.crudservice.readByDocId('accounts',doc).pipe(first()).toPromise();
     this.docId = data.docId;

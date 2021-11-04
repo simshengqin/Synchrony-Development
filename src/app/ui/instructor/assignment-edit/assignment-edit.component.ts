@@ -5,6 +5,8 @@ import { Account } from '../../../core/models/account';
 import { Assignment } from '../../../core/models/assignment'
 import { first } from 'rxjs/operators';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
+import {ToastrService} from "ngx-toastr";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assignment-edit',
@@ -52,10 +54,14 @@ export class AssignmentEditComponent implements OnInit {
   // Assignment
   assignments:any[]=[];
 
+  security_role_access: string = "instructor";
+
   constructor(
     private crudservice:CrudService,
-    private sharedService:SharedService
-    )
+    private sharedService:SharedService,
+    private router: Router,
+    private toastrService: ToastrService,
+    ) 
     { }
 
   ngOnInit(): void {
@@ -66,6 +72,10 @@ export class AssignmentEditComponent implements OnInit {
   get_account_information(): void {
     if(JSON.parse(this.sharedService.getAccount()) != null){
       this.account = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access != this.account.role){
+        this.router.navigate(['/login']);
+        this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
       this.accountDocId = this.account.docId;
       this.instructorSchools = this.account.school;
       //console.log(this.accountDocId);

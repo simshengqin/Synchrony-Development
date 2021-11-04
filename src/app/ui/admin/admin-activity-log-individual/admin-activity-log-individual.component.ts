@@ -45,15 +45,22 @@ export class AdminActivityLogIndividualComponent implements OnInit {
   selectedMonths:string[] = [];
   query_by_year_month:string[] = [];
 
+  security_role_access: string = "admin";
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private crudservice:CrudService,
     private toastr: ToastrService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
   ) { }
 
   ngOnInit(): void {
+    var accountDetail = JSON.parse(this.sharedService.getAccount()!);
+    if(this.security_role_access != accountDetail.role){
+      this.router.navigate(['/login']);
+      this.toastr.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
     this.get_activity_log()
   }
 
