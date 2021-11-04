@@ -109,7 +109,8 @@ export class AccountCreateComponent implements OnInit {
               last_name: csvRecord.last_name,
               password: bcrypt.hashSync(csvRecord.password, 10),
               first_login: true,
-              is_delete: false
+              is_delete: false,
+              login_fail_count: 0
             };
             // console.log(account);
             // value in the column is empty even though it is required

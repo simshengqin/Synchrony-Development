@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrudService } from 'src/app/core/services/crud.service';
@@ -25,6 +25,9 @@ export class AccountEditFormComponent implements OnInit {
 
   editForm!: FormGroup;
 
+  actionType:string = "accountEdit";
+  show = false;
+
   constructor(
     private route: ActivatedRoute,
     private crudservice: CrudService,
@@ -35,8 +38,8 @@ export class AccountEditFormComponent implements OnInit {
   ){}
 
   async ngOnInit() {
-    var docid = this.sharedService.getComponentParameter()
-    const data = await this.crudservice.readByDocId('accounts',docid).pipe(first()).toPromise();
+    var doc = this.sharedService.getComponentParameter()
+    const data = await this.crudservice.readByDocId('accounts',doc).pipe(first()).toPromise();
     this.docId = data.docId;
     this.username = data.username;
     this.first_name = data.first_name;
@@ -112,18 +115,25 @@ export class AccountEditFormComponent implements OnInit {
       //   this.crudservice.update("accounts", this.docId, {"role": role});
       // }
 
-      if(school!='') {
-        if(Array.isArray(school) != true) {
+      if(school!='' || school!=[]) {
+        if(Array.isArray(school) == false) {
           let arr = school.split(",");
           this.crudservice.update("accounts", this.docId, {"school": arr});
         }
+      } else {
+        this.toastrService.error("Error: School cannot be empty!", '', {positionClass: 'toast-top-center'});
+        return console.log("Error: School cannot be empty!");
       }
 
-      if(schoolInstrumentLevel!='') {
-        if(Array.isArray(schoolInstrumentLevel) != true) {
+      console.log(schoolInstrumentLevel);
+
+      if(schoolInstrumentLevel!='' || schoolInstrumentLevel!=[]) {
+        if(Array.isArray(schoolInstrumentLevel) == false) {
           let arr = schoolInstrumentLevel.split(",");
           schoolInstrumentLevel = arr;
         }
+
+        console.log(schoolInstrumentLevel);
 
         let result = [];
 
@@ -131,14 +141,25 @@ export class AccountEditFormComponent implements OnInit {
           // check for number of _
           if (schoolInstrumentLevel[i].match(/_/g).length == 2) {
             // check if the entry follows the sch_inst_lvl format!
-            // make all lowercase alphabet
-            result.push(schoolInstrumentLevel[i].toLowerCase());
+
+            if (schoolInstrumentLevel[i][0] != "_" && schoolInstrumentLevel[i].slice(-1) != "_") {
+              // make all lowercase alphabet
+              result.push(schoolInstrumentLevel[i].toLowerCase());
+            } else {
+              this.toastrService.error("Error: Check the format of School-Instrument-Level!", '', {positionClass: 'toast-top-center'});
+              return console.log("Error: Check the format of School-Instrument-Level!");
+            }
           } else {
-            console.log("Error: Number of underscores is higher or lower than 2!");
+            this.toastrService.error("Error: Number of underscores in School-Instrument-Level is higher or lower than 2!", '', {positionClass: 'toast-top-center'});
+            return console.log("Error: Number of underscores in School-Instrument-Level is higher or lower than 2!");
           }
         }
         this.crudservice.update("accounts", this.docId, {"school_instrument_level": result});
+      } else {
+        this.toastrService.error("Error: School-Instrument-Level cannot be empty!", '', {positionClass: 'toast-top-center'});
+        return console.log("Error: School-Instrument-Level cannot be empty!");
       }
+
       this.toastrService.success('Updated account details successfully!', '', {positionClass: 'toast-top-center'});
       this.router.navigate(['/admin/account/edit']);
 
