@@ -78,7 +78,6 @@ export class AssignmentEditComponent implements OnInit {
       }
       this.accountDocId = this.account.docId;
       this.instructorSchools = this.account.school;
-      //console.log(this.accountDocId);
       this.get_all_instructor_assignments()
       this.set_distint_school_instrument_level(this.account.school_instrument_level)
     }
@@ -105,12 +104,15 @@ export class AssignmentEditComponent implements OnInit {
     this.dataSource = [];
     this.assignments = [];
     var data: Assignment[] = []
-    if(this.selectViewAssignments.length > 0){
+    console.log("selectViewAssignments length is: " + this.selectViewAssignments.length)
+    if(this.selectViewAssignments.length == 1){
+      // filter by instructor assignment only
       data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId).pipe(first()).toPromise()
     } else {
+      // filter by assignments based on instructor's school instrument and level
       data = await this.crudservice.read("assignments","school_instrument_level","array-contains-any",this.account.school_instrument_level).pipe(first()).toPromise()
     }
-    const filteredAssignments: Assignment[] = [];
+    //const filteredAssignments: Assignment[] = [];
     for(const ele of data){
       var canDelete = true
       const checkAssignmentSubmission = await this.crudservice.read("assignment_submissions","assignment_doc_id","==",ele.docId).pipe(first()).toPromise()
@@ -131,12 +133,12 @@ export class AssignmentEditComponent implements OnInit {
           }
         }
       }
-      if (Math.floor( Math.abs(new Date().getTime() -
+      /*if (Math.floor( Math.abs(new Date().getTime() -
         ele.due_datetime.toDate().getTime()) / (1000 * 3600 * 24)) <= 31) {
         filteredAssignments.push(ele);
-      }
+      } */
     }
-    this.assignments = filteredAssignments;
+    //this.assignments = filteredAssignments;
     this.dataSource = this.assignments;
   }
 
@@ -176,6 +178,7 @@ export class AssignmentEditComponent implements OnInit {
       }
       if(this.sub_levels.indexOf(level)==-1){
         this.sub_levels.push(level)
+        console.log(this.sub_levels)
       }
     }
   }
@@ -243,7 +246,7 @@ export class AssignmentEditComponent implements OnInit {
   async filtering_by_school_instrument_levels(filter:string[]){
     this.assignments = [];
     var data:any[] = []
-    if(this.selectViewAssignments.length > 0){
+    if(this.selectViewAssignments.length == 1){
       data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId,"school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
     } else {
       data = await this.crudservice.read("assignments","school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
