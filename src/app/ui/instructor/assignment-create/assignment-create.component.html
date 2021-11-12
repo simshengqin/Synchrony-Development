@@ -63,43 +63,32 @@
       </mat-form-field>
 
       <br>
-      <label for="select_school"> Select A School: </label>
 
-      <mat-form-field appearance="fill">
-        <mat-label> Select a school: </mat-label>
-        <mat-select [(value)]="schoolSelected" (selectionChange) = "populateInstrumentOptions()">
-          <mat-option *ngFor="let schoolOption of schoolOptions" [value]="schoolOption">
-            {{schoolOption}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <label for="school_instrument_level"> School/Instrument/Level: </label>
       <br>
+      
+      <div class="row">
+        <div class="form-outline col-3" *ngIf="displaySchool">
+            <app-input-select id="testSchool" [inputDataList]="schools" [name]="nameSchool" (outputData)="get_query_data_school($event)"></app-input-select>
+        </div>
+        <div class="form-outline col-3" *ngIf="displayInstruments">
+            <app-input-select [inputDataList]="queriedInstruments" [name]="nameInstrument" (outputData)="get_query_data_instrument($event)"></app-input-select>
+        </div>
+        <div class="form-outline col-3" *ngIf="displayLevels">
+            <app-input-select [inputDataList]="queriedLevels" [name]="nameLevels" (outputData)="get_query_data_level($event)"></app-input-select>
+        </div>
+        <div class="form-outline col-3" *ngIf="displayLevels">
+            <button type="button" mdbBtn color="success" mdbWavesEffect (click)="add()"> Add </button>
+        </div>
+      </div>
 
-      <label for = "select_instrument"> Select An Instrument </label>
-
-      <!-- <app-input-dropdown-select [instrumentOptions]="instrumentOptions" (outputData)="getInstrumentOptions($event)"></app-input-dropdown-select> -->
-      <mat-form-field appearance="fill">
-        <mat-label>Select an instrument:</mat-label>
-        <mat-select [(value)]="instrumentSelected" (selectionChange) = "populateLevelOptions()">
-          <mat-option *ngFor="let instrumentOption of instrumentOptions" [value]="instrumentOption">
-            {{instrumentOption}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <br>
-
-      <label for = "select_level"> Select Level </label>
-      <mat-form-field appearance="fill">
-        <mat-label>Select A Level:</mat-label>
-        <mat-select [(value)]="levelSelected">
-          <mat-option *ngFor="let levelOption of levelOptions" [value]="levelOption">
-            {{levelOption}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <br>
-
-      <button class="badge" *ngFor="let buttonText of buttonTexts; let i = index;" (click)="removeButton(i)">{{buttonText}}</button>
+      <div class="row">
+        <div class="form-outline col-12">
+            <span> Selected: </span> <br>
+            <button type="button" class="btn btn-primary" *ngFor="let buttonText of assignmentSchoolInstrumentLevel; let i = index;" (click)="removeGroup(i)"> {{buttonText}} <span class="badge bg-danger ms-2"> X </span> </button>
+            <button *ngIf="addSchoolInstrumentsLevels" type="button" class="btn btn-success" (click)="add_display_school_instrument_level()" > + Add </button>
+        </div>
+      </div>
 
       <mat-error *ngIf="buttonRepeat && !isSubmitClicked">
         Don't repeat the same class twice!
@@ -121,7 +110,7 @@
         Please insert an assignment title!
       </mat-error>
 
-      <br><button mdbBtn color="info" type="submit">Add Class</button>
+      <!-- <br><button mdbBtn color="info" type="submit">Add Class</button> -->
 
       <br>
       <label for = "description"> Assignment Description: </label>
