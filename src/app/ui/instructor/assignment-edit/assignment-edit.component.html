@@ -2,6 +2,11 @@
 <div class="account-create-wrapper wrapper-padding">
     
     <h1 class="mb-3"> Edit Assignment </h1>
+    <p>
+        Please use the dropdown lists below to search through your existing assignments. You may search by assignment status (assignments with or without submissions), or by school, instrument, and level groups.
+    </p>
+    <p>Alternatively, you may also use the text filter below the dropdown boxes to filter through the assignments by typing in the assignment name.</p>
+    <br>
     <app-input-dropdown-select [inputDataList]="assignmentStatus" [name]="nameStatus" (outputData)="get_assignment_statues($event)"></app-input-dropdown-select>
     <app-input-dropdown-select [inputDataList]="viewMyAssignment" [name]="nameViewAssignment" (outputData)="get_query_data_view_assignment($event)"></app-input-dropdown-select>
     <br>
