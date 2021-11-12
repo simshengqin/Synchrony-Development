@@ -9,13 +9,22 @@
   <!-- 
   <app-input-dropdown-select [inputDataList]="roles" [name]="nameRole"  (outputData)="get_query_data_roles($event)"></app-input-dropdown-select>
   <br> -->
-  <ng-container><app-input-dropdown-select [inputDataList]="years" [name]="nameYear" (outputData)="get_query_data_year($event)"></app-input-dropdown-select></ng-container>
-  <ng-container><app-input-dropdown-select [inputDataList]="months" [name]="nameMonth" (outputData)="get_query_data_month($event)"></app-input-dropdown-select></ng-container>
-  <br>
-  <div class="float-right">
-    <button type="button" class="btn btn-primary btn-floating" (click)="createPdf()">
-      Print  <i class="fas fa-download"></i>
-    </button>
+  <div *ngIf="dataSource.length!=0">
+    <ng-container><app-input-dropdown-select [inputDataList]="years" [name]="nameYear" (outputData)="get_query_data_year($event)"></app-input-dropdown-select></ng-container>
+    <ng-container><app-input-dropdown-select [inputDataList]="months" [name]="nameMonth" (outputData)="get_query_data_month($event)"></app-input-dropdown-select></ng-container>
+    <br>
+    <div class="float-right">
+      <button type="button" class="btn btn-primary btn-floating" (click)="createPdf()">
+        Print  <i class="fas fa-download"></i>
+      </button>
+    </div>
+    <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns"></app-table>
   </div>
-  <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns"></app-table>
+  <div *ngIf="dataSource.length==0" class="text-center">
+    <br>
+    <br>
+    <mat-spinner style="margin:0 auto;"></mat-spinner>
+    <br>
+    <h1 class="mb-3"> Loading Table Content</h1>
+  </div>
 </div>

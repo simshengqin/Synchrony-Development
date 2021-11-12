@@ -46,6 +46,8 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
   selectedMonths:string[] = [];
   query_by_year_month:string[] = [];
 
+  security_role_access: string = "instructor";
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -55,6 +57,11 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    var instrustor = JSON.parse(this.sharedService.getAccount()!);
+    if(this.security_role_access != instrustor.role){
+      this.router.navigate(['/login']);
+      this.toastr.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
     this.get_activity_log()
   }
 

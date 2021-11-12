@@ -52,6 +52,9 @@ export class AssignmentMarkIndividualComponent implements OnInit {
   recordedOption = '';
   feedback = '';
   startDatetime = null;
+
+  security_role_access: string = "instructor";
+
   constructor(
     private router: Router,
     private toastrService: ToastrService,
@@ -64,9 +67,14 @@ export class AssignmentMarkIndividualComponent implements OnInit {
 
   }
   async ngOnInit(): Promise<void> {
+    this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
+    if(this.security_role_access != this.loggedInAccount.role){
+      this.router.navigate(['/login']);
+      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
     this.assignmentSubmissionDocId = this.sharedService.getComponentParameter();
     this.startDatetime = new Date ();
-    this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
+    //this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
     this.assignmentSubmission = await this.crudService.readByDocId(
       'assignment_submissions', this.assignmentSubmissionDocId).pipe(first()).toPromise();
     this.assignment = await this.crudService.readByDocId(

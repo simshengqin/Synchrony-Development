@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ConfirmModalComponent} from '../../../shared/components/confirm-modal/confirm-modal.component';
 import {SharedService} from '../../../core/services/sharedservice.service';
 
+
 @Component({
   selector: 'app-account-create',
   templateUrl: './account-create.component.html',
@@ -26,6 +27,10 @@ export class AccountCreateComponent implements OnInit {
   isAdmin: boolean;
   @ViewChild(ConfirmModalComponent) confirmModalComponent: ConfirmModalComponent;
   loggedInAccount: Account;
+  
+  security_role_access_admin: string = "admin";
+  security_role_access_instructor:string = "instructor";
+
   constructor(
     private toastrService: ToastrService,
     private ngxCsvParser: NgxCsvParser,
@@ -37,7 +42,17 @@ export class AccountCreateComponent implements OnInit {
   async ngOnInit(): Promise<void> {
 
     this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
-    console.log(this.loggedInAccount);
+    /* 
+    instructor and admin are sharing the same component, however it seems that admin precedence
+    thus this would check if the user is instructor it will direct to instructor 
+    */
+    if(this.security_role_access_instructor == this.loggedInAccount.role){
+      this.router.navigate(['/instructor/account/create']);
+    }
+    else if(this.security_role_access_admin != this.loggedInAccount.role && this.security_role_access_instructor != this.loggedInAccount.role){
+      this.router.navigate(['/login']);
+      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
     this.isAdmin = this.loggedInAccount.role === 'admin';
     const singleAccount: Account = await this.crudService.readByDocId('accounts', '7hQyZTken7p6eSAR8MQB')
       .pipe(first())

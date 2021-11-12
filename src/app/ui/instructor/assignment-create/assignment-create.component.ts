@@ -12,6 +12,7 @@ import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 import {ToastrService} from "ngx-toastr";
 import { SharedService } from 'src/app/core/services/sharedservice.service';
+import { Account } from '../../../core/models/account';
 
 @Component({
   selector: 'app-assignment-create',
@@ -43,12 +44,32 @@ export class AssignmentCreateComponent implements OnInit {
   assignmentCreateDate: Timestamp;
   assignmentDueDate: Timestamp;
   schools: string[] = [];
+  instruments:string[] = []
+  levels:string[] = []
   timeUndefined = false;
   isSubmitClicked = false;
   fileNames: string[] = [];
   dueDateError = false;
   createAssignmentButtonClickable = false;
   docIdAfterUpload = '';
+
+  assignmentSchoolInstrumentLevel:string[]=[];
+  addSchoolInstrumentsLevels = true;
+  displaySchool = false;
+  displayInstruments = false;
+  displayLevels = false;
+  account!:Account;
+  toAddSchoolInstrumentLevel!:string
+  queriedInstruments:string[] = []
+  queriedLevels:string[] = []
+  accountDocId!:string;
+  instructorSchools:string[]=[];
+
+  nameSchool:string = "School"
+  nameInstrument:string = "Instrument"
+  nameLevels:string = "Levels"
+
+  security_role_access_instructor:string = "instructor";
 
   constructor(
     private fb: FormBuilder,
@@ -62,7 +83,7 @@ export class AssignmentCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-
+    this.get_account_information();
     // Populate school dropdown list
     this.sessionAccount = JSON.parse(this.sharedService.getAccount()!);
     // console.log(this.sessionAccount);
@@ -80,6 +101,20 @@ export class AssignmentCreateComponent implements OnInit {
     // console.log(this.loginForm);
   }
 
+  get_account_information(): void {
+    if(JSON.parse(this.sharedService.getAccount()) != null){
+      this.account = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access_instructor != this.account.role){
+        this.router.navigate(['/login']);
+        this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
+      this.accountDocId = this.account.docId;
+      this.instructorSchools = this.account.school;
+      this.addSchoolInstrumentsLevels = true
+      //this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
+    }
+  }
+
   get title(): FormControl{
     return this.newAssignmentForm.get('title') as FormControl;
   }
@@ -90,6 +125,113 @@ export class AssignmentCreateComponent implements OnInit {
 
   captureEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     this.event = event.value;
+  }
+
+  add_display_school_instrument_level(){
+    this.addSchoolInstrumentsLevels = false
+    this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
+    this.displaySchool = true
+  }
+
+  get_instructor_assign_school_insturment_level(data:string[]){
+
+    this.schools = [];
+    this.instruments = [];
+    this.levels = [];
+
+    //this.displaySchool = false
+    this.displayInstruments = false;
+    this.displayLevels = false;
+
+    //this.schools.push("none")
+    for (var ele of data){
+      var tempsSchool = ele.split("_")[0]
+      var tempInsturment = ele.split("_")[1]
+      // ensure distinct values
+      if(this.schools.indexOf(tempsSchool)==-1){
+        this.schools.push(tempsSchool)
+      }
+      if(this.instruments.indexOf(tempsSchool+"_"+tempInsturment)==-1){
+        this.instruments.push(tempsSchool+"_"+tempInsturment)
+      }
+      if(this.levels.indexOf(ele)==-1){
+        this.levels.push(ele)
+      }
+    }
+
+    //this.displaySchool = true
+  }
+
+  add(){
+    if(this.schoolSelected == "none" || this.instrumentSelected == "none" || this.levelSelected == "none"){
+      this.toastrService.error( 'Please ensure that you have selected and input!', '', {positionClass: 'toast-top-center'});
+    } else {
+      if(!this.assignmentSchoolInstrumentLevel.includes(this.toAddSchoolInstrumentLevel)){
+        this.assignmentSchoolInstrumentLevel.push(this.toAddSchoolInstrumentLevel);
+      } else {
+        this.toastrService.error( 'Group has been added already!', '', {positionClass: 'toast-top-center'});
+      }
+    }
+
+    this.addSchoolInstrumentsLevels = true
+
+    this.displaySchool = false
+    this.displayInstruments = false;
+    this.displayLevels = false;
+    
+    //this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
+  }
+
+  get_query_data_school($event:any):void{
+    // change in school will refresh the instruments and levels
+    if(this.schoolSelected!=$event.value){
+      this.queriedInstruments = []
+      this.queriedLevels = []
+      this.instrumentSelected = "";
+      this.levelSelected = "";
+    }
+    this.queriedInstruments = []
+    this.schoolSelected = $event.value
+    if(this.schoolSelected.length == 0 || this.schoolSelected == "none"){
+      this.displayInstruments = false
+      this.displayLevels = false
+    } else {
+      this.displayInstruments = true
+      this.displayLevels = false
+      //this.queriedInstruments.push("none")
+      for(var ele of this.instruments){
+        var tempSchool = ele.split("_")[0]
+        if(tempSchool == this.schoolSelected){
+          this.queriedInstruments.push(ele.split("_")[1])
+        }
+      }
+      // console.log(this.queriedInstruments)
+    }
+  }
+
+  get_query_data_instrument($event:any):void{
+    this.queriedLevels = []
+    this.instrumentSelected = $event.value
+    if(this.instrumentSelected.length == 0 || this.instrumentSelected == "none"){
+      this.displayInstruments = true
+      this.displayLevels = false
+    } else {
+      //this.queriedLevels.push("none")
+      this.displayInstruments = true
+      this.displayLevels = true
+      for(var ele of this.levels){
+        var tempSchoolInstrument = ele.split("_")[0] + "_" + ele.split("_")[1]
+        var selectedSchoolInstrument = this.schoolSelected + "_" + this.instrumentSelected
+        if(tempSchoolInstrument == selectedSchoolInstrument){
+          this.queriedLevels.push(ele.split("_")[2])
+        }
+      }
+    }
+  }
+
+  get_query_data_level($event:any):void{
+    this.levelSelected = $event.value
+    this.toAddSchoolInstrumentLevel = this.schoolSelected + "_" + this.instrumentSelected + "_" + this.levelSelected
   }
 
   populateInstrumentOptions(){
@@ -160,6 +302,10 @@ export class AssignmentCreateComponent implements OnInit {
       this.createAssignmentButtonClickable = true;
     }
 
+  }
+
+  removeGroup(i: number){
+    this.assignmentSchoolInstrumentLevel.splice(i,1)
   }
 
   // Dropzone upload functions

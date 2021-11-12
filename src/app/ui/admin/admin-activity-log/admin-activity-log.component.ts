@@ -4,6 +4,9 @@ import { Account } from '../../../core/models/account';
 import { Wage } from '../../../core/models/wage';
 import { first } from 'rxjs/operators';
 import { AssignmentSubmission } from 'src/app/core/models/assignment-submission';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
+import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-activity-log',
@@ -32,11 +35,21 @@ export class AdminActivityLogComponent implements OnInit {
   selectedSchools:string[] = [];
   selectedInstrustors:string[] = [];
 
+  security_role_access: string = "admin";
+
   constructor(
-    private crudservice: CrudService
+    private crudservice: CrudService,
+    private sharedservice:SharedService,
+    private router: Router,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
+    var accountDetail = JSON.parse(this.sharedservice.getAccount()!);
+    if(this.security_role_access != accountDetail.role){
+      this.router.navigate(['/login']);
+      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
     this.retrieve_all_wages();
   }
 

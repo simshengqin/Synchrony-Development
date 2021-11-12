@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { CrudService } from 'src/app/core/services/crud.service'; 
+import { SharedService } from 'src/app/core/services/sharedservice.service';
+import { ToastrService } from 'ngx-toastr';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-instructor-home',
@@ -24,9 +28,21 @@ export class InstructorHomeComponent implements OnInit {
   markLink: string = "/instructor/assignment/mark/";
   activityLink: string = "/instructor/activitylog/";
 
-  constructor() { }
+  security_role_access: string = "instructor";
+
+  constructor(
+    private crudservice:CrudService,
+    private sharedService:SharedService,
+    private router: Router,
+    private toastrService: ToastrService,
+  ) { }
 
   ngOnInit(): void {
+    var instrustor = JSON.parse(this.sharedService.getAccount()!);
+    if(this.security_role_access != instrustor.role){
+      this.router.navigate(['/login']);
+      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
   }
 
 }

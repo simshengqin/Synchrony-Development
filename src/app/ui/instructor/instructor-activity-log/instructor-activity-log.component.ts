@@ -4,6 +4,8 @@ import { Account } from 'src/app/core/models/account';
 import { first } from 'rxjs/operators';
 import { CrudService } from 'src/app/core/services/crud.service'; 
 import { SharedService } from 'src/app/core/services/sharedservice.service';
+import { ToastrService } from 'ngx-toastr';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-instructor-activity-log',
@@ -21,9 +23,13 @@ export class InstructorActivityLogComponent implements OnInit {
   displayedColumns:string[] = ['school_abbreviation', 'action'];
   actionType:string = "instructorActivityLog"
 
+  security_role_access: string = "instructor";
+
   constructor(
     private crudservice:CrudService,
-    private sharedService:SharedService
+    private sharedService:SharedService,
+    private router: Router,
+    private toastrService: ToastrService,
     ) 
     { }
 
@@ -34,6 +40,10 @@ export class InstructorActivityLogComponent implements OnInit {
 
   get_instrustor_account_details(){
     this.instrustor = JSON.parse(this.sharedService.getAccount()!);
+    if(this.security_role_access != this.instrustor.role){
+      this.router.navigate(['/login']);
+      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
   }
 
   async retrieve_wage(){

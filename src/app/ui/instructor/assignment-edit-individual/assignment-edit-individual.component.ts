@@ -83,6 +83,8 @@ export class AssignmentEditIndividualComponent implements OnInit {
   // forms
   updateAssignmentForm!: FormGroup;
 
+  security_role_access: string = "instructor";
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -103,6 +105,10 @@ export class AssignmentEditIndividualComponent implements OnInit {
   get_account_information(): void {
     if(JSON.parse(this.sharedService.getAccount()) != null){
       this.account = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access != this.account.role){
+        this.router.navigate(['/login']);
+        this.toastr.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
       this.accountDocId = this.account.docId;
       this.instructorSchools = this.account.school;
       this.addSchoolInstrumentsLevels = true

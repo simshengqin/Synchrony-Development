@@ -8,6 +8,8 @@ import {TranslateService} from '@ngx-translate/core';
 import {DatePipe} from '@angular/common';
 import {Assignment} from '../../../core/models/assignment';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
+import {ToastrService} from "ngx-toastr";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assignment-mark',
@@ -41,16 +43,26 @@ export class AssignmentMarkComponent implements OnInit {
   selectedInstrumentOptions: string[] = [];
   selectedLevelOptions: string[] = [];
   selectedFeedbackStatusOptions: string[] = [];
+
+  security_role_access: string = "instructor";
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private crudService: CrudService,
     private translateService: TranslateService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private toastrService: ToastrService,
+    private router: Router,
   ) { }
 
   async ngOnInit(): Promise<void> {
     this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
-    console.log(this.loggedInAccount);
+
+    if(this.security_role_access != this.loggedInAccount.role){
+      this.router.navigate(['/login']);
+      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
+    // console.log(this.loggedInAccount)
     // const dataSource = await this.crudService.read('assignment_submissions').pipe(first()).toPromise();
     // console.log(dataSource);
     this.translateService.use('en');

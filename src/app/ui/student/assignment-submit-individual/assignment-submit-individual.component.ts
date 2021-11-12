@@ -38,6 +38,9 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
   recordingFile: File;
   // progress: number;
   isUploading: boolean;
+
+  security_role_access: string = "student";
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private crudService: CrudService,
@@ -48,7 +51,12 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
+
     this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
+    if(this.security_role_access != this.loggedInAccount.role){
+      this.router.navigate(['/login']);
+      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+    }
     this.assignmentDocId = this.sharedService.getComponentParameter();
     this.assignment = await this.crudService.readByDocId('assignments', this.assignmentDocId)
       .pipe(first())
