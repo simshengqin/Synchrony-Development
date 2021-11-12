@@ -5,9 +5,9 @@ import {ToastrService} from 'ngx-toastr';
 import {CrudService} from '../../../core/services/crud.service';
 import {Account, Role} from '../../../../app/core/models/account';
 import * as bcrypt from 'bcryptjs';
-import {ActivatedRoute, Router} from "@angular/router";
-import {ConfirmModalComponent} from "../../../shared/components/confirm-modal/confirm-modal.component";
-import {SharedService} from "../../../core/services/sharedservice.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {ConfirmModalComponent} from '../../../shared/components/confirm-modal/confirm-modal.component';
+import {SharedService} from '../../../core/services/sharedservice.service';
 
 @Component({
   selector: 'app-account-create',
@@ -35,6 +35,7 @@ export class AccountCreateComponent implements OnInit {
     private sharedService: SharedService,
   ) {}
   async ngOnInit(): Promise<void> {
+
     this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
     console.log(this.loggedInAccount);
     this.isAdmin = this.loggedInAccount.role === 'admin';
@@ -64,17 +65,71 @@ export class AccountCreateComponent implements OnInit {
     if (deleteAccount.length > 0) {
       await this.crudService.delete('accounts', deleteAccount[0].docId);
     }
-
   }
+  exportToCsv(filename: string, rows: string[], headers?: string[]): void {
+    if (!rows || !rows.length) {
+      return;
+    }
+    const separator = ',';
+
+    const keys: string[]  = Object.keys(rows[0]);
+
+    let columHearders: string[];
+
+    if (headers) {
+      columHearders = headers;
+    } else {
+      columHearders = keys;
+    }
+
+    const csvContent =
+      'sep=,\n' +
+      columHearders.join(separator) +
+      '\n' +
+      rows.map(row => {
+        return keys.map(k => {
+          let cell = row[k] === null || row[k] === undefined ? '' : row[k];
+
+          cell = cell instanceof Date
+            ? cell.toLocaleString()
+            : cell.toString().replace(/"/g, '""');
+
+          if (cell.search(/("|,|\n)/g) >= 0) {
+            cell = `"${cell}"`;
+          }
+          return cell;
+        }).join(separator);
+      }).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // In case of IE 10+
+      navigator.msSaveBlob(blob, filename);
+    } else {
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        // Browsers that support HTML5 download attribute
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+  }
+
   onCloseModal(response: string): void {
     // console.log(response);
   }
   async uploadFile(): Promise<void> {
+    const accounts = await this.crudService.read('accounts').pipe(first()).toPromise();
     if (this.accountFile) {
+      const createdAccounts = [];
       this.errors = [];
       // column is not found at all
-      let missingColumns = this.isAdmin ? ['username',	'role', 'school',	'school_instrument_level', 'first_name',	'last_name',	'password']
-      : ['username', 'school',	'school_instrument_level', 'first_name',	'last_name',	'password'];
+      let missingColumns = this.isAdmin ? ['role', 'school',	'school_instrument_level', 'first_name',	'last_name',	'password']
+      : ['school',	'school_instrument_level', 'first_name',	'last_name',	'password'];
       this.isUploading = true;
       // Parse the file you want to select for the operation along with the configuration
       await this.ngxCsvParser.parse(this.accountFile, {header: true, delimiter: ','})
@@ -98,10 +153,30 @@ export class AccountCreateComponent implements OnInit {
         if (this.errors.length === 0) {
           let i = 2;
           for (const csvRecord of this.csvRecords) {
-            const accounts = await this.crudService.read('accounts', 'username', '==', csvRecord.username).pipe(first()).toPromise();
+            // const accounts = await this.crudService.read('accounts', 'username', '==', csvRecord.username).pipe(first()).toPromise();
             // console.log(accounts);
+            const usedNumbers = [];
+            for (const singleAccount of accounts) {
+              if (singleAccount.username.toLowerCase().includes( csvRecord.first_name.toLowerCase()
+                + csvRecord.last_name.toLowerCase())) {
+                usedNumbers.push(+singleAccount.username.replace(/\D/g, ''));
+                // console.log(+singleAccount.username.replace(/\D/g, ''));
+              }
+            }
+            console.log(usedNumbers);
+            let rand = -1;
+            // inclusive of max and min
+            const max = 9999;
+            const min = 1000;
+            while (rand === -1 || usedNumbers.includes(rand)){
+              rand = Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            // replace is to remove empty space
+            const generatedUsername = (csvRecord.first_name + csvRecord.last_name + rand).replace(/\s/g, '');
+            console.log(generatedUsername);
             const account: Account = {
-              username: csvRecord.username,
+              // username: csvRecord.username,
+              username: generatedUsername,
               role: this.isAdmin ? csvRecord.role.toLowerCase() : 'student',
               school: csvRecord.school.split(','),
               school_instrument_level: csvRecord.school_instrument_level.toLowerCase().split(','),
@@ -112,6 +187,16 @@ export class AccountCreateComponent implements OnInit {
               is_delete: false,
               login_fail_count: 0
             };
+            const createdAccount: Account = {
+              username: generatedUsername,
+              role: this.isAdmin ? csvRecord.role.toLowerCase() : 'student',
+              school: csvRecord.school.split(','),
+              school_instrument_level: csvRecord.school_instrument_level.toLowerCase().split(','),
+              first_name: csvRecord.first_name,
+              last_name: csvRecord.last_name,
+              password: csvRecord.password
+            };
+            createdAccounts.push(createdAccount);
             // console.log(account);
             // value in the column is empty even though it is required
             const emptyColumns = [];
@@ -146,9 +231,9 @@ export class AccountCreateComponent implements OnInit {
                 }
                 if (account.role !== 'student') { this.errors.push('Row ' + i + ' has illegal values for role column (Only student is accepted)'); }
               }
-              if (accounts.length > 0 && account.role !== accounts[0].role) {
-                this.errors.push('Row ' + i + ' has illegal values for role column (Cannot change role for existing users)');
-              }
+              // if (accounts.length > 0 && account.role !== accounts[0].role) {
+              //   this.errors.push('Row ' + i + ' has illegal values for role column (Cannot change role for existing users)');
+              // }
             }
             // if (accounts.length > 0) {
             //   this.errors.push('Row ' + i + ' \'s username (' + account.username + ') is already taken');
@@ -160,16 +245,17 @@ export class AccountCreateComponent implements OnInit {
             // Stop the creation/updating of ALL accounts as long as there is a problem with 1 of the account
             if (this.errors.length === 0) {
               await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
-              if (accounts.length === 0) {
-                // console.log(account);
-                await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
-              } else {
-                  await this.crudService.update('accounts', accounts[0].docId, account);
-              }
+              // if (accounts.length === 0) {
+              //   // console.log(account);
+              //   await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
+              // } else {
+              //     await this.crudService.update('accounts', accounts[0].docId, account);
+              // }
             }
             i++;
           }
           if (this.errors.length === 0) {
+            this.exportToCsv('created_accounts', createdAccounts);
             this.toastrService.success('Uploaded data to database successfully!', '', {positionClass: 'toast-top-center'});
             this.router.navigate(['/admin/account/edit']);
           }
@@ -186,7 +272,6 @@ export class AccountCreateComponent implements OnInit {
         this.isUploading = false;
         this.toastrService.error('Incorrect file format!', '', {positionClass: 'toast-top-center'});
       });
-
     } else {
       this.toastrService.error('Please upload a file!', '', {positionClass: 'toast-top-center'});
     }

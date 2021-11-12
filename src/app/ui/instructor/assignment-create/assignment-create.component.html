@@ -132,7 +132,7 @@
         <!-- Dropzone -->
       <br>
       <div class="custom-dropzone" ngx-dropzone (change)="onSelect($event)" [accept]="'.pdf,.mp4'">
-        <ngx-dropzone-label> Please drag and drop your attachment files for this assignment here.<br>(Accepted format: .pdf)</ngx-dropzone-label>
+        <ngx-dropzone-label> Please drag and drop your attachment files for this assignment here.<br>(Optional, Accepted format: .pdf, .mp4)</ngx-dropzone-label>
         <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
           <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
         </ngx-dropzone-preview>
