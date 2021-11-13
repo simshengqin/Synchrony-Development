@@ -6,17 +6,12 @@
   <h4 class="mb-6" *ngIf="query_by_year_month.length == 0"> Filtered by: All </h4>
   <h4 class="mb-6" *ngIf="query_by_year_month.length != 0"> Filtered by: {{query_by_year_month}}</h4>
   <br>
-  <!-- 
-  <app-input-dropdown-select [inputDataList]="roles" [name]="nameRole"  (outputData)="get_query_data_roles($event)"></app-input-dropdown-select>
-  <br> -->
   <div *ngIf="dataSource.length!=0">
     <ng-container><app-input-dropdown-select [inputDataList]="years" [name]="nameYear" (outputData)="get_query_data_year($event)"></app-input-dropdown-select></ng-container>
     <ng-container><app-input-dropdown-select [inputDataList]="months" [name]="nameMonth" (outputData)="get_query_data_month($event)"></app-input-dropdown-select></ng-container>
     <br>
     <div class="float-right">
-      <button type="button" class="btn btn-primary btn-floating" (click)="createPdf()">
-        Print  <i class="fas fa-download"></i>
-      </button>
+      <app-pdf-printer [query_by_year_month]="query_by_year_month" [dataSource]="dataSource" [instructor_name]="instructor_name" [instructor_school]="instructor_school" [display_accumulated_time]="display_accumulated_time"></app-pdf-printer>
     </div>
     <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns"></app-table>
   </div>

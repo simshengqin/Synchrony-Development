@@ -94,6 +94,7 @@ import { AdminActivityLogComponent } from './ui/admin/admin-activity-log/admin-a
 import { InstructorActivityLogComponent } from './ui/instructor/instructor-activity-log/instructor-activity-log.component';
 import { InstructorActivityLogIndividualComponent } from './ui/instructor/instructor-activity-log-individual/instructor-activity-log-individual.component';
 import { SharedService } from './core/services/sharedservice.service';
+import { PdfPrinterComponent } from './shared/components/pdf-printer/pdf-printer.component';
 // import {VideoPlayerComponent} from './shared/components/video-player/video-player.component';
 
 @NgModule({
@@ -129,7 +130,8 @@ import { SharedService } from './core/services/sharedservice.service';
     AdminActivityLogIndividualComponent,
     AdminActivityLogComponent,
     InstructorActivityLogComponent,
-    InstructorActivityLogIndividualComponent
+    InstructorActivityLogIndividualComponent,
+    PdfPrinterComponent
   ],
   imports: [
     BrowserModule,

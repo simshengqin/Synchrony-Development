@@ -13,9 +13,9 @@
     <ng-container><app-input-dropdown-select [inputDataList]="months" [name]="nameMonth" (outputData)="get_query_data_month($event)"></app-input-dropdown-select></ng-container>
     <br>
     <div class="float-right">
-      <button type="button" class="btn btn-primary btn-floating" (click)="createPdf()">
-        Print  <i class="fas fa-download"></i>
-      </button>
+      <div class="float-right">
+        <app-pdf-printer [query_by_year_month]="query_by_year_month" [dataSource]="dataSource" [instructor_name]="instructor_name" [instructor_school]="instructor_school" [display_accumulated_time]="display_accumulated_time"></app-pdf-printer>
+      </div>
     </div>
     <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns"></app-table>
   </div>
