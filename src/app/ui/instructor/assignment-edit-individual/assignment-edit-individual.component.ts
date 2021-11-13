@@ -64,6 +64,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   acceptMultipleFiles:boolean = true
   acceptedFileTypes:string = ".pdf,.mp3,.mp4"
+  label:string = "Please drag and drop your attachment files for this assignment here. (Optional, Accepted format: .pdf, .mp4)"
   newFiles: File[] = []; // Contains the new files as object to upload, retrive from dropzone.
   newFilesNames: string[] = []; // Contains the new files names to upload to chck for duplicates.
   filesToBeDeleted: string[] = []; // contains the list of files to be deleted

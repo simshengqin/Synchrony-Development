@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import Timestamp = firebase.firestore.Timestamp;
 import {AssignmentSubmission} from "./assignment-submission";
+import { Account } from "./account";
 
 export interface Assignment {
   docId?: string;

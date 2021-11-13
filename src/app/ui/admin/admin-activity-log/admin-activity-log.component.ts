@@ -61,54 +61,56 @@ export class AdminActivityLogComponent implements OnInit {
       var assignmentSubmissionData = await this.crudservice.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
       this.wages.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData))
     }
-    //console.log(this.wages)
     for (var ele of this.wages){
-      //console.log(ele["key"])
       var isExist:boolean = false
       for(var i = 0; i < this.wagesByInstructorSchool.length; i++){
           if(ele["key"] == this.wagesByInstructorSchool[i]["key"]){
-          isExist = true
-          //console.log("this is index: " + i + " with a duration of " + this.wagesByInstructorSchool[i]["duration"])
-          //var tempSecond:number = ele["duration"]
-          //this.wagesByInstructorSchool[i]["duration"] += tempSecond
-          break
+            isExist = true;
+            break;
+          }
+        if(isExist){ 
+          break; 
         }
-        if(isExist){ break }
       } if (!isExist){
-        this.wagesByInstructorSchool.push(this.create_custome_wage(ele))
+        //this.wagesByInstructorSchool.push(this.create_custome_wage(ele));
+        this.wagesByInstructorSchool.push(ele);
       }
     }
     this.dataSource = this.wagesByInstructorSchool
   }
 
   private create_custom_wage(wage:Wage, account:Account, assignmentSybmission:AssignmentSubmission){
-    if(this.schools.indexOf(wage.school[0])==-1){
-      this.schools.push(wage.school[0])
+    if(this.schools.indexOf(wage.school)==-1){
+      this.schools.push(wage.school)
     }
-    let data:any = {
-      key: account.docId + "_" + wage.school[0],
-      instructor_id: account.docId,
+    let data:Wage = {
+      key: account.docId + "_" + wage.school,
+      instructor_account_doc_id: account.docId,
       first_name: account.first_name,
       last_name: account.last_name,
-      school: wage.school[0],
-      duration: wage.seconds, 
-      feeddback_datetime: wage.feedback_datetime
+      school: wage.school,
+      seconds: wage.seconds,
+      feedback_datetime: wage.feedback_datetime,
+      assignment_submission_doc_id: wage.assignment_submission_doc_id,
+      school_abbreviation: wage.school
     }
     return data
   }
 
-  private create_custome_wage(ele:any){
-    let data:any = {
+  /*
+  private create_custome_wage(ele:Wage){
+    let data:Wage = {
       key: ele["key"],
-      instructor_id: ele["instructor_id"],
-      //instructor_name: ele["first_name"] + " " + ele["last_name"],
+      instructor_account_doc_id: ele["instructor_account_doc_id"],
       first_name: ele["first_name"],
       last_name: ele["last_name"],
       school_abbreviation: ele["school"],
-      duration: ele["duration"], 
+      seconds: ele["seconds"],
+      assignment_submission_doc_id: ele["assignment_submission_doc_id"],
+      school: ele["school"]
     }
     return data
-  }
+  } */
 
   get_query_schools($event:any){
     console.log($event.value);

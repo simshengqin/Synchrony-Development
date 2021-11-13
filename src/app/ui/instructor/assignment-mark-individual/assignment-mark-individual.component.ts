@@ -170,17 +170,19 @@ export class AssignmentMarkIndividualComponent implements OnInit {
       feedback_datetime: Timestamp.fromDate(new Date()),
       seconds: parseFloat(((new Date().getTime() - this.startDatetime.getTime()) / 1000).toFixed(3)),
       // seconds: (Date().getTime() - this.secondst2.getTime()) / 1000;
-      school: this.assignmentSubmission.school
+      school: this.assignmentSubmission.school[0]
     };
     const wage: Wage[] = await this.crudService.read('wages',
       'instructor_account_doc_id', '==', this.loggedInAccount.docId,
-      'assignment_submission_doc_id', '==', this.assignmentSubmission.school,
+      'assignment_submission_doc_id', '==', this.assignmentSubmission.docId,
     ).pipe(first()).toPromise();
     if (wage.length > 0) {
       await this.crudService.update('wages', wage[0].docId, newWage);
+      console.log("Update! wage")
     }
     else {
       await this.crudService.create('wages', newWage);
+      console.log("Create! new wage")
     }
 
     this.assignmentSubmission.feedback = input[0];

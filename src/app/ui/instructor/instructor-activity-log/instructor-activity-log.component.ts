@@ -50,9 +50,9 @@ export class InstructorActivityLogComponent implements OnInit {
     var result:any = []
     const data = await this.crudservice.read('wages','instructor_account_doc_id','==',this.instrustor.docId).pipe(first()).toPromise();
     for(var ele of data){
-      if(this.schools.indexOf(ele["school"][0])==-1){
-        this.schools.push(ele["school"][0])
-        result.push(this.create_custom_wage(ele["school"][0]))
+      if(this.schools.indexOf(ele["school"])==-1){
+        this.schools.push(ele["school"])
+        result.push(this.create_custom_wage(ele["school"]))
       }
     }
     this.dataSource = result

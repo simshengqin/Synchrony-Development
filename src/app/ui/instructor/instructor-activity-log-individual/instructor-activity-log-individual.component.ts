@@ -26,7 +26,7 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
   instructor_name!:string;
   instructor_school!:string;
 
-  school:string[] = [];
+  school!:string;
   activity_logs:any[] = []
 
   dataSource = [];
@@ -71,13 +71,13 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
     const key = this.sharedService.getComponentParameter();
     console.log(key)
     this.instructor_id = key.split("_")[0]
-    this.school.push(key.split("_")[1])
+    this.school = key.split("_")[1]
 
     this.instructor_data = await this.crudservice.readByDocId('accounts',this.instructor_id).pipe(first()).toPromise();
     this.instructor_name = this.instructor_data.first_name + " " + this.instructor_data.last_name
-    this.instructor_school = this.school[0].toUpperCase();
+    this.instructor_school = this.school.toUpperCase();
 
-    const data = await this.crudservice.read('wages', 'instructor_account_doc_id', '==', this.instructor_id, 'school', 'array-contains-any', this.school).pipe(first()).toPromise();
+    const data = await this.crudservice.read('wages', 'instructor_account_doc_id', '==', this.instructor_id, 'school', '==', this.school).pipe(first()).toPromise();
     for (var wage of data){
       var instructorData = await this.crudservice.readByDocId('accounts', this.instructor_id).pipe(first()).toPromise();
       var assignmentSubmissionData = await this.crudservice.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
@@ -99,7 +99,7 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
     //this.accumulated_time += parseFloat(minutes)
     this.accumulated_time += minutes
 
-    let data:any = {
+    let data:Wage = {
       date_filter: date_filter,
       date: date,
       //feedback_date: wage.feedback_datetime,
@@ -112,7 +112,10 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
       seconds: parseFloat(wage.seconds.toFixed(3)),
       first_name: student.first_name,
       last_name: student.last_name,
-      name: assignmentData.name
+      name: assignmentData.name,
+      instructor_account_doc_id: wage.instructor_account_doc_id,
+      assignment_submission_doc_id: wage.assignment_submission_doc_id,
+      school: wage.school
     }
     return data
   }
