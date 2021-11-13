@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './account-delete.component.html',
   styleUrls: ['./account-delete.component.scss']
 })
-export class AccountDeleteComponent implements OnInit, AfterViewInit {
+export class AccountDeleteComponent implements OnInit {
 
   accounts:Account[] = [];
   accountDetail!:Account;
@@ -79,34 +79,24 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(){
-    // empty
-  }
-
   async retrieve_all_accounts(){
     this.dataSource = [];
     const data = await this.crudservice.read('accounts').pipe(first()).toPromise();
     if(data!=undefined||data!=null){
-      //this.dataSource = data
       for(var ele of data){
-        try{
-          this.create_account(ele)
-          var school_instrument_level = ele["school_instrument_level"]
-          this.set_distint_school_instrument_level(school_instrument_level);
-        } catch(e){
-          // console.log("something wrong with the data! check the database!")
-        }
+        this.create_account(ele)
+        var school_instrument_level = ele["school_instrument_level"]
+        this.set_distint_school_instrument_level(school_instrument_level);
       }
-      //console.log(this.accounts.length)
       this.dataSource = this.accounts
     }
   }
 
-  create_account(data:any){
+  create_account(data:Account){
     if(data.school[0] == "-"){
       data.school[0] = "NA";
     }
-    if(data.school_instrument_level[0] == "-"){
+    if(data.school_instrument_level[0] == "-" || data.school_instrument_level[0] == "" || data.school_instrument_level[0] == " "){
       data.school_instrument_level[0] = "NA";
     }
     if(!data.is_delete){
@@ -126,7 +116,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Method:
+  // Method: Set the filters of School, Instrument and Levels 
   set_distint_school_instrument_level(data:string[]){
     for(var dataSchoolInstrumentLevel of data){
       if(dataSchoolInstrumentLevel!="NA"){
@@ -147,12 +137,14 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // == get filter == //
+  // == Get Filter Data == //
+
+  // Method: Get role filter data 
   get_query_data_roles($event:any):void{
     this.selectRoles = $event.value
     this.query_table_with_filter()
   }
-
+  // Method: Get School filter data 
   get_query_data_sub_schools($event:any):void{
     this.selectSubSchools = $event.value
     if(this.selectSubSchools.length == 0){
@@ -165,6 +157,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       this.sub_display_levels = false
     }
   }
+  // Method: Get Instruments filter data
   get_query_data_sub_instruments($event:any):void{
     this.selectSubInstruments = $event.value
     if(this.selectSubInstruments.length == 0){
@@ -173,6 +166,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
       this.sub_display_levels = true
     }
   }
+  // Method: Get Level filter data
   get_query_data_sub_levels($event:any):void{
     this.selectSubLevels = $event.value
     this.combine_querry_search_data()
@@ -181,26 +175,20 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
 
   // Method: Combine all the permutation of the sub Strings of School, Instrument and levels
   combine_querry_search_data(){
-    // console.log(this.selectSubSchools)
-    // console.log(this.selectSubInstruments)
-    // console.log(this.selectSubLevels)
     this.select_Combine_SchoolInstrumentLevels = [];
     for(var eleSchool of this.selectSubSchools){
-      // console.log(eleSchool)
       for(var eleInstrument of this.selectSubInstruments){
         for(var eleLevel of this.selectSubLevels){
           var query = eleSchool + "_" + eleInstrument + "_" + eleLevel
-          // console.log(query);
           if(this.select_Combine_SchoolInstrumentLevels.indexOf(query)==-1){
             this.select_Combine_SchoolInstrumentLevels.push(query)
           }
         }
       }
     }
-    //console.log(this.select_Combine_SchoolInstrumentLevels)
   }
 
-  // Method:
+  // Method: filter the table with filtered query data 
   query_table_with_filter(){
     var result:Account[] = [];
     result = this.accounts;
@@ -217,6 +205,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     this.dataSource = result
   }
 
+  // Method: filter role function 
   filtering_by_role(result:Account[], filter:string[]):Account[]{
     var filterResult:Account[] = [];
     var exist:boolean = false;
@@ -238,7 +227,7 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     return filterResult
   }
 
-  // Brute force method
+  // Method: filter school instrument level function 
   filtering_by_school_instrument_levels(result:Account[], filter:string[]):Account[]{
     var filterResult:Account[] = [];
     var exist:boolean = false;
@@ -263,10 +252,9 @@ export class AccountDeleteComponent implements OnInit, AfterViewInit {
     return filterResult
   }
 
-
+  // Method: Delete Account
   delete_doc_id($event:any):void{
     if($event!=""||$event!=null){
-      // console.log($event)
       this.crudservice.delete("accounts",$event)
       var result:Account[] = []
       for(var ele of this.dataSource){
