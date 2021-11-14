@@ -22,3 +22,19 @@ Then, you need to download the angular Command Line Interface (CLI)
 Open a terminal and key in the following information:
 npm install -g @angular/cli 
 
+From the terminal, navigate to where the readme is found.
+If you do not know how to do this, simply navigate to your file on the file exporer, then click on the file directory address (the top bar of the file exporer) and copy it into your clipboard.
+
+Open a new terminal and type the following command:
+cd <paste>
+press enter 
+
+Run the following command to install our documents 
+npm install all 
+
+When this is done, run the code 
+ng serve --open
+
+When the application has finished compiling, a new browser window will open to show our application.
+
+Do ensure that your default browser is Google Chrome, else simply copy the URL into a Google Chrome Browser and it should open as well.
