@@ -26,6 +26,7 @@ export class AssignmentCreateComponent implements OnInit {
   newAssignmentForm!: FormGroup;
   timeSelected!: any ;
   schoolSelected!: string;
+  schoolsUpload: string[] = [];
   instrumentSelected!: any;
   instrumentOptions: string[] = [];
   schoolOptions!: string[];
@@ -163,14 +164,20 @@ export class AssignmentCreateComponent implements OnInit {
   }
 
   add(){
-    if(this.schoolSelected == "none" || this.instrumentSelected == "none" || this.levelSelected == "none"){
-      this.toastrService.error( 'Please ensure that you have selected and input!', '', {positionClass: 'toast-top-center'});
+    if(this.schoolSelected == "none" || this.instrumentSelected == "none"){
+      this.toastrService.error( 'Selection is blank!', '', {positionClass: 'toast-top-center'});
     } else {
       if(!this.assignmentSchoolInstrumentLevel.includes(this.toAddSchoolInstrumentLevel)){
         this.assignmentSchoolInstrumentLevel.push(this.toAddSchoolInstrumentLevel);
       } else {
         this.toastrService.error( 'Group has been added already!', '', {positionClass: 'toast-top-center'});
       }
+    }
+
+    if (this.toAddSchoolInstrumentLevel.length > 0){
+      this.createAssignmentButtonClickable = true;
+    } else {
+      this.createAssignmentButtonClickable = false;
     }
 
     this.addSchoolInstrumentsLevels = true
@@ -262,46 +269,7 @@ export class AssignmentCreateComponent implements OnInit {
   }
 
   onSubmit(){
-
-    // Check if any of the parameters are undefined. If undefined, show error and no action is taken
-    if (this.schoolSelected === undefined || this.instrumentOptions === undefined || this.levelSelected === undefined){
-      this.classUndefined = true;
-    } else {
-      this.classUndefined = false;
-      // Capture the school,instrument,levels details
-      this.buttonText = this.schoolSelected + '_' + this.instrumentSelected + '_' + this.levelSelected;
-
-      // Validate if the same text has been put before
-      // console.log(this.buttonText);
-
-      if (this.buttonTexts.includes(this.buttonText)){
-        this.buttonRepeat = true;
-      } else {
-        this.buttonTexts.push(this.buttonText);
-
-        // Submit button is unclickable if there are no classes
-        if (this.buttonTexts.length > 0){
-          this.createAssignmentButtonClickable = true;
-        } else {
-          this.createAssignmentButtonClickable = false;
-        }
-      }
-    }
-
-  }
-
-  removeButton(i: number){
-    this.buttonTexts.shift();
-    this.buttonRepeat = false;
-
-    // console.log(this.buttonTexts.length);
-    // Submit button is unclickable if there are no classes
-    if (this.buttonTexts.length == 0){
-      this.createAssignmentButtonClickable = false;
-    } else {
-      this.createAssignmentButtonClickable = true;
-    }
-
+    // Used to maintain dependencies, but no longer used 
   }
 
   removeGroup(i: number){
@@ -385,10 +353,11 @@ export class AssignmentCreateComponent implements OnInit {
 
       // Retrieve schools
       // console.log(this.buttonTexts);
-      for (const buttonText of this.buttonTexts) {
+      console.log(this.assignmentSchoolInstrumentLevel);
+      for (const classes of this.assignmentSchoolInstrumentLevel) {
         // Retrieve schools and put in schools array
-        if (!this.schools.includes(buttonText.split('_')[0])) {
-          this.schools.push(buttonText.split('_')[0]);
+        if (!this.schoolsUpload.includes(classes.split('_')[0])) {
+          this.schoolsUpload.push(classes.split('_')[0]);
         }
       }
 
@@ -412,8 +381,8 @@ export class AssignmentCreateComponent implements OnInit {
         description: this.newAssignmentForm.value.description,
         due_datetime: this.assignmentDueDate,
         name: this.newAssignmentForm.value.title,
-        school: this.schools,
-        school_instrument_level: this.buttonTexts,
+        school: this.schoolsUpload,
+        school_instrument_level: this.assignmentSchoolInstrumentLevel,
         file_names: this.fileNames
       };
 
