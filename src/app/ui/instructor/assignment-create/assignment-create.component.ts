@@ -4,7 +4,7 @@ import { Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormControl } from '@angular/forms';
-import { exit } from 'process';
+import { exit, title } from 'process';
 import { Assignment } from 'src/app/core/models/assignment';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { Router } from '@angular/router';
@@ -340,8 +340,13 @@ export class AssignmentCreateComponent implements OnInit {
 
   async createAssignment() {
 
-    // To trigger title check validation
+    // To trigger check validation
     this.isSubmitClicked = true;
+
+    // Validate form 
+    if (!this.newAssignmentForm.valid){
+      return;
+    }
 
     // Retrieving Necessary information
     // Creating assignment Create Time
