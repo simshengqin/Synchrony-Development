@@ -192,6 +192,8 @@ export class AssignmentCreateComponent implements OnInit {
             this.toAddSchoolInstrumentLevelArray.push(element)
         }
       } 
+    } else {
+      this.toAddSchoolInstrumentLevelArray.push(this.schoolSelected + "_" +  this.instrumentSelected + "_" + this.levelSelected)
     }
 
     console.log(this.toAddSchoolInstrumentLevelArray)
