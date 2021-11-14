@@ -60,7 +60,8 @@ export class AssignmentCreateComponent implements OnInit {
   displayInstruments = false;
   displayLevels = false;
   account!:Account;
-  toAddSchoolInstrumentLevel!:string
+  toAddSchoolInstrumentLevelArray:string[] = []
+  toAddSchoolInstrumentLevel:String;
   queriedInstruments:string[] = []
   queriedLevels:string[] = []
   accountDocId!:string;
@@ -164,17 +165,48 @@ export class AssignmentCreateComponent implements OnInit {
   }
 
   add(){
-    if(this.schoolSelected == "none" || this.instrumentSelected == "none"){
-      this.toastrService.error( 'Selection is blank!', '', {positionClass: 'toast-top-center'});
-    } else {
-      if(!this.assignmentSchoolInstrumentLevel.includes(this.toAddSchoolInstrumentLevel)){
-        this.assignmentSchoolInstrumentLevel.push(this.toAddSchoolInstrumentLevel);
+    this.toAddSchoolInstrumentLevelArray = [];
+    console.log(this.schoolInstrumentLevel);
+    console.log(this.schoolSelected);
+    // School cannot be blank validation
+    if(this.schoolSelected == ""){
+      console.log("school selected = none triggered!")
+      this.toastrService.error( 'School is blank!', '', {positionClass: 'toast-top-center'});
+      return
+    } else if (this.instrumentSelected == "") {
+      console.log("instrument selected = none triggered!");
+      // If instrument is blank, add all in the school
+        for (var element of this.schoolInstrumentLevel){
+          // console.log("loop triggered!");
+          // console.log(element.split("_")[0]);
+          if (element.split("_")[0] == this.schoolSelected){
+            console.log(element.split("_")[0]);
+            this.toAddSchoolInstrumentLevelArray.push(element)
+          }
+        }
+      } else if (this.levelSelected == ""){
+        console.log("level selected = none triggered!");
+        // If level is blank, add all in the instrument
+        for (var element of this.schoolInstrumentLevel){
+          if (element.split("_")[0] == this.schoolSelected && element.split("_")[1] == this.instrumentSelected){
+            this.toAddSchoolInstrumentLevelArray.push(element)
+        }
+      } 
+    }
+
+    console.log(this.toAddSchoolInstrumentLevelArray)
+    
+    for (this.toAddSchoolInstrumentLevel of this.toAddSchoolInstrumentLevelArray){
+      if(!this.assignmentSchoolInstrumentLevel.includes(this.toAddSchoolInstrumentLevel.toString())){
+        this.assignmentSchoolInstrumentLevel.push(this.toAddSchoolInstrumentLevel.toString());
       } else {
         this.toastrService.error( 'Group has been added already!', '', {positionClass: 'toast-top-center'});
       }
     }
+    
+    // console.log(this.assignmentSchoolInstrumentLevel)
 
-    if (this.toAddSchoolInstrumentLevel.length > 0){
+    if (this.assignmentSchoolInstrumentLevel.length > 0){
       this.createAssignmentButtonClickable = true;
     } else {
       this.createAssignmentButtonClickable = false;
@@ -238,7 +270,6 @@ export class AssignmentCreateComponent implements OnInit {
 
   get_query_data_level($event:any):void{
     this.levelSelected = $event.value
-    this.toAddSchoolInstrumentLevel = this.schoolSelected + "_" + this.instrumentSelected + "_" + this.levelSelected
   }
 
   populateInstrumentOptions(){

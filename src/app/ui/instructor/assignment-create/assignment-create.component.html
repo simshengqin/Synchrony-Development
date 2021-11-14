@@ -84,7 +84,7 @@
 
       <div class="row">
         <div class="form-outline col-12">
-            <span> Selected: </span> <br>
+            <!-- <span> Selected: </span> <br> -->
             <button type="button" class="btn btn-primary" *ngFor="let buttonText of assignmentSchoolInstrumentLevel; let i = index;" (click)="removeGroup(i)"> {{buttonText}} <span class="badge bg-danger ms-2"> X </span> </button>
             <button *ngIf="addSchoolInstrumentsLevels" type="button" class="btn btn-success" (click)="add_display_school_instrument_level()" > + Add </button>
         </div>
