@@ -166,8 +166,6 @@ export class AssignmentCreateComponent implements OnInit {
 
   add(){
     this.toAddSchoolInstrumentLevelArray = [];
-    console.log(this.schoolInstrumentLevel);
-    console.log(this.schoolSelected);
     // School cannot be blank validation
     if(this.schoolSelected == ""){
       console.log("school selected = none triggered!")

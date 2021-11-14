@@ -16,6 +16,7 @@ import { FormControl } from '@angular/forms';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 import { SharedService } from 'src/app/core/services/sharedservice.service';
+// import { ConsoleReporter } from 'jasmine';
 
 @Component({
   selector: 'app-assignment-edit-individual',
@@ -29,6 +30,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
   account!:Account;
   accountDocId!:string;
   instructorSchools:string[]=[];
+  instructorSchoolInstrumentLevels:string[]=[]
   // Assignment
   assignment!:Assignment;
   assignmentDocId!:string;
@@ -61,6 +63,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
   selectedLevel!:string
 
   toAddSchoolInstrumentLevel!:string
+  toAddSchoolInstrumentLevelArray:string[] = []
 
   acceptMultipleFiles:boolean = true
   acceptedFileTypes:string = ".pdf,.mp3,.mp4"
@@ -100,6 +103,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
   ngOnInit(): void {
     this.get_account_information();
     this.get_assignment_information();
+    this.toAddSchoolInstrumentLevelArray = this.assignmentSchoolInstrumentLevel;
   }
 
   // Get the account information
@@ -112,6 +116,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
       }
       this.accountDocId = this.account.docId;
       this.instructorSchools = this.account.school;
+      this.instructorSchoolInstrumentLevels = this.account.school_instrument_level;
       this.addSchoolInstrumentsLevels = true
       //this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
     }
@@ -227,23 +232,35 @@ export class AssignmentEditIndividualComponent implements OnInit {
   }
 
   add(){
-    if(this.selectedSchool == "none" || this.selectedInstrument == "none" || this.selectedLevel == "none"){
-      this.toastr.error( 'Please ensure that you have selected and input!', '', {positionClass: 'toast-top-center'});
-    } else {
-      if(!this.assignmentSchoolInstrumentLevel.includes(this.toAddSchoolInstrumentLevel)){
-        this.assignmentSchoolInstrumentLevel.push(this.toAddSchoolInstrumentLevel);
-      } else {
-        this.toastr.error( 'Group has been added already!', '', {positionClass: 'toast-top-center'});
+    // console.log(this.assignmentSchoolInstrumentLevel);
+    if(this.selectedSchool == "") {
+      this.toastr.error('School is blank!', '', {positionClass: 'toast-top-center'});
+      return
+    } else if (this.selectedInstrument == '') {
+      for (var element of this.instructorSchoolInstrumentLevels) {
+        if (element.split("_")[0] == this.selectedSchool) {
+          this.toAddSchoolInstrumentLevelArray.push(element);
+        }
       }
+    } else if (this.selectedLevel == '') {
+      for (var element of this.instructorSchoolInstrumentLevels) {
+        if (element.split("_")[0] == this.selectedSchool && element.split("_")[1] == this.selectedInstrument) {
+          this.toAddSchoolInstrumentLevelArray.push(element);
+        }
+      }
+    } else {
+      this.toAddSchoolInstrumentLevelArray.push(this.selectedSchool + "_" + this.selectedInstrument + "_" + this.selectedLevel);
     }
 
-    this.addSchoolInstrumentsLevels = true
+    console.log(this.toAddSchoolInstrumentLevelArray)
 
-    this.displaySchool = false
-    this.displayInstruments = false;
-    this.displayLevels = false;
-    
-    //this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
+    for (this.toAddSchoolInstrumentLevel of this.toAddSchoolInstrumentLevelArray) {
+      if (!this.assignmentSchoolInstrumentLevel.includes(this.toAddSchoolInstrumentLevel.toString())) {
+        this.assignmentSchoolInstrumentLevel.push(this.toAddSchoolInstrumentLevel.toString());
+      } else {
+        this.toastr.error("Group has been added already!", "", {positionClass: 'toast-top-center'});
+      }
+    }
   }
 
   // === === //
@@ -380,7 +397,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
           description: this.assignmentDescription,
           due_datetime: updateAssignmentDueDateandTime,
           name: this.assignmentName,
-          school_instrument_level: this.assignmentSchoolInstrumentLevel,
+          school_instrument_level: this.toAddSchoolInstrumentLevelArray,
           file_names: this.assignmentFileNames
         }
         // Update the assignment.
