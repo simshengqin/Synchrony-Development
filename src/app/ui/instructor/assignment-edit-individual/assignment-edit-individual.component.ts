@@ -397,7 +397,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
           description: this.assignmentDescription,
           due_datetime: updateAssignmentDueDateandTime,
           name: this.assignmentName,
-          school_instrument_level: this.assignmentSchool,
+          school_instrument_level: this.toAddSchoolInstrumentLevelArray,
           file_names: this.assignmentFileNames
         }
         // Update the assignment.
