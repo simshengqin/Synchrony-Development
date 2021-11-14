@@ -234,8 +234,35 @@ export class AssignmentCreateComponent implements OnInit {
     this.toAddSchoolInstrumentLevel = this.schoolSelected + "_" + this.instrumentSelected + "_" + this.levelSelected
   }
 
+  populateInstrumentOptions(){
+    // console.log('Instrument Function Triggered');
+    // Clear all subsequent options
+    this.instrumentOptions = [];
+    this.classGroups = [];
+    this.levelOptions = [];
+
+    for (const classGroup of this.schoolInstrumentLevel){
+      // Split classgroup to find school
+      this.school = classGroup.split('_')[0];
+      if (this.school == this.schoolSelected){
+        this.classGroups.push(classGroup);
+        if (!this.instrumentOptions.includes(classGroup.split('_')[1])){
+          this.instrumentOptions.push(classGroup.split('_')[1]);
+        }
+      }
+    }
+  }
+
+  populateLevelOptions(){
+    // Clear levelOptions
+    this.levelOptions = [];
+    for (const classGroup of this.classGroups){
+      this.levelOptions.push(classGroup.split('_')[2]);
+    }
+  }
+
   onSubmit(){
-    console.log("test");
+
     // Check if any of the parameters are undefined. If undefined, show error and no action is taken
     if (this.schoolSelected === undefined || this.instrumentOptions === undefined || this.levelSelected === undefined){
       this.classUndefined = true;
@@ -253,7 +280,7 @@ export class AssignmentCreateComponent implements OnInit {
         this.buttonTexts.push(this.buttonText);
 
         // Submit button is unclickable if there are no classes
-        if (this.assignmentSchoolInstrumentLevel.length > 0){
+        if (this.buttonTexts.length > 0){
           this.createAssignmentButtonClickable = true;
         } else {
           this.createAssignmentButtonClickable = false;
@@ -358,10 +385,10 @@ export class AssignmentCreateComponent implements OnInit {
 
       // Retrieve schools
       // console.log(this.buttonTexts);
-      for (const group of this.assignmentSchoolInstrumentLevel) {
+      for (const buttonText of this.buttonTexts) {
         // Retrieve schools and put in schools array
-        if (!this.schools.includes(group.split('_')[0])) {
-          this.schools.push(group.split('_')[0]);
+        if (!this.schools.includes(buttonText.split('_')[0])) {
+          this.schools.push(buttonText.split('_')[0]);
         }
       }
 
@@ -386,7 +413,7 @@ export class AssignmentCreateComponent implements OnInit {
         due_datetime: this.assignmentDueDate,
         name: this.newAssignmentForm.value.title,
         school: this.schools,
-        school_instrument_level: this.assignmentSchoolInstrumentLevel,
+        school_instrument_level: this.buttonTexts,
         file_names: this.fileNames
       };
 
