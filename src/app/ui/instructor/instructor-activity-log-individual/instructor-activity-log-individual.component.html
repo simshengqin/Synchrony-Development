@@ -8,7 +8,7 @@
   <h4 class="mb-6" *ngIf="query_by_year_month.length != 0"> Filtered by: {{query_by_year_month}}</h4>
   <br>
   
-  <div *ngIf="dataSource.length!=0">
+  <div *ngIf="is_loading_data == false">
     <ng-container><app-input-dropdown-select [inputDataList]="years" [name]="nameYear" (outputData)="get_query_data_year($event)"></app-input-dropdown-select></ng-container>
     <ng-container><app-input-dropdown-select [inputDataList]="months" [name]="nameMonth" (outputData)="get_query_data_month($event)"></app-input-dropdown-select></ng-container>
     <br>
@@ -20,7 +20,7 @@
     <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns"></app-table>
   </div>
 
-  <div *ngIf="dataSource.length==0" class="text-center">
+  <div *ngIf="is_loading_data == true" class="text-center">
     <br>
     <br>
     <mat-spinner style="margin:0 auto;"></mat-spinner>

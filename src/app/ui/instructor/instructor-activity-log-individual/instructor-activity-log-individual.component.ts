@@ -48,6 +48,8 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
 
   security_role_access: string = "instructor";
 
+  is_loading_data: boolean = true;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -57,6 +59,7 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.is_loading_data = true;
     var instrustor = JSON.parse(this.sharedService.getAccount()!);
     if(this.security_role_access != instrustor.role){
       this.router.navigate(['/login']);
@@ -88,6 +91,7 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
     }
     this.display_accumulated_time = this.accumulated_time
     this.dataSource = this.activity_logs;
+    this.is_loading_data = false
   }
 
   private create_custom_wage(wage:Wage, instructor:Account, assignmentSubmission:AssignmentSubmission, student:Account, assignmentData:Assignment){
