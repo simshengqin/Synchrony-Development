@@ -1,11 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
-import { Wage } from 'src/app/core/models/wage';
+import { Component, OnInit } from '@angular/core';
 import { Account } from 'src/app/core/models/account';
 import { first } from 'rxjs/operators';
 import { CrudService } from 'src/app/core/services/crud.service'; 
 import { SharedService } from 'src/app/core/services/sharedservice.service';
 import { ToastrService } from 'ngx-toastr';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-instructor-activity-log',
@@ -28,7 +27,7 @@ export class InstructorActivityLogComponent implements OnInit {
   is_loading_data: boolean = true;
 
   constructor(
-    private crudservice:CrudService,
+    private crudService:CrudService,
     private sharedService:SharedService,
     private router: Router,
     private toastrService: ToastrService,
@@ -51,7 +50,7 @@ export class InstructorActivityLogComponent implements OnInit {
 
   async retrieve_wage(){
     var result = []
-    const data = await this.crudservice.read('wages','instructor_account_doc_id','==',this.instrustor.docId).pipe(first()).toPromise();
+    const data = await this.crudService.read('wages','instructor_account_doc_id','==',this.instrustor.docId).pipe(first()).toPromise();
     for(var ele of data){
       if(this.schools.indexOf(ele["school"])==-1){
         this.schools.push(ele["school"])

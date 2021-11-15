@@ -24,7 +24,6 @@ import * as Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
 import * as Record from 'videojs-record/dist/videojs.record.js';
 import 'videojs-record/dist/plugins/videojs.record.ts-ebml.js';
 declare var require: any;
-// import * as WaveSurfer from 'wavesurfer.js';
 import * as WaveSurferRegions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {ConfirmModalComponent} from "../confirm-modal/confirm-modal.component";
 @Component({
@@ -55,28 +54,6 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
 
     // save reference to plugin (so it initializes)
     this.plugin = Record;
-    // const ws  = WaveSurfer.create( {
-    //     container: this.player,
-    //     backend: 'WebAudio',
-    //     waveColor: '#36393b',
-    //     progressColor: 'black',
-    //     debug: true,
-    //     cursorWidth: 1,
-    //     displayMilliseconds: true,
-    //     hideScrollbar: true,
-    //     plugins: [
-    //       // enable microphone plugin
-    //       WaveSurfer.microphone.create({
-    //         bufferSize: 4096,
-    //         numberOfInputChannels: 1,
-    //         numberOfOutputChannels: 1,
-    //         constraints: {
-    //           video: false,
-    //           audio: true
-    //         }
-    //       })
-    //     ]
-    //   });
 
       // video.js configuration
     this.config = {
@@ -126,7 +103,6 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
         ' and recordrtc ' + RecordRTC.version;
       videojs.log(msg);
     });
-    // this.player.fill(true);
     // device is ready
     this.player.on('deviceReady', () => {
       console.log('device is ready!');
@@ -145,11 +121,8 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
       // recordedData is a blob object containing the recorded data that
       // can be downloaded by the user, stored on server etc.
       console.log('finished recording: ', this.player.recordedData);
-      // const recordedDataMp4 = this.player.record().saveAs({video: 'my-video-file-name.mp4'}, 'convert');
-      // console.log(recordedDataMp4);
-      // this.recordingEmit.emit(recordedDataMp4);
       this.recordingEmit.emit([this.player.recordedData, this.player.record().streamCurrentTime]);
-      // this.feedbackEmit.emit([this.feedback, this.grade]);
+
     });
 
     // error handling

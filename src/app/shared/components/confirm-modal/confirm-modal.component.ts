@@ -1,9 +1,7 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Assignment} from '../../../core/models/assignment';
-// import {AssignmentService} from '../../../core/services/assignment.service';
 import {AssignmentSubmission} from '../../../core/models/assignment-submission';
-// import {AccountService} from '../../../core/services/account.service';
 import {Account} from '../../../core/models/account';
 import {ToastrService} from 'ngx-toastr';
 import {first} from 'rxjs/operators';
@@ -28,8 +26,6 @@ export class ConfirmModalComponent implements OnInit {
   @ViewChild('confirmModal') confirmModal: TemplateRef<any>;
   constructor(
     private modalService: NgbModal,
-    // private assignmentService: AssignmentService,
-    // private accountService: AccountService,
     private toastrService: ToastrService,
     private crudService: CrudService,
 
@@ -46,25 +42,8 @@ export class ConfirmModalComponent implements OnInit {
       assignment = await this.crudService.readByDocId('assignments', assignmentDocId)
         .pipe(first())
         .toPromise();
-      // assignment = await this.assignmentService.getAssignment(assignmentDocId)
-      //   .pipe(first())
-      //   .toPromise();
     }
     this.modalService.open(this.confirmModal, {ariaLabelledBy: 'modal-basic-title'}).result.then((response) => {
-      if (response === 'delete') {
-        // if (assignment) {
-        //   this.assignmentService.deleteAssignment(assignment.docId).then(r => {
-        //     this.toastrService.success('Deleted assignment successfully!', '', {positionClass: 'toast-top-center'});
-        //     console.log(r);
-        //   });
-        // }
-        // if (account) {
-        //   this.accountService.deleteAccount(account.docId).then(r => {
-        //     this.toastrService.success('Deleted account successfully!', '', {positionClass: 'toast-top-center'});
-        //     console.log(r);
-        //   });
-        // }
-      }
       if (response === 'submit') {
         if (!this.grade && this.grade !== 0) {
           this.isGradeError = true;

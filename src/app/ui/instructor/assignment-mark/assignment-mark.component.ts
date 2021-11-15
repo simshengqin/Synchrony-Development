@@ -1,14 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {first} from 'rxjs/operators';
-import {AssignmentSubmission} from '../../../core/models/assignment-submission';
-import {CrudService} from '../../../core/services/crud.service';
-import {Account} from '../../../core/models/account';
-import {TranslateService} from '@ngx-translate/core';
-import {DatePipe} from '@angular/common';
-import {Assignment} from '../../../core/models/assignment';
+import { Component, OnInit } from '@angular/core';
+import { first} from 'rxjs/operators';
+import { AssignmentSubmission } from '../../../core/models/assignment-submission';
+import { CrudService } from '../../../core/services/crud.service';
+import { Account } from '../../../core/models/account';
+import { TranslateService } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
-import {ToastrService} from "ngx-toastr";
+import { ToastrService } from "ngx-toastr";
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,19 +20,7 @@ export class AssignmentMarkComponent implements OnInit {
   dataSource!: Array<AssignmentSubmission>;
   displayedColumns: string[] = ['assignment_name', 'assignment_school_instrument_level', 'assignment_student_name', 'assignment_submission_status', 'assignment_feedback_status', 'action'];
   actionType = 'assignmentMark';
-  // tableActions?: Array<TableAction> = [TableAction.assignment_mark, TableAction.assignment_instructor_feedback];
-  // tableColumns?: Array<TableColumn> = [ TableColumn.position, TableColumn.assignment_name2,
-  //   TableColumn.assignment_school, TableColumn.assignment_group, TableColumn.assignment_student_name,
-  //   TableColumn.assignment_submission_status, TableColumn.assignment_feedback_datetime, TableColumn.actions];
-  // // tableColumns?: Array<TableColumn> = [TableColumn.position, TableColumn.assignment_submission_assignment_name,
-  //   TableColumn.assignment_submission_student_name, TableColumn.assignment_submission_submission_status,
-  // TableColumn.assignment_submission_due_datetime, TableColumn.assignment_submission_feedback_datetime, TableColumn.actions];
-  // , TableColumn.assignment_student, TableColumn.assignment_status
-  //   , TableColumn.assignment_due_datetime, TableColumn.assignment_feedback_datetime, TableColumn.actions];
-  // filterActions?: Array<FilterAction> = [FilterAction.assignment_school, FilterAction.assignment_group, FilterAction.assignment_feedback];
   assignmentSubmissions: Array<AssignmentSubmission>;
-  // instructorDocId = localStorage.getItem('activeDocId');
-  // @ViewChild(CommonTableComponent) commonTableComponent: CommonTableComponent;
   schoolOptions: string[] = [];
   instrumentOptions: string[] = [];
   levelOptions: string[] = [];
@@ -47,7 +33,6 @@ export class AssignmentMarkComponent implements OnInit {
   security_role_access: string = "instructor";
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private crudService: CrudService,
     private translateService: TranslateService,
     private sharedService: SharedService,
@@ -62,9 +47,7 @@ export class AssignmentMarkComponent implements OnInit {
       this.router.navigate(['/login']);
       this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
-    // console.log(this.loggedInAccount)
-    // const dataSource = await this.crudService.read('assignment_submissions').pipe(first()).toPromise();
-    // console.log(dataSource);
+
     this.translateService.use('en');
     const datePipe = new DatePipe(this.translateService.currentLang);
     const loggedInAccount = JSON.parse(this.sharedService.getAccount());
@@ -95,10 +78,8 @@ export class AssignmentMarkComponent implements OnInit {
     this.assignmentSubmissions = filteredAssignmentSubmissions;
     this.dataSource = this.assignmentSubmissions;
     this.updateSelectOptions();
-    // console.log(this.dataSource);
   }
   filterData($event: any, type: string): void {
-    // console.log($event.value);
     switch (type) {
       case 'School':
         this.selectedSchoolOptions = $event.value;

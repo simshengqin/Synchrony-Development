@@ -8,7 +8,5 @@
     <app-input-dropdown-select [inputDataList]="instrumentOptions" [name]="'Instrument'"  (outputData)="filterData($event, 'Instrument')"></app-input-dropdown-select>
     <app-input-dropdown-select [inputDataList]="levelOptions" [name]="'Level'"  (outputData)="filterData($event, 'Level')"></app-input-dropdown-select>
     <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType"></app-table>
-    <!--    <app-search-filter [filterActions] = "filterActions"></app-search-filter>-->
-<!--    <app-common-table [tableActions]="tableActions" [tableColumns]="tableColumns" [assignmentSubmissions]="assignmentSubmissions"></app-common-table>-->
   </ng-container>
 </div>

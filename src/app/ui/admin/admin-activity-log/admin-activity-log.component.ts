@@ -1,11 +1,11 @@
-import {Component, OnInit, AfterViewInit, ViewChild, Input, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { Account } from '../../../core/models/account';
 import { Wage } from '../../../core/models/wage';
 import { first } from 'rxjs/operators';
 import { AssignmentSubmission } from 'src/app/core/models/assignment-submission';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -38,7 +38,7 @@ export class AdminActivityLogComponent implements OnInit {
   is_loading_data:boolean = true;
 
   constructor(
-    private crudservice: CrudService,
+    private crudService: CrudService,
     private sharedservice:SharedService,
     private router: Router,
     private toastrService: ToastrService
@@ -56,10 +56,10 @@ export class AdminActivityLogComponent implements OnInit {
 
   async retrieve_all_wages(){
     this.reset();
-    var data = await this.crudservice.read('wages').pipe(first()).toPromise();
+    var data = await this.crudService.read('wages').pipe(first()).toPromise();
     for (var wage of data) {
-      var instructorData = await this.crudservice.readByDocId('accounts', wage.instructor_account_doc_id).pipe(first()).toPromise();
-      var assignmentSubmissionData = await this.crudservice.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
+      var instructorData = await this.crudService.readByDocId('accounts', wage.instructor_account_doc_id).pipe(first()).toPromise();
+      var assignmentSubmissionData = await this.crudService.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
       this.wages.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData))
     }
     for (var ele of this.wages){
@@ -98,9 +98,7 @@ export class AdminActivityLogComponent implements OnInit {
     return data
   }
 
-
   get_query_schools($event:any){
-    console.log($event.value);
     this.selectedSchools = $event.value;
     this.query_table_with_filter();
   }

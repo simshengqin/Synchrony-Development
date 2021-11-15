@@ -1,10 +1,9 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { Router } from "@angular/router";
 import { first } from 'rxjs/operators';
-import {ToastrService} from "ngx-toastr";
+import { ToastrService } from "ngx-toastr";
 import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
@@ -31,7 +30,6 @@ export class AccountEditFormComponent implements OnInit {
   security_role_access: string = "admin";
 
   constructor(
-    private route: ActivatedRoute,
     private crudservice: CrudService,
     private formBuilder: FormBuilder,
     private router: Router,
@@ -96,18 +94,14 @@ export class AccountEditFormComponent implements OnInit {
         }
       } else {
         this.toastrService.error("Error: School cannot be empty!", '', {positionClass: 'toast-top-center'});
-        return console.log("Error: School cannot be empty!");
+        return;
       }
-
-      console.log(schoolInstrumentLevel);
 
       if(schoolInstrumentLevel!='' || schoolInstrumentLevel!=[]) {
         if(Array.isArray(schoolInstrumentLevel) == false) {
           let arr = schoolInstrumentLevel.split(",");
           schoolInstrumentLevel = arr;
         }
-
-        console.log(schoolInstrumentLevel);
 
         let result = [];
 
@@ -121,24 +115,24 @@ export class AccountEditFormComponent implements OnInit {
               result.push(schoolInstrumentLevel[i].toLowerCase());
             } else {
               this.toastrService.error("Error: Check the format of School-Instrument-Level!", '', {positionClass: 'toast-top-center'});
-              return console.log("Error: Check the format of School-Instrument-Level!");
+              return;
             }
           } else {
             this.toastrService.error("Error: Number of underscores in School-Instrument-Level is higher or lower than 2!", '', {positionClass: 'toast-top-center'});
-            return console.log("Error: Number of underscores in School-Instrument-Level is higher or lower than 2!");
+            return;
           }
         }
         this.crudservice.update("accounts", this.docId, {"school_instrument_level": result});
       } else {
         this.toastrService.error("Error: School-Instrument-Level cannot be empty!", '', {positionClass: 'toast-top-center'});
-        return console.log("Error: School-Instrument-Level cannot be empty!");
+        return;
       }
 
       this.toastrService.success('Updated account details successfully!', '', {positionClass: 'toast-top-center'});
       this.router.navigate(['/admin/account/edit']);
 
     } catch(e) {
-      console.log(e);
+      this.toastrService.error("Error! Please contact the system administrator", '', {positionClass: 'toast-top-center'});
     }
   }
 

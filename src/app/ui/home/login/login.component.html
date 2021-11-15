@@ -50,11 +50,11 @@
             </mat-error>
 
             <div *ngIf="updatePasswordPage">
-              <button type="submit" class="btn btn-primary" >Update Password</button>
+              <button type="submit" type="button" mdbBtn color="primary" (click)="onSubmit()" >Update Password</button>
             </div>
 
             <div *ngIf="loginPage">
-              <button type="submit" class="btn btn-primary"> Login </button>
+              <button type="submit" type="button" mdbBtn color="primary" (click)="onSubmit()"> Login </button>
             </div>
 
 

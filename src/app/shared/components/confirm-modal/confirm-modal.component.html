@@ -15,12 +15,10 @@
           <input matInput placeholder="" value=""
                  [(ngModel)]="grade">
         </mat-form-field>
-<!--        type="number" min="0" max="100" (change)= "grade < 0 ? grade = 0 : grade; grade > 100 ? grade = 100 : grade;"-->
         <mat-error *ngIf="isGradeError && !grade">
           Score cannot be empty
         </mat-error>
         <h3>Feedback</h3>
-<!--        <textarea class="modal-content form-control mt-3" placeholder="Enter your feedback here (Optional)" [(ngModel)]="feedback"></textarea>-->
         <mat-form-field appearance="fill"  class="w-100">
           <mat-label>Enter your feedback (Optional) </mat-label>
           <textarea [(ngModel)]="feedback" matInput
@@ -43,18 +41,14 @@
           <p> b. The first row should contain all 6 columns headers: (role,	school,	school_instrument_level,	first_name,	last_name,	password)</p>
           <p> c. At least 1 row should be present (excluding the column headers) </p>
           <p> d. Every field values needs to be filled (Except for school and school_instrument_level column for admin accounts) </p>
-<!--          <p> e. The username should not be taken </p>-->
           <p> e. The password should be at least 5 characters long </p>
           <p> f. The role should only be 1 of these 3 values: admin, instructor, student </p>
-<!--          <p> g. If the account's username already exists, the account's info will be auto overriden with the newly uploaded info. However, roles of existing-->
-<!--          users cannot be changed</p>-->
         </div>
         <div *ngIf="title == 'Student\'s Account Creation Instructions'" class="ml-3">
           <p> a. The file must be .csv format </p>
           <p> b. The first row should contain all 5 columns headers: (school,	school_instrument_level, first_name,	last_name,	password)</p>
           <p> c. At least 1 row should be present (excluding the column headers) </p>
           <p> d. Every field values needs to be filled </p>
-<!--          <p> e. The username should not be taken </p>-->
           <p> e. The password should be at least 5 characters long </p>
           <p> f. Instructors can only upload students with the same school_instrument_level as them (Students can have fewer school_instrument_level then instructors)</p>
         </div>

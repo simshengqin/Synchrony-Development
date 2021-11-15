@@ -1,22 +1,15 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CrudService } from 'src/app/core/services/crud.service';
-import { TableComponent } from 'src/app/shared/components/table/table.component';
-import {ToastrService} from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { Account } from '../../../core/models/account';
 import { Assignment } from '../../../core/models/assignment'
 import { first } from 'rxjs/operators';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { Observable } from 'rxjs';
 import { environment } from "../../../../environments/environment.prod";
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Validators } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { FormControl } from '@angular/forms';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 import { SharedService } from 'src/app/core/services/sharedservice.service';
-// import { ConsoleReporter } from 'jasmine';
 
 @Component({
   selector: 'app-assignment-edit-individual',
@@ -84,18 +77,12 @@ export class AssignmentEditIndividualComponent implements OnInit {
   isDueDateTimeAcceptable:boolean = true;
   isSchoolInstrumentLevelAcceptable:boolean = true;
 
-  // forms
-  updateAssignmentForm!: FormGroup;
-
   security_role_access: string = "instructor";
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
-    private crudservice:CrudService,
+    private crudService:CrudService,
     private storage: AngularFireStorage,
-    //private afStorage: AngularFireStorage,
-    private fb: FormBuilder,
     private toastr: ToastrService,
     private sharedService: SharedService
   ) { }
@@ -118,25 +105,20 @@ export class AssignmentEditIndividualComponent implements OnInit {
       this.instructorSchools = this.account.school;
       this.instructorSchoolInstrumentLevels = this.account.school_instrument_level;
       this.addSchoolInstrumentsLevels = true
-      //this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
     }
   }
 
   // Get the assignment information
   async get_assignment_information() {
-    //const assignmentid = this.route.snapshot.paramMap.get('docId');
     const assignmentid = this.sharedService.getComponentParameter();
-    console.log(assignmentid)
     this.assignmentDocId = assignmentid;
-    const data = await this.crudservice.readByDocId('assignments', assignmentid).pipe(first()).toPromise();
+    const data = await this.crudService.readByDocId('assignments', assignmentid).pipe(first()).toPromise();
     this.assignment = data
     this.assignmentDescription = this.assignment.description;
     this.convert_date_time(this.assignment.due_datetime)
     this.assignmentName = this.assignment.name;
     this.assignmentSchool = this.assignment.school;
     this.assignmentSchoolInstrumentLevel = this.assignment.school_instrument_level;
-    //this.assignmentFileNames = this.assignment.file_names;
-
     this.get_assignment_files(assignmentid)
   }
 
@@ -156,11 +138,9 @@ export class AssignmentEditIndividualComponent implements OnInit {
     this.instruments = [];
     this.levels = [];
 
-    //this.displaySchool = false
     this.displayInstruments = false;
     this.displayLevels = false;
 
-    //this.schools.push("none")
     for (var ele of data){
       var tempsSchool = ele.split("_")[0]
       var tempInsturment = ele.split("_")[1]
@@ -175,8 +155,6 @@ export class AssignmentEditIndividualComponent implements OnInit {
         this.levels.push(ele)
       }
     }
-
-    //this.displaySchool = true
   }
 
   get_query_data_school($event:any):void{
@@ -195,14 +173,12 @@ export class AssignmentEditIndividualComponent implements OnInit {
     } else {
       this.displayInstruments = true
       this.displayLevels = false
-      //this.queriedInstruments.push("none")
       for(var ele of this.instruments){
         var tempSchool = ele.split("_")[0]
         if(tempSchool == this.selectedSchool){
           this.queriedInstruments.push(ele.split("_")[1])
         }
       }
-      // console.log(this.queriedInstruments)
     }
   }
 
@@ -213,7 +189,6 @@ export class AssignmentEditIndividualComponent implements OnInit {
       this.displayInstruments = true
       this.displayLevels = false
     } else {
-      //this.queriedLevels.push("none")
       this.displayInstruments = true
       this.displayLevels = true
       for(var ele of this.levels){
@@ -232,7 +207,6 @@ export class AssignmentEditIndividualComponent implements OnInit {
   }
 
   add(){
-    // console.log(this.assignmentSchoolInstrumentLevel);
     if(this.selectedSchool == "") {
       this.toastr.error('School is blank!', '', {positionClass: 'toast-top-center'});
       return
@@ -252,8 +226,6 @@ export class AssignmentEditIndividualComponent implements OnInit {
       this.toAddSchoolInstrumentLevelArray.push(this.selectedSchool + "_" + this.selectedInstrument + "_" + this.selectedLevel);
     }
 
-    console.log(this.toAddSchoolInstrumentLevelArray)
-
     for (this.toAddSchoolInstrumentLevel of this.toAddSchoolInstrumentLevelArray) {
       if (!this.assignmentSchoolInstrumentLevel.includes(this.toAddSchoolInstrumentLevel.toString())) {
         this.assignmentSchoolInstrumentLevel.push(this.toAddSchoolInstrumentLevel.toString());
@@ -268,16 +240,9 @@ export class AssignmentEditIndividualComponent implements OnInit {
   // === === //
 
   convert_date_time(data:Timestamp){
-    //var month = data.toDate().getMonth()
-    //var day = data.toDate().getDay()
     this.assignmentDueDateTime = data.toDate().toString().split(" ");
     this.assignmentDueDate = this.assignmentDueDateTime[3] + "-" + this.convert_date_abbreviation_to_number(this.assignmentDueDateTime[1]) + "-" + this.assignmentDueDateTime[2]
     this.assignmentDueTime = this.assignmentDueDateTime[4].split(":")[0] + ":" + this.assignmentDueDateTime[4].split(":")[1]
-    //var dueDate = this.assignmentDueDateTime[3] + "-" + (month+1) + "-" + day
-    //data.toDate().getMonth;
-    //this.assignmentDueDate = dueDate;
-    //this.assignmentDueDate = data.toDate().getFullYear() + "-" + data.toDate().getMonth() + "-" + data.toDate().getDay()
-
   }
 
   // Method: Convert date_abbreviation "Jan" or "January" to a number
@@ -296,9 +261,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   // Get assignment files
   get_assignment_files(docid:string){
-    // console.log(docid)
     this.fileLocationPath = "/assignment/" + docid + "/";
-    // console.log(this.assignment["file_names"])
     for(var ele of this.assignment["file_names"]){
       this.assignmentFileNames.push(ele);
     }
@@ -309,22 +272,12 @@ export class AssignmentEditIndividualComponent implements OnInit {
     var index = this.assignmentFileNames.indexOf(data)
     this.filesToBeDeleted.push(this.assignmentFileNames[index]);
     this.assignmentFileNames.splice(index,1)
-    // Remove the file from S3 Stroge.
-    //this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + data).delete();
-
-    // Set updated data into new object
-    //var updateData = this.update_data_assignment()
-
-    // Update the assignment.
-    //this.crudservice.update("assignments",this.assignmentDocId,updateData)
   }
 
   // Method: Remove the file from firestorge Stroge.
   delete_files_from_database(){
     if(this.filesToBeDeleted.length!=0){
-      // console.log("Deleteing ")
       for(var file of this.filesToBeDeleted){
-        // console.log(file)
         this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + file).delete();
       }
     }
@@ -332,42 +285,26 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   addFiles($event:any){
     for(var file of $event){
-      //if(!this.check_file_naming_convention(file["name"])){
         if(this.assignmentFileNames.indexOf(file["name"])==-1){
-          this.newFiles.push(file)
+          this.newFiles.push(file);
         } else {
-          this.showMessageError(file['name'] + " is already included in this assignment")
-          this.isFileAcceptable = false
+          this.showMessageError(file['name'] + " is already included in this assignment");
+          this.isFileAcceptable = false;
         }
-      /*} else {
-        this.showMessageError(file['name'] + " has special characters, please remove this file")
-        this.isFileAcceptable = false
-      }*/
     }
-    this.isFileAcceptable = true
-  }
-
-  private check_file_naming_convention(filename:string):boolean{
-    var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]+/;
-    // return true is there is special characters
-    if(format.test(filename)){
-      return true
-    }
-    // return false if no special characters
-    return false
+    this.isFileAcceptable = true;
   }
 
   add_files_to_database(){
     if(this.newFiles.length!=0){
       for(var file of this.newFiles){
-        var location: string = 'assignment/' + this.assignmentDocId + "/" + file['name']
-        //console.log(location + file["name"])
+        var location: string = 'assignment/' + this.assignmentDocId + "/" + file['name'];
         if(this.assignmentFileNames.indexOf(file['name'])==-1){
           this.assignmentFileNames.push(file['name']);
           this.storage.upload(location, file);
-          this.showMessageSuccess("file Uploaded")
+          this.showMessageSuccess("file Uploaded");
         } else {
-          this.showMessageError(file['name'] + " is already included")
+          this.showMessageError(file['name'] + " is already included");
         }
       }
     }
@@ -375,15 +312,15 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   // remove school instrument level
   removeButton(i: number){
-    this.assignmentSchoolInstrumentLevel.splice(i,1)
+    this.assignmentSchoolInstrumentLevel.splice(i,1);
   }
 
   onSubmit(){
 
-    this.validate_due_date_and_time()
-    this.validate_name()
-    this.validate_school_instrument_level()
-    this.validate_description()
+    this.validate_due_date_and_time();
+    this.validate_name();
+    this.validate_school_instrument_level();
+    this.validate_description();
 
     if(this.isFileAcceptable && this.isNameAcceptable &&
       this.isSchoolInstrumentLevelAcceptable && this.isDueDateTimeAcceptable &&
@@ -392,8 +329,6 @@ export class AssignmentEditIndividualComponent implements OnInit {
         this.delete_files_from_database()
         this.add_files_to_database()
         let updateData = {
-          //instructor_account_doc_id: this.assignment.instructor_account_doc_id,
-          //created_datetime: this.assignment.created_datetime,
           description: this.assignmentDescription,
           due_datetime: updateAssignmentDueDateandTime,
           name: this.assignmentName,
@@ -401,7 +336,7 @@ export class AssignmentEditIndividualComponent implements OnInit {
           file_names: this.assignmentFileNames
         }
         // Update the assignment.
-        this.crudservice.update("assignments", this.assignmentDocId, updateData)
+        this.crudService.update("assignments", this.assignmentDocId, updateData)
         this.router.navigate(['/instructor/assignment/edit']);
         this.showMessageSuccess(this.assignmentName + " has been updated!")
       } else {

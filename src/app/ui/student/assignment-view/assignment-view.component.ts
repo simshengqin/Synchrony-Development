@@ -1,13 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {first} from 'rxjs/operators';
-import {Assignment} from '../../../core/models/assignment';
-import {ActivatedRoute, Router} from '@angular/router';
-import {CrudService} from '../../../core/services/crud.service';
-import {AssignmentSubmission} from '../../../core/models/assignment-submission';
-import {DatePipe} from '@angular/common';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { first} from 'rxjs/operators';
+import { Assignment} from '../../../core/models/assignment';
+import { Router} from '@angular/router';
+import { CrudService} from '../../../core/services/crud.service';
+import { AssignmentSubmission} from '../../../core/models/assignment-submission';
+import { DatePipe} from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
-import {ToastrService} from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -29,7 +29,6 @@ export class AssignmentViewComponent implements OnInit {
   security_role_access: string = "student";
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private crudservice: CrudService,
     private router: Router,
     private translateService: TranslateService,

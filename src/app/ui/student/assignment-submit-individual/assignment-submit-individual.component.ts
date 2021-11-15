@@ -1,12 +1,12 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Assignment} from '../../../core/models/assignment';
-import {first} from 'rxjs/operators';
-import {ToastrService} from 'ngx-toastr';
-import {Account} from '../../../core/models/account';
-import {CrudService} from '../../../core/services/crud.service';
-import {AssignmentSubmission} from '../../../core/models/assignment-submission';
-import {AngularFireStorage} from '@angular/fire/storage';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Assignment } from '../../../core/models/assignment';
+import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { Account } from '../../../core/models/account';
+import { CrudService } from '../../../core/services/crud.service';
+import { AssignmentSubmission } from '../../../core/models/assignment-submission';
+import { AngularFireStorage } from '@angular/fire/storage';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 import { SharedService } from 'src/app/core/services/sharedservice.service';
@@ -30,7 +30,6 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
   security_role_access: string = "student";
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private crudService: CrudService,
     private router: Router,
     private toastrService: ToastrService,

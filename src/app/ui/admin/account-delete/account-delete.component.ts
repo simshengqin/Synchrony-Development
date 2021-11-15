@@ -1,12 +1,8 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CrudService } from 'src/app/core/services/crud.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { TableComponent } from 'src/app/shared/components/table/table.component';
 import { Account } from '../../../core/models/account';
 import { first } from 'rxjs/operators';
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
 
@@ -85,7 +81,7 @@ export class AccountDeleteComponent implements OnInit {
   }
 
   create_account(data:Account){
-    if(data.school[0] == "-"){
+    if(data.school[0] == "-" || data.school[0] == "" || data.school[0] == " "){
       data.school[0] = "NA";
     }
     if(data.school_instrument_level[0] == "-" || data.school_instrument_level[0] == "" || data.school_instrument_level[0] == " "){
@@ -125,7 +121,6 @@ export class AccountDeleteComponent implements OnInit {
           this.sub_schools.push(school)
         }
         if(this.sub_instrument.indexOf(instrument)==-1){
-          console.log(instrument);
           this.sub_instrument.push(instrument)
         }
         if(this.sub_levels.indexOf(level)==-1){

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-pdf-printer',

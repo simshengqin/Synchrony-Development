@@ -1,23 +1,19 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SecurityContext, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {first} from 'rxjs/operators';
-import {ToastrService} from 'ngx-toastr';
-// import {pdfDefaultOptions} from 'ngx-extended-pdf-viewer';
-import {HttpClient} from '@angular/common/http';
-// import { saveAs } from 'file-saver';
-import {AngularFireStorage} from '@angular/fire/storage';
-import {AssignmentSubmission} from '../../../core/models/assignment-submission';
-import {Assignment} from '../../../core/models/assignment';
-import {Account} from '../../../core/models/account';
-import {VideojsRecordComponent} from '../../../shared/components/videojs-record/videojs-record.component';
-import {NgxExtendedPdfViewerComponent} from 'ngx-extended-pdf-viewer';
-import {CrudService} from '../../../core/services/crud.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { AssignmentSubmission } from '../../../core/models/assignment-submission';
+import { Assignment } from '../../../core/models/assignment';
+import { Account } from '../../../core/models/account';
+import { VideojsRecordComponent } from '../../../shared/components/videojs-record/videojs-record.component';
+import { NgxExtendedPdfViewerComponent } from 'ngx-extended-pdf-viewer';
+import { CrudService } from '../../../core/services/crud.service';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {ConfirmModalComponent} from '../../../shared/components/confirm-modal/confirm-modal.component';
-import {Wage} from "../../../core/models/wage";
-// import {VideoPlayerComponent} from '../../../shared/components/video-player/video-player.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
+import { Wage } from "../../../core/models/wage";
 import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 @Component({
@@ -102,7 +98,6 @@ export class AssignmentMarkIndividualComponent implements OnInit {
           });
       });
     }
-    console.log( (new Date().getTime() - this.startDatetime.getTime()) / 1000);
     const newWage: Wage = {
       instructor_account_doc_id: this.loggedInAccount.docId,
       assignment_submission_doc_id: this.assignmentSubmission.docId,
@@ -116,11 +111,9 @@ export class AssignmentMarkIndividualComponent implements OnInit {
     ).pipe(first()).toPromise();
     if (wage.length > 0) {
       await this.crudService.update('wages', wage[0].docId, newWage);
-      console.log("Update! wage")
     }
     else {
       await this.crudService.create('wages', newWage);
-      console.log("Create! new wage")
     }
     this.assignmentSubmission.feedback = input[0];
     this.assignmentSubmission.grade = input[1];

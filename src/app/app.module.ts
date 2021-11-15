@@ -56,7 +56,6 @@ import { AccountCreateComponent} from './ui/admin/account-create/account-create.
 import { AccountEditComponent } from './ui/admin/account-edit/account-edit.component';
 import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';
 import { AdminHomeComponent } from './ui/admin/admin-home/admin-home.component';
-import { FreelanceWageComponent } from './ui/admin/freelance-wage/freelance-wage.component';
 // Form modules
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule} from 'ngx-toastr';
@@ -108,7 +107,6 @@ import { CrudService } from './core/services/crud.service';
     AccountDeleteComponent,
     UpdatePasswordComponent,
     AdminHomeComponent,
-    FreelanceWageComponent,
     InstructorHomeComponent,
     AssignmentCreateComponent,
     AssignmentEditComponent,

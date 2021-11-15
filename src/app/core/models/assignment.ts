@@ -20,4 +20,6 @@ export interface Assignment {
   submission_status?: string;
   isOverDueDate?: boolean;
   assignmentSubmission?: AssignmentSubmission;
+  due_datetime_modified?: string
+  canDelete?:boolean
 }

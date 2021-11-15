@@ -10,7 +10,6 @@ import { AccountCreateComponent} from './ui/admin/account-create/account-create.
 import { AccountEditComponent} from './ui/admin/account-edit/account-edit.component';
 import { AccountEditFormComponent } from './ui/admin/account-edit-form/account-edit-form.component';
 import { AccountDeleteComponent } from './ui/admin/account-delete/account-delete.component';
-import { FreelanceWageComponent } from './ui/admin/freelance-wage/freelance-wage.component';
 import { AdminHomeComponent } from './ui/admin/admin-home/admin-home.component';
 import { AdminActivityLogComponent } from './ui/admin/admin-activity-log/admin-activity-log.component'
 import { AdminActivityLogIndividualComponent } from './ui/admin/admin-activity-log-individual/admin-activity-log-individual.component'
@@ -67,11 +66,6 @@ const routes: Routes = [{
       path: 'admin/account/edit/form',
       pathMatch: 'full',
       component: AccountEditFormComponent
-    },
-    {
-      path: 'admin/freelance',
-      pathMatch: 'full',
-      component: FreelanceWageComponent
     },
     {
       path: 'admin/activitylog',

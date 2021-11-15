@@ -1,11 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CrudService } from 'src/app/core/services/crud.service';
-import { TableComponent } from 'src/app/shared/components/table/table.component';
 import { Account } from '../../../core/models/account';
 import { Assignment } from '../../../core/models/assignment'
 import { first } from 'rxjs/operators';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
-import {ToastrService} from "ngx-toastr";
+import {ToastrService } from "ngx-toastr";
 import { Router } from '@angular/router';
 
 @Component({
@@ -48,16 +47,16 @@ export class AssignmentEditComponent implements OnInit {
 
   // Mat Table
   dataSource!:any;
-  displayedColumns:string[] = ['name', 'due_datetime', 'school_instrument_level', 'action'];
+  displayedColumns:string[] = ['name', 'due_datetime_modified', 'school_instrument_level', 'action'];
   actionType:string = "instructorAssignmentEdit";
 
   // Assignment
-  assignments:any[]=[];
+  assignments:Assignment[]=[];
 
   security_role_access: string = "instructor";
 
   constructor(
-    private crudservice:CrudService,
+    private crudService:CrudService,
     private sharedService:SharedService,
     private router: Router,
     private toastrService: ToastrService,
@@ -91,7 +90,6 @@ export class AssignmentEditComponent implements OnInit {
 
   // Get filter data by submission status
   get_assignment_statues($event:any):void{
-    console.log($event.value)
     this.selectAssignmentStatus = $event.value
     if (this.select_Combine_SchoolInstrumentLevels.length == 0){
       this.get_all_instructor_assignments()
@@ -104,18 +102,17 @@ export class AssignmentEditComponent implements OnInit {
     this.dataSource = [];
     this.assignments = [];
     var data: Assignment[] = []
-    console.log("selectViewAssignments length is: " + this.selectViewAssignments.length)
     if(this.selectViewAssignments.length == 1){
       // filter by instructor assignment only
-      data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId).pipe(first()).toPromise()
+      data = await this.crudService.read("assignments","instructor_account_doc_id","==",this.accountDocId).pipe(first()).toPromise()
     } else {
       // filter by assignments based on instructor's school instrument and level
-      data = await this.crudservice.read("assignments","school_instrument_level","array-contains-any",this.account.school_instrument_level).pipe(first()).toPromise()
+      data = await this.crudService.read("assignments","school_instrument_level","array-contains-any",this.account.school_instrument_level).pipe(first()).toPromise()
     }
     //const filteredAssignments: Assignment[] = [];
     for(const ele of data){
       var canDelete = true
-      const checkAssignmentSubmission = await this.crudservice.read("assignment_submissions","assignment_doc_id","==",ele.docId).pipe(first()).toPromise()
+      const checkAssignmentSubmission = await this.crudService.read("assignment_submissions","assignment_doc_id","==",ele.docId).pipe(first()).toPromise()
       if (checkAssignmentSubmission.length > 0){
         canDelete = false
       }
@@ -133,12 +130,7 @@ export class AssignmentEditComponent implements OnInit {
           }
         }
       }
-      /*if (Math.floor( Math.abs(new Date().getTime() -
-        ele.due_datetime.toDate().getTime()) / (1000 * 3600 * 24)) <= 31) {
-        filteredAssignments.push(ele);
-      } */
     }
-    //this.assignments = filteredAssignments;
     this.dataSource = this.assignments;
   }
 
@@ -148,12 +140,13 @@ export class AssignmentEditComponent implements OnInit {
     edit_due_datetime = edit_due_datetime.toString().split("GMT")[0].split(" ");
     var edit_due_date = edit_due_datetime[0] + ", " + edit_due_datetime[2] + " " + edit_due_datetime[1] + " " + edit_due_datetime[3] + ", "
     var edit_due_time = edit_due_datetime[4]
-    var assignment: any = {
+    var assignment: Assignment = {
       docId: data.docId,
       instructor_account_doc_id: data.instructor_account_doc_id,
       created_datetime: data.created_datetime,
       description: data.description,
-      due_datetime: edit_due_date + edit_due_time,
+      due_datetime: data.due_datetime,
+      due_datetime_modified: edit_due_date + edit_due_time,
       name: data.name,
       school: data.school,
       school_instrument_level: data.school_instrument_level,
@@ -178,7 +171,6 @@ export class AssignmentEditComponent implements OnInit {
       }
       if(this.sub_levels.indexOf(level)==-1){
         this.sub_levels.push(level)
-        console.log(this.sub_levels)
       }
     }
   }
@@ -233,8 +225,6 @@ export class AssignmentEditComponent implements OnInit {
 
   // Method:
   query_table_with_filter(){
-    //var result:Account[] = [];
-    //result = this.assignments;
     if(this.select_Combine_SchoolInstrumentLevels.length!=0){
       this.filtering_by_school_instrument_levels(this.select_Combine_SchoolInstrumentLevels)
     } else {
@@ -245,15 +235,15 @@ export class AssignmentEditComponent implements OnInit {
   // Method:
   async filtering_by_school_instrument_levels(filter:string[]){
     this.assignments = [];
-    var data:any[] = []
+    var data:Assignment[] = []
     if(this.selectViewAssignments.length == 1){
-      data = await this.crudservice.read("assignments","instructor_account_doc_id","==",this.accountDocId,"school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
+      data = await this.crudService.read("assignments","instructor_account_doc_id","==",this.accountDocId,"school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
     } else {
-      data = await this.crudservice.read("assignments","school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
+      data = await this.crudService.read("assignments","school_instrument_level","array-contains-any",filter).pipe(first()).toPromise()
     }
     for(var ele of data){
       var canDelete = true
-      const checkAssignmentSubmission = await this.crudservice.read("assignment_submissions","assignment_doc_id","==",ele.docId).pipe(first()).toPromise()
+      const checkAssignmentSubmission = await this.crudService.read("assignment_submissions","assignment_doc_id","==",ele.docId).pipe(first()).toPromise()
       if (checkAssignmentSubmission.length > 0){
         canDelete = false
       }

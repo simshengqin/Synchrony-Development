@@ -70,13 +70,9 @@ export class DialogBoxComponent implements OnInit {
   }
 
   async click_to_delete_assignment(){
-      console.log('Assignment deleted!');
-      console.log(this.docid);
       this.fileLocationPath = "/assignment/" + this.docid + "/";
       const data = await this.crudservice.readByDocId('assignments', this.docid).pipe(first()).toPromise();
-      console.log(data)
       for(var file of data["file_names"]){
-        console.log("file to be delete:" + file)
         this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + file).delete();
       }
       this.crudservice.delete('assignments', this.docid);
@@ -86,18 +82,6 @@ export class DialogBoxComponent implements OnInit {
     });
   }
 
-  /*
-  async delete_assignment_from_storage(docid){
-    console.log(docid)
-    this.fileLocationPath = "/assignment/" + docid + "/";
-    const data = await this.crudservice.readByDocId('assignments', docid).pipe(first()).toPromise();
-    console.log(data)
-    for(var file of data["file_names"]){
-      console.log("file to be delete:" + file)
-      this.storage.storage.refFromURL(this.storage_bucket + this.fileLocationPath + file).delete();
-    }
-  }
-  */
 
   acquire_file(){
     const arr = this.fileName.split('.');
@@ -114,7 +98,6 @@ export class DialogBoxComponent implements OnInit {
   async getPDF(): Promise<any> {
     const pdf = this.storage_bucket + this.fileLocationPath + this.fileName;
     const ref = this.storage.refFromURL(pdf);
-    // return this.pdfUrl = ref.getDownloadURL().subscribe(data => {this.pdfUrl = data})
     this.pdfUrl = await ref.getDownloadURL().subscribe(data => {
       this.pdfUrl = data;
     });
@@ -128,8 +111,6 @@ export class DialogBoxComponent implements OnInit {
     const ref = this.storage.refFromURL(video);
     ref.getDownloadURL().subscribe(data => {this.videoUrl = data})
     return this.videoUrl = ref.getDownloadURL().subscribe(data => {this.videoUrl = data; });
-    // console.log(ref.getDownloadURL().subscribe(data => {this.videoUrl = data}))
-    // console.log(this.videoUrl)
   }
 
   returnSafeURL(){

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {first} from 'rxjs/operators';
-import {Assignment} from "../../../core/models/assignment";
-import {AssignmentSubmission} from "../../../core/models/assignment-submission";
-import {ActivatedRoute, Router} from "@angular/router";
-import {CrudService} from "../../../core/services/crud.service";
-import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import { first } from 'rxjs/operators';
+import { Assignment } from "../../../core/models/assignment";
+import { AssignmentSubmission } from "../../../core/models/assignment-submission";
+import { Router} from "@angular/router";
+import { CrudService } from "../../../core/services/crud.service";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { SharedService } from 'src/app/core/services/sharedservice.service';
-import {ToastrService} from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-assignment-feedback-individual',
@@ -23,7 +23,6 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
 
   constructor(
     private toastrService: ToastrService,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private crudService: CrudService,
     private domSanitizer: DomSanitizer,

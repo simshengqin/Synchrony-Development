@@ -9,7 +9,7 @@ export class DropzoneComponent implements OnInit {
   files: File[] = [];
   @Input() acceptMultipleFiles;
   @Input() label: string;
-  @Input() acceptedFileTypes: string; // .pdf,.mp4
+  @Input() acceptedFileTypes: string; 
   @Output() fileEmit = new EventEmitter<any>();
   constructor() { }
 

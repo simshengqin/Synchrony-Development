@@ -4,7 +4,6 @@ import { Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormControl } from '@angular/forms';
-import { exit, title } from 'process';
 import { Assignment } from 'src/app/core/models/assignment';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { Router } from '@angular/router';
@@ -88,11 +87,8 @@ export class AssignmentCreateComponent implements OnInit {
     this.get_account_information();
     // Populate school dropdown list
     this.sessionAccount = JSON.parse(this.sharedService.getAccount()!);
-    // console.log(this.sessionAccount);
     this.schoolOptions = this.sessionAccount.school;
-    // console.log(this.schoolOptions);
     this.schoolInstrumentLevel = this.sessionAccount.school_instrument_level;
-    // console.log(this.schoolInstrumentLevel);
   }
 
   initForm(): void{
@@ -100,7 +96,6 @@ export class AssignmentCreateComponent implements OnInit {
       title: ['', Validators.required],
       description: ['']
     });
-    // console.log(this.loginForm);
   }
 
   get_account_information(): void {
@@ -113,7 +108,6 @@ export class AssignmentCreateComponent implements OnInit {
       this.accountDocId = this.account.docId;
       this.instructorSchools = this.account.school;
       this.addSchoolInstrumentsLevels = true
-      //this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
     }
   }
 
@@ -141,11 +135,9 @@ export class AssignmentCreateComponent implements OnInit {
     this.instruments = [];
     this.levels = [];
 
-    //this.displaySchool = false
     this.displayInstruments = false;
     this.displayLevels = false;
 
-    //this.schools.push("none")
     for (var ele of data){
       var tempsSchool = ele.split("_")[0]
       var tempInsturment = ele.split("_")[1]
@@ -160,30 +152,22 @@ export class AssignmentCreateComponent implements OnInit {
         this.levels.push(ele)
       }
     }
-
-    //this.displaySchool = true
   }
 
   add(){
     this.toAddSchoolInstrumentLevelArray = [];
     // School cannot be blank validation
     if(this.schoolSelected == ""){
-      console.log("school selected = none triggered!")
       this.toastrService.error( 'School is blank!', '', {positionClass: 'toast-top-center'});
       return
     } else if (this.instrumentSelected == "") {
-      console.log("instrument selected = none triggered!");
       // If instrument is blank, add all in the school
         for (var element of this.schoolInstrumentLevel){
-          // console.log("loop triggered!");
-          // console.log(element.split("_")[0]);
           if (element.split("_")[0] == this.schoolSelected){
-            console.log(element.split("_")[0]);
             this.toAddSchoolInstrumentLevelArray.push(element)
           }
         }
       } else if (this.levelSelected == ""){
-        console.log("level selected = none triggered!");
         // If level is blank, add all in the instrument
         for (var element of this.schoolInstrumentLevel){
           if (element.split("_")[0] == this.schoolSelected && element.split("_")[1] == this.instrumentSelected){
@@ -193,8 +177,6 @@ export class AssignmentCreateComponent implements OnInit {
     } else {
       this.toAddSchoolInstrumentLevelArray.push(this.schoolSelected + "_" +  this.instrumentSelected + "_" + this.levelSelected)
     }
-
-    console.log(this.toAddSchoolInstrumentLevelArray)
     
     for (this.toAddSchoolInstrumentLevel of this.toAddSchoolInstrumentLevelArray){
       if(!this.assignmentSchoolInstrumentLevel.includes(this.toAddSchoolInstrumentLevel.toString())){
@@ -204,8 +186,6 @@ export class AssignmentCreateComponent implements OnInit {
       }
     }
     
-    // console.log(this.assignmentSchoolInstrumentLevel)
-
     if (this.assignmentSchoolInstrumentLevel.length > 0){
       this.createAssignmentButtonClickable = true;
     } else {
@@ -218,7 +198,6 @@ export class AssignmentCreateComponent implements OnInit {
     this.displayInstruments = false;
     this.displayLevels = false;
     
-    //this.get_instructor_assign_school_insturment_level(this.account.school_instrument_level)
   }
 
   get_query_data_school($event:any):void{
@@ -237,14 +216,12 @@ export class AssignmentCreateComponent implements OnInit {
     } else {
       this.displayInstruments = true
       this.displayLevels = false
-      //this.queriedInstruments.push("none")
       for(var ele of this.instruments){
         var tempSchool = ele.split("_")[0]
         if(tempSchool == this.schoolSelected){
           this.queriedInstruments.push(ele.split("_")[1])
         }
       }
-      // console.log(this.queriedInstruments)
     }
   }
 
@@ -255,7 +232,6 @@ export class AssignmentCreateComponent implements OnInit {
       this.displayInstruments = true
       this.displayLevels = false
     } else {
-      //this.queriedLevels.push("none")
       this.displayInstruments = true
       this.displayLevels = true
       for(var ele of this.levels){
@@ -273,7 +249,6 @@ export class AssignmentCreateComponent implements OnInit {
   }
 
   populateInstrumentOptions(){
-    // console.log('Instrument Function Triggered');
     // Clear all subsequent options
     this.instrumentOptions = [];
     this.classGroups = [];
@@ -308,7 +283,6 @@ export class AssignmentCreateComponent implements OnInit {
   }
 
   // Dropzone upload functions
-
   onSelect(event: any) {
     this.files.push(...event.addedFiles);
   }
@@ -321,16 +295,9 @@ export class AssignmentCreateComponent implements OnInit {
     this.docIdAfterUpload = sessionStorage.getItem('assignment_docId');
     let index = 0;
     for (const ele of this.files){
-      // console.log(ele);
       const location: string = 'assignment/' + this.docIdAfterUpload + '/' + this.fileNames[index];
       this.afStorage.upload(location, ele);
       index += 1;
-      // /* Notes: file directory, create if does not exist:
-      // under assignments/assignmentDocid*/
-      // var location:string = "assignments/" + this.assignment.assignmentid + "/" + this.assignment.student + "/"
-      // this.afStorage.upload( location + file_name, ele)
-      // .then(()=>this.updateAssignment())
-      // .catch(()=>this.toastr.error("Unable to Upload Assignment!"))
     }
     this.toastrService.success('Assignment has been created!', '', {positionClass: 'toast-top-center'});
 
@@ -339,7 +306,6 @@ export class AssignmentCreateComponent implements OnInit {
 
 
   async createAssignment() {
-
     // To trigger check validation
     this.isSubmitClicked = true;
 
@@ -351,7 +317,6 @@ export class AssignmentCreateComponent implements OnInit {
     // Retrieving Necessary information
     // Creating assignment Create Time
     this.assignmentCreateDate = Timestamp.fromDate(new Date());
-    // console.log('Assignment Time: ', this.assignmentCreateDate);
 
     // Retrieve Assignment Due date
     // Validation check for due date: Cannot be undefined
@@ -361,8 +326,6 @@ export class AssignmentCreateComponent implements OnInit {
     }
     this.assignmentDueDate = Timestamp.fromDate(new Date(this.event.getUTCFullYear(), this.event?.getMonth(),
       this.event.getDate(), this.timeSelected.substring(0, 2), this.timeSelected.substring(2, 4)));
-    // console.log('Assignment Due Time:', this.assignmentDueDate);
-
 
     // Due date validation
     // Assignment cannot be due before current date
@@ -374,22 +337,7 @@ export class AssignmentCreateComponent implements OnInit {
       this.dueDateError = false;
     }
 
-    // console.log(this.dueDateError);
-
     if (this.newAssignmentForm.status) {
-
-      // Retrieve instructor Account DocID
-      // console.log('DocID:', this.sessionAccount.docId);
-
-      // Retrieve description
-      // console.log('description:', this.newAssignmentForm.value.description);
-
-      // Retrieve assignment name
-      // console.log('title:', this.newAssignmentForm.value.title);
-
-      // Retrieve schools
-      // console.log(this.buttonTexts);
-      console.log(this.assignmentSchoolInstrumentLevel);
       for (const classes of this.assignmentSchoolInstrumentLevel) {
         // Retrieve schools and put in schools array
         if (!this.schoolsUpload.includes(classes.split('_')[0])) {
@@ -397,20 +345,12 @@ export class AssignmentCreateComponent implements OnInit {
         }
       }
 
-      // console.log('Schools:', this.schools);
-
-      // Get schoolInstrumentLevel
-      // console.log('schoolInstrumentLevel', this.buttonTexts);
-
-      // get file names
       const i = 0;
       for (let i = 0; i < this.files.length; i++) {
         this.fileNames.push(this.files[i].name);
       }
-      // console.log('file names:', this.fileNames);
 
       // Pack all information into assignment class:
-
       const finalAssignmentSubmission: Assignment = {
         instructor_account_doc_id: this.sessionAccount.docId,
         created_datetime: this.assignmentCreateDate,
@@ -424,16 +364,9 @@ export class AssignmentCreateComponent implements OnInit {
 
       await this.crudService.create('assignments', finalAssignmentSubmission)
         .then(function (docRef) {
-          // console.log('Document: ', docRef);
-          // console.log('Document', typeof (docRef));
           sessionStorage.setItem('assignment_docId', docRef);
-        }).catch(() => console.log('Unable to Upload Assignment!'));
-
-      // console.log('no man\'s land');
-
+        }).catch(() => this.toastrService.error('Unable to Upload Assignment!', '', {positionClass: 'toast-top-center'}));
       this.upload();
-
     }
   }
 }
-

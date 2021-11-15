@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ViewChild, Input, ElementRef} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CrudService } from 'src/app/core/services/crud.service';
 import { Account } from '../../../core/models/account';
 import { Wage } from '../../../core/models/wage';
@@ -6,11 +6,9 @@ import { first } from 'rxjs/operators';
 import { AssignmentSubmission } from 'src/app/core/models/assignment-submission';
 import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import {ToastrService} from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Assignment } from 'src/app/core/models/assignment';
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 
@@ -51,9 +49,8 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
   is_loading_data: boolean = true;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
-    private crudservice:CrudService,
+    private crudService:CrudService,
     private toastr: ToastrService,
     private sharedService: SharedService
   ) { }
@@ -74,16 +71,16 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
     this.instructor_id = key.split("_")[0]
     this.school = key.split("_")[1]
 
-    this.instructor_data = await this.crudservice.readByDocId('accounts',this.instructor_id).pipe(first()).toPromise();
+    this.instructor_data = await this.crudService.readByDocId('accounts',this.instructor_id).pipe(first()).toPromise();
     this.instructor_name = this.instructor_data.first_name + " " + this.instructor_data.last_name;
     this.instructor_school = this.school.toUpperCase();
 
-    const data = await this.crudservice.read('wages', 'instructor_account_doc_id', '==', this.instructor_id, 'school', '==', this.school).pipe(first()).toPromise();
+    const data = await this.crudService.read('wages', 'instructor_account_doc_id', '==', this.instructor_id, 'school', '==', this.school).pipe(first()).toPromise();
     for (var wage of data){
-      var instructorData = await this.crudservice.readByDocId('accounts', this.instructor_id).pipe(first()).toPromise();
-      var assignmentSubmissionData = await this.crudservice.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
-      var studentData = await this.crudservice.readByDocId('accounts', assignmentSubmissionData.student_doc_id).pipe(first()).toPromise();
-      var assignmentData = await this.crudservice.readByDocId('assignments', assignmentSubmissionData.assignment_doc_id).pipe(first()).toPromise();
+      var instructorData = await this.crudService.readByDocId('accounts', this.instructor_id).pipe(first()).toPromise();
+      var assignmentSubmissionData = await this.crudService.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
+      var studentData = await this.crudService.readByDocId('accounts', assignmentSubmissionData.student_doc_id).pipe(first()).toPromise();
+      var assignmentData = await this.crudService.readByDocId('assignments', assignmentSubmissionData.assignment_doc_id).pipe(first()).toPromise();
       this.activity_logs.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData,assignmentData));
     }
     this.display_accumulated_time = this.accumulated_time;
@@ -170,7 +167,6 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
       this.display_accumulated_time = 0;
       for(var year of this.selectedYears){
         for(var month of this.selectedMonths){
-          console.log(year + "-" + month)
           this.query_by_year_month.push(year + "-" + month)
         }
       }

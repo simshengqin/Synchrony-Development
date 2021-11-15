@@ -35,8 +35,8 @@
           <mat-option value="1030">10:30am</mat-option>
           <mat-option value="1100">11:00am</mat-option>
           <mat-option value="1130">11:30am</mat-option>
-          <mat-option value="1200">12:00am</mat-option>
-          <mat-option value="1230">12:30am</mat-option>
+          <mat-option value="1200">12:00pm</mat-option>
+          <mat-option value="1230">12:30pm</mat-option>
           <mat-option value="1300">1:00pm</mat-option>
           <mat-option value="1330">1:30pm</mat-option>
           <mat-option value="1400">2:00pm</mat-option>
@@ -84,7 +84,6 @@
 
       <div class="row">
         <div class="form-outline col-12">
-            <!-- <span> Selected: </span> <br> -->
             <button type="button" class="btn btn-primary" *ngFor="let buttonText of assignmentSchoolInstrumentLevel; let i = index;" (click)="removeGroup(i)"> {{buttonText}} <span class="badge bg-danger ms-2"> X </span> </button>
             <button *ngIf="addSchoolInstrumentsLevels" type="button" class="btn btn-success" (click)="add_display_school_instrument_level()" > + Add </button>
         </div>
@@ -110,8 +109,6 @@
         Please insert an assignment title!
       </mat-error>
 
-      <!-- <br><button mdbBtn color="info" type="submit">Add Class</button> -->
-
       <br>
       <label for = "description"> Assignment Description: </label>
       <br>
@@ -130,19 +127,6 @@
       <br>
       <button mdbBtn color="success" [disabled]="!createAssignmentButtonClickable" class="create_assignment" (click)="createAssignment()">Create Assignment</button>
     </form>
-
-
-
-    <!-- <p>Date day: {{event?.getDate()}}</p> -->
-    <!-- There is a bug in the calendar, be sure to add +1 later on  -->
-    <!-- <p>Date month: {{event?.getMonth()}}</p>
-    <p>Date year: {{event?.getUTCFullYear()}}</p>
-    <p>Time selected: {{timeSelected}}</p>
-    <p>School selected: {{schoolSelected}}</p>
-    <p>Instrument selected: {{instrumentSelected}}</p>
-    <p>Level selected: {{levelSelected}}</p>
-    <p>Form Value: {{ newAssignmentForm.value | json }}</p>
-    <p>Form status: {{ newAssignmentForm.status | json }}</p> -->
 
   </div>
 </div>

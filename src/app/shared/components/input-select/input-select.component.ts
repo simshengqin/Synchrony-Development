@@ -7,7 +7,7 @@ import { MatSelectChange } from '@angular/material/select';
   templateUrl: './input-select.component.html',
   styleUrls: ['./input-select.component.scss']
 })
-export class InputSelectComponent implements OnInit {
+export class InputSelectComponent {
 
   @Input('inputDataList') public inputDataList!:any;
   @Input('name') public name!:any;
@@ -18,15 +18,11 @@ export class InputSelectComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-    //empty
-  }
 
   // Method: get the dropdown list values and prepare to sent to parent
   selected_value(event: MatSelectChange):void {
     this.selectedData = {
       value: event.value,
-      //text: event.source.triggerValue
     };
     this.sentToParent()
   }

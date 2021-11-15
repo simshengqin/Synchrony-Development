@@ -28,7 +28,6 @@ export class HeaderComponent implements OnInit {
     if(JSON.parse(this.sharedservice.getAccount()) != null){
       this.accountDetail = JSON.parse(this.sharedservice.getAccount());
       this.userRole = this.accountDetail.role;
-      console.log(this.userRole);
     }else {
       this.router.navigate(['/login']);
     }
