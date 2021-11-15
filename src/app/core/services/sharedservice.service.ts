@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SharedService {
 
   //private parameter; // parameter will contain values to be pass between URL or Componets.

@@ -6,9 +6,9 @@ import { MatSort } from '@angular/material/sort';
 import { TableComponent } from 'src/app/shared/components/table/table.component';
 import { Account } from '../../../core/models/account';
 import { first } from 'rxjs/operators';
-import { SharedService } from 'src/app/core/services/sharedservice.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
+import { SharedService } from 'src/app/core/services/sharedservice.service';
 
 
 @Component({
@@ -62,16 +62,15 @@ export class AccountDeleteComponent implements OnInit {
 
   security_role_access: string = "admin";
 
-  constructor(
-    private crudservice:CrudService,
-    private sharedservice:SharedService,
+  constructor (
+    private sharedService: SharedService,
+    private crudService:CrudService,
     private router: Router,
-    private toastrService: ToastrService
-  ) { }
-
+    private toastrService: ToastrService,
+  ) {}
   ngOnInit(): void {
     this.retrieve_all_accounts();
-    this.accountDetail = JSON.parse(this.sharedservice.getAccount()!);
+    this.accountDetail = JSON.parse(this.sharedService.getAccount()!);
     this.accountUsername = this.accountDetail.username
     if(this.security_role_access != this.accountDetail.role){
       this.router.navigate(['/login']);
@@ -81,7 +80,7 @@ export class AccountDeleteComponent implements OnInit {
 
   async retrieve_all_accounts(){
     this.dataSource = [];
-    const data = await this.crudservice.read('accounts').pipe(first()).toPromise();
+    const data = await this.crudService.read('accounts').pipe(first()).toPromise();
     if(data!=undefined||data!=null){
       for(var ele of data){
         this.create_account(ele)
@@ -261,7 +260,7 @@ export class AccountDeleteComponent implements OnInit {
   // Method: Delete Account
   delete_doc_id($event:any):void{
     if($event!=""||$event!=null){
-      this.crudservice.delete("accounts",$event)
+      this.crudService.delete("accounts",$event)
       var result:Account[] = []
       for(var ele of this.dataSource){
         if(ele.docId != $event){

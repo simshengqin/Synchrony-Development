@@ -95,6 +95,7 @@ import { InstructorActivityLogComponent } from './ui/instructor/instructor-activ
 import { InstructorActivityLogIndividualComponent } from './ui/instructor/instructor-activity-log-individual/instructor-activity-log-individual.component';
 import { SharedService } from './core/services/sharedservice.service';
 import { PdfPrinterComponent } from './shared/components/pdf-printer/pdf-printer.component';
+import { CrudService } from './core/services/crud.service';
 // import {VideoPlayerComponent} from './shared/components/video-player/video-player.component';
 
 @NgModule({
@@ -194,7 +195,12 @@ import { PdfPrinterComponent } from './shared/components/pdf-printer/pdf-printer
     VgOverlayPlayModule,
     VgBufferingModule
   ],
-  providers: [SharedService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  // constructor(
+  //   private crudService:CrudService,
+  //   private router: Router,
+  //   private toastrService: ToastrService
+  // ){}
+}

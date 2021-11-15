@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-
 import { Injectable } from '@angular/core';
 import {
   Action, AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup,
