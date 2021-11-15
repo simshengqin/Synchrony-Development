@@ -2,12 +2,12 @@
 <div class="account-create-wrapper wrapper-padding">
   <h1 class="mb-3"> Activity Log </h1>
 
-  <div *ngIf="dataSource.length!=0">
+  <div *ngIf="is_loading_data == false">
     <ng-container><app-input-dropdown-select [inputDataList]="schools" [name]="nameSchool" (outputData)="get_query_schools($event)"></app-input-dropdown-select></ng-container>
     <br>
     <app-table  [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType"></app-table>
   </div>
-  <div *ngIf="dataSource.length==0" class="text-center">
+  <div *ngIf="is_loading_data == true" class="text-center">
     <br>
     <br>
     <mat-spinner style="margin:0 auto;"></mat-spinner>

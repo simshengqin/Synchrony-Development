@@ -25,6 +25,8 @@ export class InstructorActivityLogComponent implements OnInit {
 
   security_role_access: string = "instructor";
 
+  is_loading_data: boolean = true;
+
   constructor(
     private crudservice:CrudService,
     private sharedService:SharedService,
@@ -34,6 +36,7 @@ export class InstructorActivityLogComponent implements OnInit {
     { }
 
   ngOnInit(): void {
+    this.is_loading_data = true;
     this.get_instrustor_account_details()
     this.retrieve_wage()
   }
@@ -56,6 +59,7 @@ export class InstructorActivityLogComponent implements OnInit {
       }
     }
     this.dataSource = result
+    this.is_loading_data = false;
   }
 
   create_custom_wage(school:string){

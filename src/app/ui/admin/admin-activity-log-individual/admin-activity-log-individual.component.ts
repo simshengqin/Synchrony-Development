@@ -47,6 +47,8 @@ export class AdminActivityLogIndividualComponent implements OnInit {
 
   security_role_access: string = "admin";
 
+  is_loading_data:boolean = true;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -56,6 +58,7 @@ export class AdminActivityLogIndividualComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.is_loading_data = true;
     var accountDetail = JSON.parse(this.sharedService.getAccount()!);
     if(this.security_role_access != accountDetail.role){
       this.router.navigate(['/login']);
@@ -87,6 +90,7 @@ export class AdminActivityLogIndividualComponent implements OnInit {
     }
     this.display_accumulated_time = this.accumulated_time
     this.dataSource = this.activity_logs;
+    this.is_loading_data = false;
   }
 
   private create_custom_wage(wage:Wage, instructor:Account, assignmentSubmission:AssignmentSubmission, student:Account, assignmentData:Assignment){

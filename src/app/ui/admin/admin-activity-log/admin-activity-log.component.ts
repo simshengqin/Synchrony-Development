@@ -37,6 +37,8 @@ export class AdminActivityLogComponent implements OnInit {
 
   security_role_access: string = "admin";
 
+  is_loading_data:boolean = true;
+
   constructor(
     private crudservice: CrudService,
     private sharedservice:SharedService,
@@ -45,6 +47,7 @@ export class AdminActivityLogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.is_loading_data = true
     var accountDetail = JSON.parse(this.sharedservice.getAccount()!);
     if(this.security_role_access != accountDetail.role){
       this.router.navigate(['/login']);
@@ -76,7 +79,8 @@ export class AdminActivityLogComponent implements OnInit {
         this.wagesByInstructorSchool.push(ele);
       }
     }
-    this.dataSource = this.wagesByInstructorSchool
+    this.dataSource = this.wagesByInstructorSchool;
+    this.is_loading_data = false;
   }
 
   private create_custom_wage(wage:Wage, account:Account, assignmentSybmission:AssignmentSubmission){

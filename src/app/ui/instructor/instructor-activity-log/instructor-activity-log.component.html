@@ -9,10 +9,10 @@
   <ng-container *ngIf="sub_display_levels"><app-input-dropdown-select [inputDataList]="sub_levels" [name]="nameLevels" (outputData)="get_query_data_sub_levels($event)"></app-input-dropdown-select></ng-container>
   <br> -->
   
-  <div *ngIf="dataSource.length!=0">
+  <div *ngIf="is_loading_data == false">
     <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType"></app-table>
   </div>
-  <div *ngIf="dataSource.length==0" class="text-center">
+  <div *ngIf="is_loading_data == true" class="text-center">
     <br>
     <br>
     <mat-spinner style="margin:0 auto;"></mat-spinner>
