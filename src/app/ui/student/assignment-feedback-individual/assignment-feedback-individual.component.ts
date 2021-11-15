@@ -5,11 +5,6 @@ import {AssignmentSubmission} from "../../../core/models/assignment-submission";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CrudService} from "../../../core/services/crud.service";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-// import {AssignmentSubmission} from '../../../core/models/assignment-submission';
-// import {AssignmentSubmissionService} from '../../../core/services/assignment-submission.service';
-// import {ActivatedRoute, Router} from '@angular/router';
-// import {Assignment} from '../../../core/models/assignment';
-// import {AssignmentService} from '../../../core/services/assignment.service';
 import { SharedService } from 'src/app/core/services/sharedservice.service';
 import {ToastrService} from 'ngx-toastr';
 
@@ -27,8 +22,6 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
   security_role_access: string = "student";
 
   constructor(
-    // private assignmentSubmissionService: AssignmentSubmissionService,
-    // private assignmentService: AssignmentService,
     private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -51,14 +44,6 @@ export class AssignmentFeedbackIndividualComponent implements OnInit {
       this.assignment = await this.crudService.readByDocId(
         'assignments', this.assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
       this.videoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.assignmentSubmission.instructor_feedback_attachment);
-      // console.log(this.videoUrl);
-      // this.assignmentSubmission = await this.assignmentSubmissionService.getAssignmentSubmission(this.assignmentSubmissionDocId)
-      //   .pipe(first())
-      //   .toPromise();
-      // this.assignment = await this.assignmentService.getAssignment(this.assignmentSubmission.assignmentDocId)
-      //   .pipe(first())
-      //   .toPromise();
-      // console.log(this.assignmentSubmission);
   }
   onGoBackClick(): void {
     this.router.navigate(['student/assignment/view']);

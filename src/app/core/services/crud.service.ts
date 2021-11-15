@@ -31,29 +31,18 @@ export class CrudService {
        filterName4: string = '', filterOp4: any = '', filterValue4: any = '',
        sortColumn = '', isAsc = false): Observable<any[]> {
     // Cannot use === as filterValue1 etc can be a number
-    // tslint:disable-next-line:triple-equals
-    // console.log(filterValue1 + ',' + filterValue2 + ',' + filterValue3 + ',' + filterValue4 + ',');
-    // tslint:disable-next-line:triple-equals
     if (filterValue1 == '' && filterValue2 == '' && filterValue3 == '' && filterValue4 == '') {
       return this.fs.col$(collection, ref => {
         return ref;
-        // .orderBy('createdDatetime', 'desc');
       });
     }
     // @ts-ignore
     return this.fs.col$(collection, ref => {
       let result;
       if (filterValue1 !== '') {result = ref.where(filterName1, filterOp1, filterValue1); }
-      // else if (filterValue2 !== '') {result = ref.where(filterName2, filterOp2, filterValue2); }
-      // else if (filterValue3 !== '') {result = ref.where(filterName3, filterOp3, filterValue3); }
-      // else if (filterValue4 !== '') {result = ref.where(filterName4, filterOp4, filterValue4); }
       for (let i = 2; i <= 4; i++) {
         switch (i) {
-          // case 1:
-          //   if (filterValue1 !== '') {
-          //     console.log('First filter op only');
-          //     result = result?.where(filterName1, filterOp1, filterValue1); }
-          //   break;
+
           case 2:
             if (filterValue2 !== '') {
               result = result?.where(filterName2, filterOp2, filterValue2); }
@@ -66,7 +55,7 @@ export class CrudService {
             break;
         }
       }
-      return result; // ?.orderBy('school', 'asc');
+      return result;
     });
   }
 

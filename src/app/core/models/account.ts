@@ -16,6 +16,5 @@ export enum Role {
   student = 'student',
   instructor = 'instructor',
   invalid = ''
-  // freelancer = 'freelancer'
 }
 

@@ -27,11 +27,7 @@ export class AccountDeleteComponent implements OnInit {
   actionType:string = "accountDelete";
 
   // === set filter data === //
-  //schools:string[] = [];
   school_instrument_levels:string[] = [];
-  //groups:string[] = [];
-  //instruments:string[] = [];
-  //levels:string[] = [];
   roles:string[] = ["admin","instructor","student"];
 
   sub_schools:string[] = [];
@@ -43,7 +39,6 @@ export class AccountDeleteComponent implements OnInit {
 
   // === set filter name === //
   nameSchool:string = "School"
-  //nameGroup:string = "Group"
   nameRole:string = "Role"
   nameSchoolInstrumentLevels = "School Instrument Levels"
   nameInstrument:string = "Instrument"
@@ -52,9 +47,7 @@ export class AccountDeleteComponent implements OnInit {
   // === get filter data === //
   selectRoles:string[] = [];
   selectSchools:string[] = [];
-  //selectGroups:string[] = [];
   selectGroups:string[] = [];
-  //selectSchoolInstrumentLevels:string[] = [];
   select_Combine_SchoolInstrumentLevels:string[] = [];
   selectSubSchools:string[] = [];
   selectSubInstruments:string[] = [];
@@ -269,7 +262,6 @@ export class AccountDeleteComponent implements OnInit {
       }
       this.dataSource = result;
     } else {
-      // console.log("There is no account to delete!")
     }
   }
 

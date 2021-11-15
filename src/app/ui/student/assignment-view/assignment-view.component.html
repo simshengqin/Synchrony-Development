@@ -4,6 +4,4 @@
   <app-input-dropdown-select [inputDataList]="completionStatusOptions" [name]="'Completion Status'"  (outputData)="filterData($event, 'Completion Status')"></app-input-dropdown-select>
   <app-input-dropdown-select [inputDataList]="submissionStatusOptions" [name]="'Submission Status'"  (outputData)="filterData($event, 'Submission Status')"></app-input-dropdown-select>
   <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [actionType]="actionType"></app-table>
-<!--  <app-search-filter [filterActions] = "filterActions"></app-search-filter>-->
-<!--  <app-common-table [tableActions]="tableActions" [tableColumns]="tableColumns" [assignments]="assignments"></app-common-table>-->
 </div>

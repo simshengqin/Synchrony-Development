@@ -51,7 +51,6 @@ export class AccountService {
   }
 
   update(id: string, data: any): any {
-    //return this.accountsRef.doc(id).update({...data});
     return this.accountsRef.doc(id).update({...data});
   }
 

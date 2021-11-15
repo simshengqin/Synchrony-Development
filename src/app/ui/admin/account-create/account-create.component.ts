@@ -17,7 +17,6 @@ import {SharedService} from '../../../core/services/sharedservice.service';
 })
 export class AccountCreateComponent implements OnInit {
 
-  // @ViewChild(ConfirmModalComponent) confirmModalComponent: ConfirmModalComponent;
   @ViewChild('file') file: ElementRef | undefined;
   accountFile: File;
   csvRecords: any[] = [];
@@ -57,23 +56,19 @@ export class AccountCreateComponent implements OnInit {
     const singleAccount: Account = await this.crudService.readByDocId('accounts', '7hQyZTken7p6eSAR8MQB')
       .pipe(first())
       .toPromise();
-    // console.log(singleAccount);
 
     const allAccounts: Account[] = await this.crudService.read('accounts').pipe(first()).toPromise();
-    // console.log(allAccounts.sort((a, b) => a.username.localeCompare(b.username)));
 
     const testAccounts: Account[] = await this.crudService.read('accounts',
       'role', '==', 'student',
       'school', '!=', 'NUS',
     ).pipe(first()).toPromise();
-    // console.log(testAccounts);
 
     const testAccounts2: Account[] = await this.crudService.read('accounts',
       'role', '==', 'student',
       'school', '!=', 'NUS',
       'first_name', '==', 'Carecci',
     ).pipe(first()).toPromise();
-    // console.log(testAccounts2);
     const deleteAccount: Account[] = await this.crudService.read('accounts',
       'username', '==', 'student4'
     ).pipe(first()).toPromise();
@@ -135,7 +130,6 @@ export class AccountCreateComponent implements OnInit {
   }
 
   onCloseModal(response: string): void {
-    // console.log(response);
   }
   async uploadFile(): Promise<void> {
     const accounts = await this.crudService.read('accounts').pipe(first()).toPromise();
@@ -149,7 +143,6 @@ export class AccountCreateComponent implements OnInit {
       // Parse the file you want to select for the operation along with the configuration
       await this.ngxCsvParser.parse(this.accountFile, {header: true, delimiter: ','})
         .pipe().subscribe(async (result: any) => {
-        // console.log('Result', result);
         this.csvRecords = result;
         if (this.csvRecords.length < 1) {
             this.errors.push('Less than 2 rows of data (1 row for column header and 1 row for the actual account data)');
@@ -168,14 +161,11 @@ export class AccountCreateComponent implements OnInit {
         if (this.errors.length === 0) {
           let i = 2;
           for (const csvRecord of this.csvRecords) {
-            // const accounts = await this.crudService.read('accounts', 'username', '==', csvRecord.username).pipe(first()).toPromise();
-            // console.log(accounts);
             const usedNumbers = [];
             for (const singleAccount of accounts) {
               if (singleAccount.username.toLowerCase().includes( csvRecord.first_name.toLowerCase()
                 + csvRecord.last_name.toLowerCase())) {
                 usedNumbers.push(+singleAccount.username.replace(/\D/g, ''));
-                // console.log(+singleAccount.username.replace(/\D/g, ''));
               }
             }
             console.log(usedNumbers);
@@ -190,7 +180,6 @@ export class AccountCreateComponent implements OnInit {
             const generatedUsername = (csvRecord.first_name + csvRecord.last_name + rand).replace(/\s/g, '');
             console.log(generatedUsername);
             const account: Account = {
-              // username: csvRecord.username,
               username: generatedUsername,
               role: this.isAdmin ? csvRecord.role.toLowerCase() : 'student',
               school: csvRecord.school.split(','),
@@ -212,7 +201,6 @@ export class AccountCreateComponent implements OnInit {
               password: csvRecord.password
             };
             createdAccounts.push(createdAccount);
-            // console.log(account);
             // value in the column is empty even though it is required
             const emptyColumns = [];
             for (const [key, value] of Object.entries(account)) {
@@ -222,7 +210,6 @@ export class AccountCreateComponent implements OnInit {
                 emptyColumns.push(key);
               }
             }
-            // console.log(emptyColumns);
             if (emptyColumns.length > 0) {
               this.errors.push('Row ' + i + ' has missing values for the following columns: ' + Array.from(emptyColumns).join(', '));
             }
@@ -246,13 +233,7 @@ export class AccountCreateComponent implements OnInit {
                 }
                 if (account.role !== 'student') { this.errors.push('Row ' + i + ' has illegal values for role column (Only student is accepted)'); }
               }
-              // if (accounts.length > 0 && account.role !== accounts[0].role) {
-              //   this.errors.push('Row ' + i + ' has illegal values for role column (Cannot change role for existing users)');
-              // }
             }
-            // if (accounts.length > 0) {
-            //   this.errors.push('Row ' + i + ' \'s username (' + account.username + ') is already taken');
-            // }
             if (account.password.length > 0 && account.password.length < 5) {
               this.errors.push('Row ' + i + ' does not meet the minimum length requirement for password (5)');
             }
@@ -260,12 +241,6 @@ export class AccountCreateComponent implements OnInit {
             // Stop the creation/updating of ALL accounts as long as there is a problem with 1 of the account
             if (this.errors.length === 0) {
               await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
-              // if (accounts.length === 0) {
-              //   // console.log(account);
-              //   await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
-              // } else {
-              //     await this.crudService.update('accounts', accounts[0].docId, account);
-              // }
             }
             i++;
           }
@@ -283,7 +258,6 @@ export class AccountCreateComponent implements OnInit {
         }
         this.isUploading = false;
         }, (error: NgxCSVParserError) => {
-        // console.log('Error', error);
         this.isUploading = false;
         this.toastrService.error('Incorrect file format!', '', {positionClass: 'toast-top-center'});
       });

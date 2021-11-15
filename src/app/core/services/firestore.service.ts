@@ -65,20 +65,6 @@ export class FirestoreService {
       );
   }
 
-  // colGroup$<T>(collectionId: string, queryGroupFn?: QueryGroupFn): Observable<T[]> {
-  //   // @ts-ignore
-  //   return this.colGroup(collectionId, queryGroupFn)
-  //     .snapshotChanges()
-  //     .pipe(
-  //       map((docs: DocumentChangeAction<T>[]) => {
-  //         return docs.map((a: DocumentChangeAction<T>) => {
-  //           const data = a.payload.doc.data() as T;
-  //           const docId = a.payload.doc.id;
-  //           return {...data, docId};
-  //         }) as T[];
-  //       }),
-  //     );
-  // }
 
   get timestamp() {
     return firebase.firestore.FieldValue.serverTimestamp();

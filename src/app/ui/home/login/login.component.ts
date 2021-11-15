@@ -49,7 +49,6 @@ export class LoginComponent implements OnInit {
     for (const assignment of assignments) {
       const diff = Math.abs(new Date().getTime() - assignment.due_datetime.toDate().getTime());
       const diffDays = Math.floor(diff / (1000 * 3600 * 24));
-      // console.log( assignment.due_datetime.toDate(), diffDays);
       if (diffDays > 31 && !assignment.storaged_deleted) {
         for (const filename of assignment.file_names) {
           console.log('Deleting from ' + 'gs://' +
@@ -85,10 +84,7 @@ export class LoginComponent implements OnInit {
       }
 
     }
-    // sessionStorage.clear()
     this.sharedservice.reset()
-    // console.log(this.sharedservice.getAccount())
-    // console.log(this.sharedservice.getComponentParameter())
   }
 
   initForm(): void{
@@ -98,7 +94,6 @@ export class LoginComponent implements OnInit {
       // Added to avoid error
       newPassword: ['']
     });
-    // console.log(this.loginForm);
   }
 
   // Retrieve username
@@ -164,7 +159,6 @@ export class LoginComponent implements OnInit {
           delete account[0].password;
 
           // Store account details as session
-          //sessionStorage.setItem('account', JSON.stringify(account[0]));
           this.sharedservice.setAccount(JSON.stringify(account[0]));
           console.log(JSON.parse(this.sharedservice.getAccount()))
 
@@ -190,10 +184,8 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['instructor/home']);
               } else if (this.role == 'student'){
                 // Redirect to student page
-                // console.log("student's page")
                 this.router.navigate(['student/assignment/view']);
               } else if (this.role == 'admin'){
-                // console.log("admin page");
                 this.router.navigate(['admin/home']);
             }
           }

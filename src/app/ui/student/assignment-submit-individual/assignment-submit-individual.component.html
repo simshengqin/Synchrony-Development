@@ -20,7 +20,6 @@
     <app-dropzone [label]="'Drop your music score sheet here (Accepted format: .pdf)'"
  [acceptedFileTypes] = "'.pdf'"
                   [acceptMultipleFiles]=false (fileEmit)="scoresheetFile = $event[0]"></app-dropzone>
-<!--    <input #scoresheetFile type="file" class="form-control" accept="application/pdf">-->
     <div *ngIf="assignmentSubmission && assignmentSubmission.student_attachment_scoresheet" class="form-text text-muted" >
       Previous Submission: <a [href]="assignmentSubmission.student_attachment_scoresheet" target="_blank">
       {{assignmentSubmission.student_attachment_scoresheet_name}}</a>
@@ -32,7 +31,6 @@
     <app-dropzone [label]="'Drop your video recording here (Accepted formats: .avi, .mov, .mpeg4, .mp4, .webm)'"
                   [acceptedFileTypes] = "'.MOV, .MPEG4, .MP4, .AVI, .WEBM'"
                   [acceptMultipleFiles]=false (fileEmit)="recordingFile = $event[0]"></app-dropzone>
-<!--    <input #recordingFile type="file" class="form-control" accept="video/*">-->
     <div *ngIf="assignmentSubmission && assignmentSubmission.student_attachment_recording" class="form-text text-muted" >
       Previous Submission: <a [href]="assignmentSubmission.student_attachment_recording" target="_blank">
       {{assignmentSubmission.student_attachment_recording_name}}</a>
@@ -49,5 +47,4 @@
     <button *ngIf="assignment" class="btn btn-info submit-btn" (click)="onSubmitClick()">Submit</button>
   </div>
 
-<!--  <app-confirm-modal></app-confirm-modal>-->
 </div>

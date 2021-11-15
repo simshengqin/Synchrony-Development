@@ -35,6 +35,5 @@ export enum Role {
   admin = 'admin',
   student = 'student',
   instructor = 'instructor'
-  // freelancer = 'freelancer'
 }
 

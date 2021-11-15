@@ -18,8 +18,6 @@ export class FreelanceWageComponent implements OnInit {
 
   dataSource = [];
   displayedColumns:string[] = ['first_name', 'last_name', 'school_abbreviation', 'action'];
-  // displayedColumns:string[] = ['first_name', 'last_name' , 'month', 'number_of_minutes', 'school_abbreviation', 'year'];
-  //displayedColumns:string[] = ['month', 'number_of_minutes', 'school_abbreviation', 'year'];
   actionType:string = "wage";
   @ViewChild('app-table') appTable: ElementRef | undefined;
   // set filter data
@@ -46,14 +44,11 @@ export class FreelanceWageComponent implements OnInit {
       var assignmentSubmissionData = await this.crudservice.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
       this.wages.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData))
     }
-    //console.log(this.wages)
     for (var ele of this.wages){
-      //console.log(ele["key"])
       var isExist:boolean = false
       for(var i = 0; i < this.wagesByInstructorSchool.length; i++){
           if(ele["key"] == this.wagesByInstructorSchool[i]["key"]){
           isExist = true
-          //console.log("this is index: " + i + " with a duration of " + this.wagesByInstructorSchool[i]["duration"])
           var tempSecond:number = ele["duration"]
           this.wagesByInstructorSchool[i]["duration"] += tempSecond
           break
@@ -84,7 +79,6 @@ export class FreelanceWageComponent implements OnInit {
     let data:any = {
       key: ele["key"],
       instructor_id: ele["instructor_id"],
-      //instructor_name: ele["first_name"] + " " + ele["last_name"],
       first_name: ele["first_name"],
       last_name: ele["last_name"],
       school_abbreviation: ele["school"],

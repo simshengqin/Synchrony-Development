@@ -69,7 +69,6 @@ export class AdminActivityLogIndividualComponent implements OnInit {
 
   async get_activity_log() {
     this.reset()
-    //const key = this.route.snapshot.paramMap.get('key');
     const key = this.sharedService.getComponentParameter();
     console.log(key)
     this.instructor_id = key.split("_")[0]
@@ -85,7 +84,6 @@ export class AdminActivityLogIndividualComponent implements OnInit {
       var assignmentSubmissionData = await this.crudservice.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
       var studentData = await this.crudservice.readByDocId('accounts', assignmentSubmissionData.student_doc_id).pipe(first()).toPromise();
       var assignmentData = await this.crudservice.readByDocId('assignments', assignmentSubmissionData.assignment_doc_id).pipe(first()).toPromise();
-      //this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData)
       this.activity_logs.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData,assignmentData))
     }
     this.display_accumulated_time = this.accumulated_time
@@ -97,21 +95,13 @@ export class AdminActivityLogIndividualComponent implements OnInit {
     var date = this.convert_date(wage.feedback_datetime)
     var time = this.convert_time(wage.feedback_datetime)
     var date_filter = this.convert_datefilter(wage.feedback_datetime)
-    //var minutes = (Math.round((wage.seconds / 60) * 1000) / 1000).toFixed(3);
     var minutes = parseFloat((wage.seconds / 60).toFixed(3))
-    //this.accumulated_time += parseFloat(minutes)
     this.accumulated_time += minutes
 
     let data:Wage = {
       date_filter: date_filter,
       date: date,
-      //feedback_date: wage.feedback_datetime,
       feedback_datetime: wage.feedback_datetime,
-      //assignment_submission_doc_id: wage.assignment_submission_doc_id,
-      //minutes: minutes + " mins"
-      //seconds: wage.seconds,
-      //seconds: (Math.round((wage.seconds) * 1000) / 1000).toFixed(3),
-      //seconds: parseFloat(Math.round(wage.seconds).toFixed(3)),
       seconds: parseFloat(wage.seconds.toFixed(3)),
       first_name: student.first_name,
       last_name: student.last_name,
@@ -185,14 +175,12 @@ export class AdminActivityLogIndividualComponent implements OnInit {
       for (var ele of this.activity_logs){
         for(var query of this.query_by_year_month)
         if(ele["date_filter"] == query){
-          //this.accumulated_time += parseFloat((Math.round((ele["seconds"]  / 60) * 1000) / 1000).toFixed(3))
           this.display_accumulated_time += parseFloat((ele["seconds"] / 60).toFixed(3));
           result.push(ele)
         }
       }
       this.dataSource = result;
     } else{
-      //this.get_activity_log()
       this.dataSource = this.activity_logs
       this.display_accumulated_time = this.accumulated_time
     }

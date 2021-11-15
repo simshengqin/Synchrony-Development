@@ -50,7 +50,7 @@ export class InstructorActivityLogComponent implements OnInit {
   }
 
   async retrieve_wage(){
-    var result:any = []
+    var result = []
     const data = await this.crudservice.read('wages','instructor_account_doc_id','==',this.instrustor.docId).pipe(first()).toPromise();
     for(var ele of data){
       if(this.schools.indexOf(ele["school"])==-1){
@@ -63,7 +63,7 @@ export class InstructorActivityLogComponent implements OnInit {
   }
 
   create_custom_wage(school:string){
-    var data:any = {
+    var data = {
       school_abbreviation: school,
       key: this.instrustor.docId + "_" + school
     }

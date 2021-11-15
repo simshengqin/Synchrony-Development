@@ -20,15 +20,6 @@
                 <label for="role">Role:</label>
                     <b>{{role}}</b> <br>
 
-                <!-- <label for="role">Role:</label>
-                    <mat-form-field appearance="fill">
-                        <mat-select [ngModel]="selectedItem" formControlName="role">
-                            <mat-option value='student'>Student</mat-option>
-                            <mat-option value='instructor'>Instructor</mat-option>
-                            <mat-option value='admin'>Admin</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <br> -->
 
                 <label for="school">School:</label>
                     <input type="text" [ngModel]="school" formControlName="school">
@@ -39,7 +30,6 @@
                     <br>
 
                 <br>
-                <!-- <button mdbBtn type="button" color="danger" (click)=goBack()>Back</button> -->
                 <app-dialog-box [actionType]="actionType" [docid]="docId" [username]="username"></app-dialog-box>
                 <button mdbBtn type="button" color="success" class="submitButton" (click)="edit()">Submit</button>
         </form>

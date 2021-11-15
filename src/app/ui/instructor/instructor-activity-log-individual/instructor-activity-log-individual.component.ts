@@ -65,19 +65,17 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
       this.router.navigate(['/login']);
       this.toastr.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
-    this.get_activity_log()
+    this.get_activity_log();
   }
 
   async get_activity_log() {
-    this.reset()
-    //const key = this.route.snapshot.paramMap.get('key');
+    this.reset();
     const key = this.sharedService.getComponentParameter();
-    console.log(key)
     this.instructor_id = key.split("_")[0]
     this.school = key.split("_")[1]
 
     this.instructor_data = await this.crudservice.readByDocId('accounts',this.instructor_id).pipe(first()).toPromise();
-    this.instructor_name = this.instructor_data.first_name + " " + this.instructor_data.last_name
+    this.instructor_name = this.instructor_data.first_name + " " + this.instructor_data.last_name;
     this.instructor_school = this.school.toUpperCase();
 
     const data = await this.crudservice.read('wages', 'instructor_account_doc_id', '==', this.instructor_id, 'school', '==', this.school).pipe(first()).toPromise();
@@ -86,33 +84,24 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
       var assignmentSubmissionData = await this.crudservice.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
       var studentData = await this.crudservice.readByDocId('accounts', assignmentSubmissionData.student_doc_id).pipe(first()).toPromise();
       var assignmentData = await this.crudservice.readByDocId('assignments', assignmentSubmissionData.assignment_doc_id).pipe(first()).toPromise();
-      //this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData)
-      this.activity_logs.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData,assignmentData))
+      this.activity_logs.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData,assignmentData));
     }
-    this.display_accumulated_time = this.accumulated_time
+    this.display_accumulated_time = this.accumulated_time;
     this.dataSource = this.activity_logs;
-    this.is_loading_data = false
+    this.is_loading_data = false;
   }
 
   private create_custom_wage(wage:Wage, instructor:Account, assignmentSubmission:AssignmentSubmission, student:Account, assignmentData:Assignment){
-    var date = this.convert_date(wage.feedback_datetime)
-    var time = this.convert_time(wage.feedback_datetime)
-    var date_filter = this.convert_datefilter(wage.feedback_datetime)
-    //var minutes = (Math.round((wage.seconds / 60) * 1000) / 1000).toFixed(3);
-    var minutes = parseFloat((wage.seconds / 60).toFixed(3))
-    //this.accumulated_time += parseFloat(minutes)
-    this.accumulated_time += minutes
+    var date = this.convert_date(wage.feedback_datetime);
+    var time = this.convert_time(wage.feedback_datetime);
+    var date_filter = this.convert_datefilter(wage.feedback_datetime);
+    var minutes = parseFloat((wage.seconds / 60).toFixed(3));
+    this.accumulated_time += minutes;
 
     let data:Wage = {
       date_filter: date_filter,
       date: date,
-      //feedback_date: wage.feedback_datetime,
       feedback_datetime: wage.feedback_datetime,
-      //assignment_submission_doc_id: wage.assignment_submission_doc_id,
-      //minutes: minutes + " mins"
-      //seconds: wage.seconds,
-      //seconds: (Math.round((wage.seconds) * 1000) / 1000).toFixed(3),
-      //seconds: parseFloat(Math.round(wage.seconds).toFixed(3)),
       seconds: parseFloat(wage.seconds.toFixed(3)),
       first_name: student.first_name,
       last_name: student.last_name,
@@ -124,19 +113,21 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
     return data
   }
 
+  // Method: Convert date
   private convert_date(data:Timestamp){
     var feedback_DateTime = data.toDate().toString().split(" ");
     var date = feedback_DateTime[3] + "-" + this.convert_date_abbreviation_to_number(feedback_DateTime[1]) + "-" + feedback_DateTime[2]
     return date
   }
 
+  // Method: Convert time
   private convert_time(data:Timestamp){
     var feedback_DateTime = data.toDate().toString().split(" ");
     var time = feedback_DateTime[4].split(":")[0] + ":" + feedback_DateTime[4].split(":")[1]
     return time
   }
 
-  // allow roles to be filtered via input.
+  // Method: allow roles to be filtered via input.
   private convert_datefilter(data:Timestamp){
     var feedback_DateTime = data.toDate().toString().split(" ");
     var date = feedback_DateTime[3] + "-" + feedback_DateTime[1]
@@ -173,7 +164,7 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
 
   // Method: Query the Database
   query_table_with_filter(){
-    var result:any = []
+    var result = []
     this.query_by_year_month = []
     if(this.selectedYears.length !=0 && this.selectedMonths.length !=0){
       this.display_accumulated_time = 0;
@@ -186,14 +177,12 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
       for (var ele of this.activity_logs){
         for(var query of this.query_by_year_month)
         if(ele["date_filter"] == query){
-          //this.accumulated_time += parseFloat((Math.round((ele["seconds"]  / 60) * 1000) / 1000).toFixed(3))
           this.display_accumulated_time += parseFloat((ele["seconds"] / 60).toFixed(3));
           result.push(ele)
         }
       }
       this.dataSource = result;
     } else{
-      //this.get_activity_log()
       this.dataSource = this.activity_logs
       this.display_accumulated_time = this.accumulated_time
     }

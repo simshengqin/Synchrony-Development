@@ -69,46 +69,16 @@ export class AccountEditFormComponent implements OnInit {
     });
   }
 
-  // get new_username(): FormControl{
-  //   return this.editForm.get('username') as FormControl;
-  // }
-
-  // get new_first_name(): FormControl{
-  //   return this.editForm.get('first_name') as FormControl;
-  // }
-
-  // get new_last_name(): FormControl{
-  //   return this.editForm.get('last_name') as FormControl;
-  // }
-
-  // get new_role(): FormControl{
-  //   return this.editForm.get('role') as FormControl;
-  // }
-
-  // get new_school(): FormControl{
-  //   return this.editForm.get('school') as FormControl;
-  // }
-
-  // get new_school_instrument_level(): FormControl{
-  //   return this.editForm.get('school_instrument_level') as FormControl;
-  // }
 
   async edit() {
-    // let username = this.editForm.value.username;
-
-    // console.log(this.editForm.value);
 
     let firstName = this.editForm.value.first_name;
     let lastName = this.editForm.value.last_name;
-    // let role = this.editForm.value.role;
     let school = this.editForm.value.school;
     let schoolInstrumentLevel = this.editForm.value.school_instrument_level;
 
     try {
       // username shouldnt be allowed to be editable!!
-      // if(username!='') {
-      //   this.crudservice.update("accounts", this.docId, {"username": username});
-      // }
 
       if(firstName!='') {
         this.crudservice.update("accounts", this.docId, {"first_name": firstName});
@@ -118,9 +88,6 @@ export class AccountEditFormComponent implements OnInit {
         this.crudservice.update("accounts", this.docId, {"last_name": lastName});
       }
 
-      // if(role!='') {
-      //   this.crudservice.update("accounts", this.docId, {"role": role});
-      // }
 
       if(school!='' || school!=[]) {
         if(Array.isArray(school) == false) {

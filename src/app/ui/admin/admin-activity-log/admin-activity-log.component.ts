@@ -20,8 +20,6 @@ export class AdminActivityLogComponent implements OnInit {
 
   dataSource = [];
   displayedColumns:string[] = ['first_name', 'last_name', 'school_abbreviation', 'action'];
-  // displayedColumns:string[] = ['first_name', 'last_name' , 'month', 'number_of_minutes', 'school_abbreviation', 'year'];
-  //displayedColumns:string[] = ['month', 'number_of_minutes', 'school_abbreviation', 'year'];
   actionType:string = "adminActivityLog";
   @ViewChild('app-table') appTable: ElementRef | undefined;
   
@@ -75,7 +73,6 @@ export class AdminActivityLogComponent implements OnInit {
           break; 
         }
       } if (!isExist){
-        //this.wagesByInstructorSchool.push(this.create_custome_wage(ele));
         this.wagesByInstructorSchool.push(ele);
       }
     }
@@ -101,20 +98,6 @@ export class AdminActivityLogComponent implements OnInit {
     return data
   }
 
-  /*
-  private create_custome_wage(ele:Wage){
-    let data:Wage = {
-      key: ele["key"],
-      instructor_account_doc_id: ele["instructor_account_doc_id"],
-      first_name: ele["first_name"],
-      last_name: ele["last_name"],
-      school_abbreviation: ele["school"],
-      seconds: ele["seconds"],
-      assignment_submission_doc_id: ele["assignment_submission_doc_id"],
-      school: ele["school"]
-    }
-    return data
-  } */
 
   get_query_schools($event:any){
     console.log($event.value);

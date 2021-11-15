@@ -43,7 +43,6 @@ export class AssignmentViewComponent implements OnInit {
       this.router.navigate(['/login']);
       this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
-    // console.log(loggedInAccount);
     this.assignments = await this.crudservice.read('assignments',
     'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();
     this.translateService.use('en');
@@ -58,7 +57,6 @@ export class AssignmentViewComponent implements OnInit {
         await this.crudservice.read('assignment_submissions',
           'student_doc_id', '==', loggedInAccount.docId,
           'assignment_doc_id', '==', assignment.docId).pipe(first()).toPromise();
-      // console.log(assignmentSubmission);
       assignment.isOverDueDate = new Date() > assignment.due_datetime.toDate();
       if (assignmentSubmission.length > 0) {
         assignment.submission_status = 'Last submitted on ' + datePipe.transform(assignmentSubmission[0].submitted_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
@@ -78,7 +76,6 @@ export class AssignmentViewComponent implements OnInit {
   }
 
   filterData($event: any, type: string): void {
-    // console.log($event.value);
     switch (type) {
       case 'Completion Status':
         this.selectedCompletionStatusOptions = $event.value;
@@ -101,21 +98,5 @@ export class AssignmentViewComponent implements OnInit {
       }
     }
     this.dataSource = filteredAssignments;
-    // const filteredAssignmentSubmissions: Array<AssignmentSubmission> = [];
-    // for (const assignmentSubmission of this.assignmentSubmissions) {
-    //   for (const schoolInstrumentLevel of assignmentSubmission.school_instrument_level) {
-    //     const schoolInstrumentLevelArr = schoolInstrumentLevel.split('_');
-    //     const school = schoolInstrumentLevelArr[0];
-    //     const instrument = schoolInstrumentLevelArr[1];
-    //     const level = schoolInstrumentLevelArr[2];
-    //     if (
-    // (this.selectedSchoolOptions.length === 0 || this.selectedSchoolOptions.includes(school)) &&
-    // (this.selectedInstrumentOptions.length === 0 || this.selectedInstrumentOptions.includes(instrument)) &&
-    // (this.selectedLevelOptions.length === 0 ||this.selectedLevelOptions.includes(level))
-    //     ) {
-    //       filteredAssignmentSubmissions.push(assignmentSubmission);
-    //     }
-    //   }
-    //   this.dataSource = filteredAssignmentSubmissions;
   }
 }

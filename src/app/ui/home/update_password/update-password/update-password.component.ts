@@ -64,7 +64,6 @@ export class UpdatePasswordComponent implements OnInit {
       newPassword:["",[Validators.required,Validators.minLength(5)]],
       confirmPassword:["",Validators.required]
     }, { validators: this.checkPasswords });
-    // console.log(this.loginForm);
   }
 
   // Retrieve username
@@ -100,11 +99,9 @@ export class UpdatePasswordComponent implements OnInit {
      // Validate account and password match
     if (this.loginForm.valid) {
       // Form validation complete. Update password
-      // console.log("Form Validated ");
 
       // Login Validation only happens once
       if (this.firstTime){
-        // console.log("Login Validation triggered!");
         this.firstTime = false;
         // Validate login
         this.crudservice.read("accounts","username","==",this.loginForm.value.username).pipe(first()).subscribe(async (account:any) => {
@@ -112,8 +109,6 @@ export class UpdatePasswordComponent implements OnInit {
 
         if (account.length==0 || !bcrypt.compareSync(this.loginForm.value.password, account[0].password)){
           // username and password does not exist on the database or password fails 
-          // console.log("Login denied");
-          // console.log(bcrypt.compareSync(this.loginForm.value.password, account[0].password));
           this.isValidUsernamePasswordCombi = false;
 
           // Next, validate if password matches 
@@ -125,7 +120,6 @@ export class UpdatePasswordComponent implements OnInit {
           console.log(this.account)
 
           if (account[0].is_delete){
-            //alert("Account has been deactivated. Please seek the admin to reset your account");
             this.error("Account has been deactivated","Account has been deactivated. Please seek the admin to reset your account")
             this.router.navigate(["/login"]);
             return;
@@ -135,12 +129,7 @@ export class UpdatePasswordComponent implements OnInit {
           // Hashing password
           console.log("Hashing function has been reached")
           this.account.password = bcrypt.hashSync(this.loginForm.value.newPassword, 10);
-          // this.account.password = this.loginForm.value.newPassword;
           this.account.first_login = false;
-
-          
-          // console.log(this.account.password)
-          console.log(this.account);
           this.crudservice.update("accounts",this.account.docId, this.account);
           this.success("Update successful!","Update successful! Please login again")
           this.router.navigate(["/login"]);

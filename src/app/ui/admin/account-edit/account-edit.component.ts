@@ -27,11 +27,7 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   actionType:string = "accountEdit";
 
   // === set filter data === //
-  //schools:string[] = [];
   school_instrument_levels:string[] = [];
-  //groups:string[] = [];
-  //instruments:string[] = [];
-  //levels:string[] = [];
   roles:string[] = ["admin","instructor","student"];
 
   sub_schools:string[] = [];
@@ -43,7 +39,6 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
 
   // === set filter name === //
   nameSchool:string = "School"
-  //nameGroup:string = "Group"
   nameRole:string = "Role"
   nameSchoolInstrumentLevels = "School Instrument Levels"
   nameInstrument:string = "Instrument"
@@ -52,9 +47,7 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   // === get filter data === //
   selectRoles:string[] = [];
   selectSchools:string[] = [];
-  //selectGroups:string[] = [];
   selectGroups:string[] = [];
-  //selectSchoolInstrumentLevels:string[] = [];
   select_Combine_SchoolInstrumentLevels:string[] = [];
   selectSubSchools:string[] = [];
   selectSubInstruments:string[] = [];
@@ -90,19 +83,9 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
       for(var ele of data){
         try{
           this.create_account(ele)
-          //var schoolgrp = ele["school_group"].split(",")
-          //var school = ele["school"].split(",")
-          //var school = ele["school"]
           var school_instrument_level = ele["school_instrument_level"]
-          //this.set_distint_school_levels(ele["levels"])
-          //this.set_distint_school_instruments(ele["instruments"])
-          // get distint school groups
-          //this.set_distint_school_group(schoolgrp);
-          // get distint school
-          //this.set_distint_school(school);
           this.set_distint_school_instrument_level(school_instrument_level);
         } catch(e){
-          // console.log("something wrong with the data! check the database!")
         }
       }
       this.dataSource = this.accounts
@@ -157,21 +140,6 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
     this.selectRoles = $event.value
     this.query_table_with_filter()
   }
-  /*
-  get_query_data_schools($event:any):void{
-    this.selectSchools = $event.value
-    this.query_table_with_filter()
-  } */
-  /*
-  get_query_data_groups($event:any):void{
-    this.selectGroups = $event.value
-    this.query_table_with_filter()
-  } */
-  /*
-  get_query_data_school_instrument_level($event:any):void{
-    this.selectSchools = $event.value
-    this.query_table_with_filter()
-  } */
 
   get_query_data_sub_schools($event:any):void{
     this.selectSubSchools = $event.value
@@ -199,23 +167,17 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
 
   // Method: Combine all the permutation of the sub Strings of School, Instrument and levels
   combine_querry_search_data(){
-    // console.log(this.selectSubSchools)
-    // console.log(this.selectSubInstruments)
-    // console.log(this.selectSubLevels)
     this.select_Combine_SchoolInstrumentLevels = [];
     for(var eleSchool of this.selectSubSchools){
-      // console.log(eleSchool)
       for(var eleInstrument of this.selectSubInstruments){
         for(var eleLevel of this.selectSubLevels){
           var query = eleSchool + "_" + eleInstrument + "_" + eleLevel
-          // console.log(query);
           if(this.select_Combine_SchoolInstrumentLevels.indexOf(query)==-1){
             this.select_Combine_SchoolInstrumentLevels.push(query)
           }
         }
       }
     }
-    //console.log(this.select_Combine_SchoolInstrumentLevels)
   }
 
   // Method:
@@ -228,40 +190,11 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
     if(this.select_Combine_SchoolInstrumentLevels.length!=0){
       result = this.filtering_by_school_instrument_levels(result, this.select_Combine_SchoolInstrumentLevels)
     }
-    /*
-    if(this.selectSchools.length!=0){
-      result = this.filtering_by_school(result, this.selectSchools)
-    } */
-
-    //console.log(result)
-    /*
-    if(this.selectSchoolInstrumentLevels.length!=0){
-      result = this.filtering(result, this.selectSchoolInstrumentLevels)
-    } */
-    /*
-    if(this.selectGroups.length!=0){
-      result = this.filtering(result, this.selectGroups)
-    } */
-    /*
-    if(this.selectRoles.length ==0 && this.selectSchools.length ==0 && this.selectGroups.length ==0){
-      result = this.accounts;
-    }
-    */
     if(this.selectRoles.length == 0 && this.select_Combine_SchoolInstrumentLevels.length == 0){
       result = this.accounts;
     }
     this.dataSource = result
 
-    /*
-    const data = await this.crudservice.read('accounts',"role","in",this.selectRoles).pipe(first()).toPromise();
-    */
-    /*
-    this.crudservice.read("accounts",
-      "role","in",this.selectRoles,
-      "school","array-contains-any",this.selectSchools,
-      "school_group","array-contains-any",this.selectGroups).subscribe(async (data:any) => {
-      this.dataSource = data
-    }) */
   }
 
   filtering_by_role(result:Account[], filter:string[]):Account[]{
@@ -311,8 +244,6 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
   }
 
   edit_doc_id($event:any):any{
-    // console.log("edit_doc_id activated");
-    // [0] = username, [1] = first_name, [2] = last_name, [3] = role
     // check if any of these are null before passing through crudservice.update
     // if all are null, crudservice.update does not take place and return a message
 
@@ -345,7 +276,6 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
     }
 
     if(data == {}) {
-      // console.log("No changes were made");
     } else {
 
       try {
@@ -357,12 +287,10 @@ export class AccountEditComponent implements OnInit, AfterViewInit {
           result.push(ele);
         }
         this.dataSource = result;
-        // console.log("Update is successful!");
 
         // send request back to dialog-box component to return to edit form
   
       } catch (error) {
-        // console.log(error);
       }
 
     }

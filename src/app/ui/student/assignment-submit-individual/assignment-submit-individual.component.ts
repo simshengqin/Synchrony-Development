@@ -2,16 +2,6 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Assignment} from '../../../core/models/assignment';
 import {first} from 'rxjs/operators';
-// import {AssignmentService} from '../../../core/services/assignment.service';
-// import {ConfirmModalComponent} from '../../../shared/components/confirm-modal/confirm-modal.component';
-// import {AngularFireStorage} from '@angular/fire/storage';
-// import {Observable} from 'rxjs';
-// import {AssignmentSubmission} from '../../../core/models/assignment-submission';
-// import {Instructor} from '../../../core/models/instructor';
-// import {InstructorService} from '../../../core/services/instructor.service';
-// import {StudentService} from '../../../core/services/student.service';
-// import {Student} from '../../../core/models/student';
-// import {AssignmentSubmissionService} from '../../../core/services/assignment-submission.service';
 import {ToastrService} from 'ngx-toastr';
 import {Account} from '../../../core/models/account';
 import {CrudService} from '../../../core/services/crud.service';
@@ -33,10 +23,8 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
   assignmentSubmission: AssignmentSubmission = null;
   newAssignmentSubmission: AssignmentSubmission;
   assignmentSubmissionDocId: string;
-  // @ViewChild(ConfirmModalComponent) confirmModalComponent: ConfirmModalComponent;
   scoresheetFile: File;
   recordingFile: File;
-  // progress: number;
   isUploading: boolean;
 
   security_role_access: string = "student";
@@ -61,22 +49,12 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
     this.assignment = await this.crudService.readByDocId('assignments', this.assignmentDocId)
       .pipe(first())
       .toPromise();
-    // this.assignment = await this.assignmentService.getAssignment(this.assignmentDocId)
-    //   .pipe(first())
-    //   .toPromise();
-    // const assignmentSubmission: Array<AssignmentSubmission> =
     const data = await this.crudService.read('assignment_submissions',
       'student_doc_id', '==', this.loggedInAccount.docId,
       'assignment_doc_id', '==', this.assignment.docId).pipe(first()).toPromise();
     if (data && data.length > 0) {
       this.assignmentSubmission = data[0];
     }
-    // this.assignmentSubmissionService.getAssignmentSubmissionsByStudentAndAssignment(
-    //   localStorage.getItem('activeDocId'), this.assignmentDocId)
-    //   .subscribe(async (assignmentSubmissions) => {
-    //   this.assignmentSubmission = assignmentSubmissions[assignmentSubmissions.length - 1];
-    // console.log(this.assignmentSubmission);
-    // });
   }
   onGoBackClick(assignment: Assignment): void {
     this.router.navigate(['student/assignment/view']);
@@ -126,12 +104,10 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
   }
   async uploadFile(file: File, type): Promise<void> {
     const path = 'assignment_submissions/' + this.assignmentSubmissionDocId + '/' + file.name;
-    // console.log(file);
     const task = this.afStorage.upload(path, file);
     await task.then(async (result) => {
       await result.ref.getDownloadURL().then(
         async (downloadUrl) => {
-          // console.log(downloadUrl);
           if (this.assignmentSubmission == null) {
             if (type === 'scoresheet') {
               this.newAssignmentSubmission.student_attachment_scoresheet = downloadUrl;
