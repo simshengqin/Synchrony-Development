@@ -124,10 +124,16 @@ export class AccountDeleteComponent implements OnInit {
         var school = sub_query[0];
         var instrument = sub_query[1];
         var level = sub_query[2];
+        
+        if(school == "" || school == undefined) {school="NA";} 
+        if(instrument == "" || instrument == undefined) {instrument="NA";}
+        if(level == "" || level == undefined) {level="NA";}
+
         if(this.sub_schools.indexOf(school)==-1){
           this.sub_schools.push(school)
         }
         if(this.sub_instrument.indexOf(instrument)==-1){
+          console.log(instrument);
           this.sub_instrument.push(instrument)
         }
         if(this.sub_levels.indexOf(level)==-1){
