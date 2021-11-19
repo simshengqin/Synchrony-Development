@@ -168,15 +168,8 @@ export class AccountCreateComponent implements OnInit {
                 usedNumbers.push(+singleAccount.username.replace(/\D/g, ''));
               }
             }
-            let rand = -1;
-            // inclusive of max and min
-            const max = 9999;
-            const min = 1000;
-            while (rand === -1 || usedNumbers.includes(rand)){
-              rand = Math.floor(Math.random() * (max - min + 1)) + min;
-            }
             // replace is to remove empty space
-            const generatedUsername = (csvRecord.first_name + csvRecord.last_name + rand).replace(/\s/g, '');
+            const generatedUsername = (csvRecord.first_name + csvRecord.last_name).replace(/\s/g, '');
             const account: Account = {
               username: generatedUsername,
               role: this.isAdmin ? csvRecord.role.toLowerCase() : 'student',
