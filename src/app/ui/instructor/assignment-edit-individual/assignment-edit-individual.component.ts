@@ -320,7 +320,6 @@ export class AssignmentEditIndividualComponent implements OnInit {
     this.validate_due_date_and_time();
     this.validate_name();
     this.validate_school_instrument_level();
-    this.validate_description();
 
     if(this.isFileAcceptable && this.isNameAcceptable &&
       this.isSchoolInstrumentLevelAcceptable && this.isDueDateTimeAcceptable &&
@@ -346,15 +345,6 @@ export class AssignmentEditIndividualComponent implements OnInit {
 
   back(){
     this.router.navigate(['/instructor/assignment/edit']);
-  }
-
-  private validate_description(){
-    if(this.assignmentDescription.length==0 || this.assignmentDescription==""){
-      this.isDescriptionAcceptable = false
-      this.showMessageError(this.assignmentName + " description is empty, plase give context to the assignment")
-    } else {
-      this.isDescriptionAcceptable = true
-    }
   }
 
   private validate_school_instrument_level(){
