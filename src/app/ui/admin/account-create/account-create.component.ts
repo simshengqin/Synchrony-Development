@@ -46,6 +46,8 @@ export class AccountCreateComponent implements OnInit {
     thus this would check if the user is instructor it will direct to instructor 
     */
     if(this.security_role_access_instructor == this.loggedInAccount.role){
+      console.log(this.security_role_access_instructor);
+      console.log(this.loggedInAccount.role);
       this.router.navigate(['/instructor/account/create']);
     }
     else if(this.security_role_access_admin != this.loggedInAccount.role && this.security_role_access_instructor != this.loggedInAccount.role){

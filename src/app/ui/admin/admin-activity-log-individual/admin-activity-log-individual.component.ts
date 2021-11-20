@@ -91,7 +91,7 @@ export class AdminActivityLogIndividualComponent implements OnInit {
     var date = this.convert_date(wage.feedback_datetime)
     var time = this.convert_time(wage.feedback_datetime)
     var date_filter = this.convert_datefilter(wage.feedback_datetime)
-    var minutes = parseFloat((wage.seconds / 60).toFixed(3))
+    var minutes = parseFloat((wage.seconds / 60).toFixed(0))
     this.accumulated_time += minutes
 
     let data:Wage = {
