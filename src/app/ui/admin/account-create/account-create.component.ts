@@ -46,13 +46,11 @@ export class AccountCreateComponent implements OnInit {
     thus this would check if the user is instructor it will direct to instructor 
     */
     if(this.security_role_access_instructor == this.loggedInAccount.role){
-      console.log(this.security_role_access_instructor);
-      console.log(this.loggedInAccount.role);
       this.router.navigate(['/instructor/account/create']);
     }
     else if(this.security_role_access_admin != this.loggedInAccount.role && this.security_role_access_instructor != this.loggedInAccount.role){
       this.router.navigate(['/login']);
-      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      this.toastrService.error('Access denied invalid user access detected!', '', {positionClass: 'toast-top-center'});
     }
     this.isAdmin = this.loggedInAccount.role === 'admin';
     const singleAccount: Account = await this.crudService.readByDocId('accounts', '7hQyZTken7p6eSAR8MQB')
@@ -240,7 +238,13 @@ export class AccountCreateComponent implements OnInit {
           if (this.errors.length === 0) {
             this.exportToCsv('created_accounts', createdAccounts);
             this.toastrService.success('Uploaded data to database successfully!', '', {positionClass: 'toast-top-center'});
-            this.router.navigate(['/admin/account/edit']);
+
+            if(this.security_role_access_admin == this.loggedInAccount.role){
+              this.router.navigate(['/admin/account/edit']);
+            } else if (this.security_role_access_instructor == this.loggedInAccount.role){
+              this.router.navigate(['/instructor/home']);
+            }
+            
           }
           else {
             this.toastrService.error('Errors encountered uploading the file!', '', {positionClass: 'toast-top-center'});
