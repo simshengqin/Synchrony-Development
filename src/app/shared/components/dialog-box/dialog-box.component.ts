@@ -59,8 +59,7 @@ export class DialogBoxComponent implements OnInit {
   click_to_delete_account(){
     console.log('User ' + this.username + ' has be hidden!');
     const data = {
-      is_delete: true,
-      password: this.genPassword()
+      is_delete: true
     };
     this.crudservice.update('accounts', this.docid, data);
     this.showMessageSuccess('The following user: ' + this.username + ' account has been successfully deleted');
@@ -137,18 +136,6 @@ export class DialogBoxComponent implements OnInit {
   goBack() {
     console.log("dialogBox");
     this.router.navigate(['/admin/account/edit']);
-  }
-
-  // Method: auto generate a radnom password
-  private genPassword(): string{
-    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let password = '';
-    for (let i = 0; i < 20; i++) {
-      password += CHARS.charAt(
-        Math.floor(Math.random() * CHARS.length)
-      );
-    }
-    return password;
   }
 
   private showMessageSuccess(message: string) {
