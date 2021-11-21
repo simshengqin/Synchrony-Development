@@ -51,16 +51,20 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
   constructor(
     private router: Router,
     private crudService:CrudService,
-    private toastr: ToastrService,
+    private toastrService: ToastrService,
     private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
     this.is_loading_data = true;
-    var instrustor = JSON.parse(this.sharedService.getAccount()!);
-    if(this.security_role_access != instrustor.role){
+    if(JSON.parse(this.sharedService.getAccount()) != null){
+      var instrustor  = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access != instrustor.role){
+        this.router.navigate(['/login']);
+        this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
+    } else{
       this.router.navigate(['/login']);
-      this.toastr.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
     this.get_activity_log();
   }
@@ -173,7 +177,7 @@ export class InstructorActivityLogIndividualComponent implements OnInit {
       for (var ele of this.activity_logs){
         for(var query of this.query_by_year_month)
         if(ele["date_filter"] == query){
-          this.display_accumulated_time += parseFloat((ele["seconds"] / 60).toFixed(3));
+          this.display_accumulated_time += parseFloat((ele["seconds"] / 60).toFixed(0));
           result.push(ele)
         }
       }

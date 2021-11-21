@@ -36,10 +36,14 @@ export class InstructorHomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    var instrustor = JSON.parse(this.sharedService.getAccount()!);
-    if(this.security_role_access != instrustor.role){
+    if(JSON.parse(this.sharedService.getAccount()) != null){
+      var instrustor  = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access != instrustor.role){
+        this.router.navigate(['/login']);
+        this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
+    } else{
       this.router.navigate(['/login']);
-      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
   }
 

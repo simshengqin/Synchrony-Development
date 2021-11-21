@@ -35,17 +35,23 @@ export class InstructorActivityLogComponent implements OnInit {
     { }
 
   ngOnInit(): void {
-    this.is_loading_data = true;
     this.get_instrustor_account_details()
+    this.is_loading_data = true;
     this.retrieve_wage()
   }
 
   get_instrustor_account_details(){
-    this.instrustor = JSON.parse(this.sharedService.getAccount()!);
-    if(this.security_role_access != this.instrustor.role){
+    if(JSON.parse(this.sharedService.getAccount()) != null){
+      this.instrustor  = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access != this.instrustor.role){
+        this.router.navigate(['/login']);
+        this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
+    } else{
       this.router.navigate(['/login']);
-      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
+
+
   }
 
   async retrieve_wage(){
