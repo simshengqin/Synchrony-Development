@@ -108,6 +108,8 @@ export class AssignmentCreateComponent implements OnInit {
       this.accountDocId = this.account.docId;
       this.instructorSchools = this.account.school;
       this.addSchoolInstrumentsLevels = true
+    } else{
+      this.router.navigate(['/login']);
     }
   }
 
