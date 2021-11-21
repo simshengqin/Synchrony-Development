@@ -39,18 +39,22 @@ export class AdminActivityLogComponent implements OnInit {
 
   constructor(
     private crudService: CrudService,
-    private sharedservice:SharedService,
+    private sharedService:SharedService,
     private router: Router,
     private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
-    this.is_loading_data = true
-    var accountDetail = JSON.parse(this.sharedservice.getAccount()!);
-    if(this.security_role_access != accountDetail.role){
+    if(JSON.parse(this.sharedService.getAccount()) != null){
+      var accountDetail = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access != accountDetail.role){
+        this.router.navigate(['/login']);
+        this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
+    } else{
       this.router.navigate(['/login']);
-      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
+    this.is_loading_data = true
     this.retrieve_all_wages();
   }
 

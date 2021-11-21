@@ -50,18 +50,22 @@ export class AdminActivityLogIndividualComponent implements OnInit {
   constructor(
     private router: Router,
     private crudService:CrudService,
-    private toastr: ToastrService,
+    private toastrService: ToastrService,
     private sharedService: SharedService,
   ) { }
 
   ngOnInit(): void {
-    this.is_loading_data = true;
-    var accountDetail = JSON.parse(this.sharedService.getAccount()!);
-    if(this.security_role_access != accountDetail.role){
+    if(JSON.parse(this.sharedService.getAccount()) != null){
+      var accountDetail = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access != accountDetail.role){
+        this.router.navigate(['/login']);
+        this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
+    } else{
       this.router.navigate(['/login']);
-      this.toastr.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
-    this.get_activity_log()
+    this.is_loading_data = true
+    this.get_activity_log();
   }
 
   async get_activity_log() {
@@ -170,7 +174,7 @@ export class AdminActivityLogIndividualComponent implements OnInit {
       for (var ele of this.activity_logs){
         for(var query of this.query_by_year_month)
         if(ele["date_filter"] == query){
-          this.display_accumulated_time += parseFloat((ele["seconds"] / 60).toFixed(3));
+          this.display_accumulated_time += parseFloat((ele["seconds"] / 60).toFixed(0));
           result.push(ele)
         }
       }

@@ -29,15 +29,19 @@ export class AdminHomeComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private toastr: ToastrService,
+    private toastrService: ToastrService,
     private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
-    var accountDetail = JSON.parse(this.sharedService.getAccount()!);
-    if(this.security_role_access != accountDetail.role){
+    if(JSON.parse(this.sharedService.getAccount()) != null){
+      var accountDetail = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access != accountDetail.role){
+        this.router.navigate(['/login']);
+        this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
+    } else{
       this.router.navigate(['/login']);
-      this.toastr.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
   }
 

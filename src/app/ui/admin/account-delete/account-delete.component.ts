@@ -58,13 +58,17 @@ export class AccountDeleteComponent implements OnInit {
     private toastrService: ToastrService,
   ) {}
   ngOnInit(): void {
-    this.retrieve_all_accounts();
-    this.accountDetail = JSON.parse(this.sharedService.getAccount()!);
-    this.accountUsername = this.accountDetail.username
-    if(this.security_role_access != this.accountDetail.role){
+    if(JSON.parse(this.sharedService.getAccount()) != null){
+      this.accountDetail = JSON.parse(this.sharedService.getAccount());
+      if(this.security_role_access != this.accountDetail.role){
+        this.router.navigate(['/login']);
+        this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
+      }
+      this.accountUsername = this.accountDetail.username
+    } else{
       this.router.navigate(['/login']);
-      this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
+    this.retrieve_all_accounts();
   }
 
   async retrieve_all_accounts(){
