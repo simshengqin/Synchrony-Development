@@ -47,37 +47,46 @@ export class AssignmentMarkComponent implements OnInit {
       this.router.navigate(['/login']);
       this.toastrService.error('Access denied invalid user access detect!', '', {positionClass: 'toast-top-center'});
     }
-
-    this.translateService.use('en');
-    const datePipe = new DatePipe(this.translateService.currentLang);
-    const loggedInAccount = JSON.parse(this.sharedService.getAccount());
-    this.assignmentSubmissions = await this.crudService.read('assignment_submissions',
-        'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();
-    const filteredAssignmentSubmissions = [];
-    for (const assignmentSubmission of this.assignmentSubmissions) {
-      assignmentSubmission.assignment = await this.crudService.readByDocId(
-        'assignments', assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
-      if (assignmentSubmission.assignment == null || new Date() < assignmentSubmission.assignment.due_datetime.toDate()
-       ||  Math.floor( Math.abs(new Date().getTime() -
-          assignmentSubmission.assignment.due_datetime.toDate().getTime()) / (1000 * 3600 * 24)) > 31
-      ) { continue; }
-      assignmentSubmission.assignment_name = assignmentSubmission.assignment?.name;
-      assignmentSubmission.student = await this.crudService.readByDocId(
-        'accounts', assignmentSubmission.student_doc_id).pipe(first()).toPromise();
-      assignmentSubmission.student_name = assignmentSubmission.student.first_name + ' ' +
-        assignmentSubmission.student.last_name;
-      assignmentSubmission.submission_status = 'Last submitted on ' +
-        datePipe.transform(assignmentSubmission.submitted_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
-      assignmentSubmission.feedback_status = 'Not reviewed';
-      if (assignmentSubmission.feedback_datetime != null) {
-        assignmentSubmission.feedback_status = 'Last marked on ' +
-          datePipe.transform(assignmentSubmission.feedback_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
+    try{
+      this.translateService.use('en');
+      const datePipe = new DatePipe(this.translateService.currentLang);
+      const loggedInAccount = JSON.parse(this.sharedService.getAccount());
+      this.assignmentSubmissions = await this.crudService.read('assignment_submissions',
+      'school_instrument_level', 'array-contains-any', loggedInAccount.school_instrument_level).pipe(first()).toPromise();
+      const filteredAssignmentSubmissions = [];
+      for (const assignmentSubmission of this.assignmentSubmissions) {
+        assignmentSubmission.assignment = await this.crudService.readByDocId(
+          'assignments', assignmentSubmission.assignment_doc_id).pipe(first()).toPromise();
+        if (assignmentSubmission.assignment == null || new Date() < assignmentSubmission.assignment.due_datetime.toDate()
+         ||  Math.floor( Math.abs(new Date().getTime() -
+            assignmentSubmission.assignment.due_datetime.toDate().getTime()) / (1000 * 3600 * 24)) > 31
+        ) { continue; }
+        assignmentSubmission.assignment_name = assignmentSubmission.assignment?.name;
+        assignmentSubmission.student = await this.crudService.readByDocId(
+          'accounts', assignmentSubmission.student_doc_id).pipe(first()).toPromise();
+        assignmentSubmission.student_name = assignmentSubmission.student.first_name + ' ' +
+          assignmentSubmission.student.last_name;
+        assignmentSubmission.submission_status = 'Last submitted on ' +
+          datePipe.transform(assignmentSubmission.submitted_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
+        assignmentSubmission.feedback_status = 'Not reviewed';
+        if (assignmentSubmission.feedback_datetime != null) {
+          assignmentSubmission.feedback_status = 'Last marked on ' +
+            datePipe.transform(assignmentSubmission.feedback_datetime.toDate(), 'EEEE, MMMM d, y, h:mm:ss a');
+        }
+        filteredAssignmentSubmissions.push(assignmentSubmission);
       }
-      filteredAssignmentSubmissions.push(assignmentSubmission);
+      this.assignmentSubmissions = filteredAssignmentSubmissions;
+      this.dataSource = this.assignmentSubmissions;
+      this.updateSelectOptions();
+    } catch(e){
+      this.dataSource = [];
+      this.feedbackStatusOptions = [];
+      this.selectedSchoolOptions = [];
+      this.selectedInstrumentOptions = [];
+      this.selectedLevelOptions = [];
+      this.selectedFeedbackStatusOptions = [];
     }
-    this.assignmentSubmissions = filteredAssignmentSubmissions;
-    this.dataSource = this.assignmentSubmissions;
-    this.updateSelectOptions();
+
   }
   filterData($event: any, type: string): void {
     switch (type) {

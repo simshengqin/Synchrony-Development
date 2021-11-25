@@ -62,9 +62,14 @@ export class AdminActivityLogComponent implements OnInit {
     this.reset();
     var data = await this.crudService.read('wages').pipe(first()).toPromise();
     for (var wage of data) {
-      var instructorData = await this.crudService.readByDocId('accounts', wage.instructor_account_doc_id).pipe(first()).toPromise();
-      var assignmentSubmissionData = await this.crudService.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
-      this.wages.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData))
+      try{
+        var instructorData = await this.crudService.readByDocId('accounts', wage.instructor_account_doc_id).pipe(first()).toPromise();
+        var assignmentSubmissionData = await this.crudService.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
+        this.wages.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData))
+      } catch(e){
+        this.is_loading_data = false;
+        this.schools = []
+      }
     }
     for (var ele of this.wages){
       var isExist:boolean = false

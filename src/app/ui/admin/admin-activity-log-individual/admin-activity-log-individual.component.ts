@@ -80,11 +80,18 @@ export class AdminActivityLogIndividualComponent implements OnInit {
 
     const data = await this.crudService.read('wages', 'instructor_account_doc_id', '==', this.instructor_id, 'school', '==', this.school).pipe(first()).toPromise();
     for (var wage of data){
-      var instructorData = await this.crudService.readByDocId('accounts', this.instructor_id).pipe(first()).toPromise();
-      var assignmentSubmissionData = await this.crudService.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
-      var studentData = await this.crudService.readByDocId('accounts', assignmentSubmissionData.student_doc_id).pipe(first()).toPromise();
-      var assignmentData = await this.crudService.readByDocId('assignments', assignmentSubmissionData.assignment_doc_id).pipe(first()).toPromise();
-      this.activity_logs.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData,assignmentData))
+      try{
+        var instructorData = await this.crudService.readByDocId('accounts', this.instructor_id).pipe(first()).toPromise();
+        var assignmentSubmissionData = await this.crudService.readByDocId('assignment_submissions', wage.assignment_submission_doc_id).pipe(first()).toPromise();
+        var studentData = await this.crudService.readByDocId('accounts', assignmentSubmissionData.student_doc_id).pipe(first()).toPromise();
+        var assignmentData = await this.crudService.readByDocId('assignments', assignmentSubmissionData.assignment_doc_id).pipe(first()).toPromise();
+        this.activity_logs.push(this.create_custom_wage(wage,instructorData,assignmentSubmissionData,studentData,assignmentData))
+      } catch(e){
+        this.is_loading_data = false;
+        this.years = [];
+        this.months = [];
+      }
+
     }
     this.display_accumulated_time = this.accumulated_time
     this.dataSource = this.activity_logs;
