@@ -42,7 +42,7 @@
       </ng-container>
 
       <ng-container matColumnDef="school_instrument_level">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> school_instrument_level </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Class </th>
         <td mat-cell *matCellDef="let element">
           <ng-container *ngFor="let tag of element.school_instrument_level; let i = index">
           <span *ngIf="tag =='NA'" [contentEditable]="contenteditable">
@@ -131,7 +131,7 @@
       <td mat-cell *matCellDef="let element"> {{element.school}} </td>
     </ng-container>
     <ng-container matColumnDef="assignment_school_instrument_level">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> School_Instrument_Level </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Class </th>
       <td mat-cell *matCellDef="let element"> {{element.school_instrument_level}} </td>
     </ng-container>
     <ng-container matColumnDef="assignment_student_name">
