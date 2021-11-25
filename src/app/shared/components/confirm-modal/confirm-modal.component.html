@@ -76,7 +76,7 @@
             {{assignmentSubmission?.student_attachment_scoresheet_name}}
           </a>
         </div>
-        <div class="form-text" >
+        <div class="form-text" *ngIf="assignmentSubmission?.student_attachment_recording">
          Video recording :
           <a #videoPlayer target="_blank" [href]="assignmentSubmission?.student_attachment_recording">
             {{assignmentSubmission?.student_attachment_recording_name}}
@@ -87,7 +87,7 @@
           <h4> Previously submitted instructor's feedback information</h4>
           <div class="form-text" >
             <div> Score: {{assignmentSubmission.grade}}</div>
-            <div> Feedback: {{assignmentSubmission.feedback == '' ? "No Feedback" : assignmentSubmission.feedback}} </div>
+            <div> Feedback: {{!assignmentSubmission.feedback || assignmentSubmission.feedback == '' ? "No Feedback" : assignmentSubmission.feedback}} </div>
             <div *ngIf="assignmentSubmission.instructor_feedback_attachment != ''"> Feedback Recording:
               <a target="_blank" [href]="assignmentSubmission?.instructor_feedback_attachment">
                 {{assignmentSubmission?.instructor_feedback_attachment_name}}
