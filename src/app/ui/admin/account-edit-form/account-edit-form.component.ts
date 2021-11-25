@@ -114,17 +114,17 @@ export class AccountEditFormComponent implements OnInit {
               // make all lowercase alphabet
               result.push(schoolInstrumentLevel[i].toLowerCase());
             } else {
-              this.toastrService.error("Error: Check the format of School-Instrument-Level!", '', {positionClass: 'toast-top-center'});
+              this.toastrService.error("Error: Check the format of Class! (School_Instrument_Level)", '', {positionClass: 'toast-top-center'});
               return;
             }
           } else {
-            this.toastrService.error("Error: Number of underscores in School-Instrument-Level is higher or lower than 2!", '', {positionClass: 'toast-top-center'});
+            this.toastrService.error("Error: Number of underscores in Class is higher or lower than 2!", '', {positionClass: 'toast-top-center'});
             return;
           }
         }
         this.crudservice.update("accounts", this.docId, {"school_instrument_level": result});
       } else {
-        this.toastrService.error("Error: School-Instrument-Level cannot be empty!", '', {positionClass: 'toast-top-center'});
+        this.toastrService.error("Error: Class cannot be empty!", '', {positionClass: 'toast-top-center'});
         return;
       }
 
