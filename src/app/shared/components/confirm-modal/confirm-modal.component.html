@@ -43,6 +43,7 @@
           <p> d. Every field values needs to be filled (Except for school and school_instrument_level column for admin accounts) </p>
           <p> e. The password should be at least 5 characters long </p>
           <p> f. The role should only be 1 of these 3 values: admin, instructor, student </p>
+          <p> g. Uploading an account with the same first name ane last name as an existing account will overwrite it</p>
         </div>
         <div *ngIf="title == 'Student\'s Account Creation Instructions'" class="ml-3">
           <p> a. The file must be .csv format </p>
@@ -51,6 +52,7 @@
           <p> d. Every field values needs to be filled </p>
           <p> e. The password should be at least 5 characters long </p>
           <p> f. Instructors can only upload students with the same school_instrument_level as them (Students can have fewer school_instrument_level then instructors)</p>
+          <p> g. Uploading an account with the same first name ane last name as an existing account will overwrite it</p>
         </div>
         <p> 4. Click on the dotted box above and select this newly created file  </p>
         <p> 5. Click the upload button </p>

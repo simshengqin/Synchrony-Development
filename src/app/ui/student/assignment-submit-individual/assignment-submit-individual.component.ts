@@ -59,8 +59,8 @@ export class AssignmentSubmitIndividualComponent implements OnInit {
     this.router.navigate(['student/assignment/view']);
   }
   async onSubmitClick(): Promise<void> {
-    if (!this.scoresheetFile && !this.recordingFile) {
-      this.toastrService.error('Please upload a file!', '', {positionClass: 'toast-top-center'});
+    if (!this.scoresheetFile) {
+      this.toastrService.error('Please upload a music scoresheet pdf file!', '', {positionClass: 'toast-top-center'});
     }
     else {
       // Students can have multiple school instrument levels, assignments can also have multiple school instrument level

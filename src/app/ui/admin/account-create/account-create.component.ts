@@ -26,7 +26,7 @@ export class AccountCreateComponent implements OnInit {
   isAdmin: boolean;
   @ViewChild(ConfirmModalComponent) confirmModalComponent: ConfirmModalComponent;
   loggedInAccount: Account;
-  
+
   security_role_access_admin: string = "admin";
   security_role_access_instructor:string = "instructor";
 
@@ -41,9 +41,9 @@ export class AccountCreateComponent implements OnInit {
   async ngOnInit(): Promise<void> {
 
     this.loggedInAccount = JSON.parse(this.sharedService.getAccount());
-    /* 
+    /*
     instructor and admin are sharing the same component, however it seems that admin precedence
-    thus this would check if the user is instructor it will direct to instructor 
+    thus this would check if the user is instructor it will direct to instructor
     */
     if(this.security_role_access_instructor == this.loggedInAccount.role){
       this.router.navigate(['/instructor/account/create']);
@@ -134,7 +134,7 @@ export class AccountCreateComponent implements OnInit {
   async uploadFile(): Promise<void> {
     const accounts = await this.crudService.read('accounts').pipe(first()).toPromise();
     if (this.accountFile) {
-      const createdAccounts = [];
+      // const createdAccounts = [];
       this.errors = [];
       // column is not found at all
       let missingColumns = this.isAdmin ? ['role', 'school',	'school_instrument_level', 'first_name',	'last_name',	'password']
@@ -161,15 +161,16 @@ export class AccountCreateComponent implements OnInit {
         if (this.errors.length === 0) {
           let i = 2;
           for (const csvRecord of this.csvRecords) {
-            const usedNumbers = [];
-            for (const singleAccount of accounts) {
-              if (singleAccount.username.toLowerCase().includes( csvRecord.first_name.toLowerCase()
-                + csvRecord.last_name.toLowerCase())) {
-                usedNumbers.push(+singleAccount.username.replace(/\D/g, ''));
-              }
-            }
+            // const usedNumbers = [];
+            // for (const singleAccount of accounts) {
+            //   if (singleAccount.username.toLowerCase().includes(csvRecord.first_name.toLowerCase()
+            //     + csvRecord.last_name.toLowerCase())) {
+            //     usedNumbers.push(+singleAccount.username.replace(/\D/g, ''));
+            //   }
+            // }
             // replace is to remove empty space
             const generatedUsername = (csvRecord.first_name + csvRecord.last_name).replace(/\s/g, '');
+            const accountsDb = await this.crudService.read('accounts', 'username', '==', generatedUsername).pipe(first()).toPromise();
             const account: Account = {
               username: generatedUsername,
               role: this.isAdmin ? csvRecord.role.toLowerCase() : 'student',
@@ -182,18 +183,19 @@ export class AccountCreateComponent implements OnInit {
               is_delete: false,
               login_fail_count: 0
             };
-            const createdAccount: Account = {
-              username: generatedUsername,
-              role: this.isAdmin ? csvRecord.role.toLowerCase() : 'student',
-              school: csvRecord.school.split(','),
-              school_instrument_level: csvRecord.school_instrument_level.toLowerCase().split(','),
-              first_name: csvRecord.first_name,
-              last_name: csvRecord.last_name,
-              password: csvRecord.password
-            };
-            createdAccounts.push(createdAccount);
+            // const createdAccount: Account = {
+            //   username: generatedUsername,
+            //   role: this.isAdmin ? csvRecord.role.toLowerCase() : 'student',
+            //   school: csvRecord.school.split(','),
+            //   school_instrument_level: csvRecord.school_instrument_level.toLowerCase().split(','),
+            //   first_name: csvRecord.first_name,
+            //   last_name: csvRecord.last_name,
+            //   password: csvRecord.password
+            // };
+            // createdAccounts.push(createdAccount);
             // value in the column is empty even though it is required
             const emptyColumns = [];
+            if (csvRecord.password === '') { emptyColumns.push('password'); }
             for (const [key, value] of Object.entries(account)) {
               if (value === '' ||
                 ((key === 'school' || key === 'school_instrument_level')
@@ -209,34 +211,47 @@ export class AccountCreateComponent implements OnInit {
                 this.errors.push('Row ' + i + ' has illegal values for role column (Only admin, instructor or student is accepted)');
               }
               if (!this.isAdmin) {
-                if (account.role !== 'student') { this.errors.push('Row ' + i + ' has illegal values for role column (Only student is accepted)'); }
-                const invalidSchoolInstrumentLevels  = [];
+                if (account.role !== 'student') {
+                  this.errors.push('Row ' + i + ' has illegal values for role column (Only student is accepted)');
+                }
+                const invalidSchoolInstrumentLevels = [];
                 for (const schoolInstrumentLevel of account.school_instrument_level) {
                   let exist = false;
                   for (const instructorSchoolInstrumentLevel of this.loggedInAccount.school_instrument_level) {
-                    if (schoolInstrumentLevel === instructorSchoolInstrumentLevel) { exist = true; }
+                    if (schoolInstrumentLevel === instructorSchoolInstrumentLevel) {
+                      exist = true;
+                    }
                   }
-                  if (!exist) { invalidSchoolInstrumentLevels.push(schoolInstrumentLevel); }
+                  if (!exist) {
+                    invalidSchoolInstrumentLevels.push(schoolInstrumentLevel);
+                  }
                 }
                 if (invalidSchoolInstrumentLevels.length > 0) {
                   this.errors.push('Row ' + i + ' has illegal values for school_instrument_level column. Instructors can only upload students with the same school_instrument_level as them. ' +
                     'Invalid values: ' + invalidSchoolInstrumentLevels.join(', '));
                 }
-                if (account.role !== 'student') { this.errors.push('Row ' + i + ' has illegal values for role column (Only student is accepted)'); }
+
               }
             }
-            if (account.password.length > 0 && account.password.length < 5) {
+            if (accountsDb.length > 0 && account.role !== accountsDb[0].role) {
+              this.errors.push('Row ' + i + ' has illegal values for role column (Cannot change role for existing users)');
+            }
+            if (csvRecord.password.length > 0 && csvRecord.password.length < 5) {
               this.errors.push('Row ' + i + ' does not meet the minimum length requirement for password (5)');
             }
 
             // Stop the creation/updating of ALL accounts as long as there is a problem with 1 of the account
             if (this.errors.length === 0) {
-              await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
+              if (accountsDb.length === 0) {
+                await this.crudService.create('accounts', account); // .then(r => {const ownerDocId = r; } );
+              } else {
+                await this.crudService.update('accounts', accountsDb[0].docId, account);
+              }
             }
             i++;
           }
           if (this.errors.length === 0) {
-            this.exportToCsv('created_accounts', createdAccounts);
+            // this.exportToCsv('created_accounts', createdAccounts);
             this.toastrService.success('Uploaded data to database successfully!', '', {positionClass: 'toast-top-center'});
 
             if(this.security_role_access_admin == this.loggedInAccount.role){
@@ -244,7 +259,7 @@ export class AccountCreateComponent implements OnInit {
             } else if (this.security_role_access_instructor == this.loggedInAccount.role){
               this.router.navigate(['/instructor/home']);
             }
-            
+
           }
           else {
             this.toastrService.error('Errors encountered uploading the file!', '', {positionClass: 'toast-top-center'});

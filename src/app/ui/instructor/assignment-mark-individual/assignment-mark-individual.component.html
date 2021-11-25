@@ -8,12 +8,14 @@
 
   <div fxLayout="row wrap" fxLayoutGap="32px grid" fxLayoutAlign="space-between" class="mb-2 min-height">
     <ng-container *ngIf="pdfUrl">
-      <embed fxLayout="column" fxFlex="50" fxFlex.lt-md="100" class="h-100"
+      <embed fxLayout="column" [fxFlex]="this.assignmentSubmission.student_attachment_recording || selectedRecordingOption == 'Camera Recording'? 50: 100" fxFlex.lt-md="100" class="h-100"
              [ngClass.lt-md]="'reduced-height'" [src]="pdfUrl">
     </ng-container>
 
     <div fxLayout="column" fxLayoutAlign="center center" fxFlex="50" fxFlex.lt-md="100" class="h-95">
-      <video [ngClass]="selectedRecordingOption == 'Camera Recording' ? 'video-camera': 'video-screen'" controls [src]="videoUrl"></video>
+      <ng-container *ngIf="this.assignmentSubmission.student_attachment_recording">
+        <video [ngClass]="selectedRecordingOption == 'Camera Recording' ? 'video-camera': 'video-screen'" controls [src]="videoUrl"></video>
+      </ng-container>
       <app-videojs-record #cameraVideojs *ngIf="selectedRecordingOption == 'Camera Recording'"
                           class="h-100"
                           [selectedRecordingOption] = "'Camera Recording'"
