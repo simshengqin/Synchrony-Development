@@ -99,7 +99,7 @@
         <!-- Segment 6: Assignment School Instrument Level  -->
         <div class="row">
             <div class="float-end"> 
-                <button type="button" mdbBtn color="danger" (click)="back()" mdbWavesEffect> Cancel </button> 
+                <app-dialog-box [actionType]="actionTypeCancel"></app-dialog-box>
                 <button type="button" mdbBtn color="success" (click)="onSubmit()" mdbWavesEffect> Update </button> 
             </div>
         </div>

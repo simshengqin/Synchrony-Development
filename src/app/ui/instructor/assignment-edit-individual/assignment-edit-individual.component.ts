@@ -19,6 +19,7 @@ import { SharedService } from 'src/app/core/services/sharedservice.service';
 export class AssignmentEditIndividualComponent implements OnInit {
 
   actionType:string = "instructorEditIndividual";
+  actionTypeCancel = "instructorEditIndividualBack";
   // Instrustor
   account!:Account;
   accountDocId!:string;

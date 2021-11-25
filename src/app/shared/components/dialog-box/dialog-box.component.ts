@@ -138,6 +138,11 @@ export class DialogBoxComponent implements OnInit {
     this.router.navigate(['/admin/account/edit']);
   }
 
+  goBackAssignment() {
+    console.log("dialogBox");
+    this.router.navigate(['/instructor/assignment/edit']);
+  }
+
   private showMessageSuccess(message: string) {
     if (message == null || message == ''){
       message = 'Success!';
