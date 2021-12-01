@@ -43,39 +43,28 @@ export class LoginComponent implements OnInit {
     // Initialize formbuilder
     this.initForm();
     sessionStorage.clear();
-    console.log(this.sharedservice.getAccount());
-    console.log(this.sharedservice.getComponentParameter());
     const assignments = await this.crudservice.read('assignments').pipe(first()).toPromise();
     for (const assignment of assignments) {
       const diff = Math.abs(new Date().getTime() - assignment.due_datetime.toDate().getTime());
       const diffDays = Math.floor(diff / (1000 * 3600 * 24));
       if (diffDays > 31 && !assignment.storaged_deleted) {
         for (const filename of assignment.file_names) {
-          console.log('Deleting from ' + 'gs://' +
-            environment.firebase.storageBucket + '/assignment/' + assignment.docId + '/' + filename);
           await this.angularFireStorage.storage.refFromURL('gs://' +
             environment.firebase.storageBucket + '/assignment/' + assignment.docId + '/' + filename).delete();
         }
         const assignmentSubmissions = await this.crudservice.read('assignment_submissions',
           'assignment_doc_id', '==', assignment.docId).pipe(first()).toPromise();
-        console.log(assignmentSubmissions);
         for (const assignmentSubmission of assignmentSubmissions) {
           try {
-            console.log('Deleting from ' + 'gs://' +
-              environment.firebase.storageBucket + '/assignment_submissions/' + assignmentSubmission.docId + '/' +
-              assignmentSubmission.student_attachment_scoresheet_name);
             await this.angularFireStorage.storage.refFromURL('gs://' +
               environment.firebase.storageBucket + '/assignment_submissions/' + assignmentSubmission.docId + '/' +
               assignmentSubmission.student_attachment_scoresheet_name).delete();
-            console.log('Deleting from ' + 'gs://' +
-              environment.firebase.storageBucket + '/assignment_submissions/' + assignmentSubmission.docId + '/' +
-              assignmentSubmission.student_attachment_recording_name);
             await this.angularFireStorage.storage.refFromURL('gs://' +
               environment.firebase.storageBucket + '/assignment_submissions/' + assignmentSubmission.docId + '/' +
               assignmentSubmission.student_attachment_recording_name).delete();
           }
           catch (error) {
-            console.log(error);
+            // console.log(error);
           }
 
         }
@@ -123,7 +112,6 @@ export class LoginComponent implements OnInit {
 
       // Calling firebase service
       this.crudservice.read('accounts', 'username', '==', this.loginForm.value.username).pipe(first()).subscribe(async (account: any) => {
-        // console.log(account);
 
         if (account.length==0){
           // username and password does not exist on the database
@@ -160,7 +148,6 @@ export class LoginComponent implements OnInit {
 
           // Store account details as session
           this.sharedservice.setAccount(JSON.stringify(account[0]));
-          console.log(JSON.parse(this.sharedservice.getAccount()))
 
           // Check if account has been deleted
           if (account[0].is_delete){

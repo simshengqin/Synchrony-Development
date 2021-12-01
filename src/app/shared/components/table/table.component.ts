@@ -87,7 +87,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   // Modal //
   onOpen(event: any): void {
-    console.log(event);
+    // console.log(event);
   }
 
   onClickPassParameter(route:string, data:any): void {

@@ -96,7 +96,6 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
     this.config.plugins.record.screen = this.selectedRecordingOption !== 'Camera Recording';
     this.config.plugins.record.video = this.selectedRecordingOption === 'Camera Recording';
     this.player = videojs(document.getElementById(el), this.config, () => {
-      console.log('player ready! id:', el);
       // print version information at startup
       const msg = 'Using video.js ' + videojs.VERSION +
         ' with videojs-record ' + videojs.getPluginVersion('record') +
@@ -105,13 +104,11 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
     });
     // device is ready
     this.player.on('deviceReady', () => {
-      console.log('device is ready!');
       this.player.record().start();
     });
 
     // user clicked the record button and started recording
     this.player.on('startRecord', () => {
-      console.log('started recording!');
       this.isRecording = true;
       this.startedRecordingEmit.emit();
     });
@@ -120,7 +117,6 @@ export class VideojsRecordComponent implements OnInit, OnDestroy, AfterViewInit 
     this.player.on('finishRecord', () => {
       // recordedData is a blob object containing the recorded data that
       // can be downloaded by the user, stored on server etc.
-      console.log('finished recording: ', this.player.recordedData);
       this.recordingEmit.emit([this.player.recordedData, this.player.record().streamCurrentTime]);
 
     });

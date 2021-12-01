@@ -45,11 +45,9 @@ export class UpdatePasswordComponent implements OnInit {
 
     // The user can only enter this page if he or she has logged in before. All logged in accounts are stored in sessions 
     this.sessionAccount = JSON.parse(this.sharedservice.getAccount());
-    console.log(this.sessionAccount);
     
     // If no session exists, then reroute the user back to the login page 
     if(this.sessionAccount.username == null){
-      console.log("Reroute triggered")
       this.router.navigate(["/login"]);
     }
 
@@ -105,7 +103,6 @@ export class UpdatePasswordComponent implements OnInit {
         this.firstTime = false;
         // Validate login
         this.crudservice.read("accounts","username","==",this.loginForm.value.username).pipe(first()).subscribe(async (account:any) => {
-        console.log(account);
 
         if (account.length==0 || !bcrypt.compareSync(this.loginForm.value.password, account[0].password)){
           // username and password does not exist on the database or password fails 
@@ -114,10 +111,8 @@ export class UpdatePasswordComponent implements OnInit {
           // Next, validate if password matches 
         } else {
           // Login is successful
-          console.log("Login successful");
           this.isValidUsernamePasswordCombi = true;
           this.account = account[0];
-          console.log(this.account)
 
           if (account[0].is_delete){
             this.error("Account has been deactivated","Account has been deactivated. Please seek the admin to reset your account")
@@ -127,7 +122,6 @@ export class UpdatePasswordComponent implements OnInit {
 
           // Update password
           // Hashing password
-          console.log("Hashing function has been reached")
           this.account.password = bcrypt.hashSync(this.loginForm.value.newPassword, 10);
           this.account.first_login = false;
           this.crudservice.update("accounts",this.account.docId, this.account);

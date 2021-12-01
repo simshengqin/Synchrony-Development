@@ -51,7 +51,7 @@ export class PdfPrinterComponent implements OnInit {
       body: bodyData,
       theme: 'plain',
       didDrawCell: data => {
-        console.log(data.column.index)
+        // console.log(data.column.index)
       }
     })
     doc.save("Activity Log - " + this.instructor_name + " - " + this.instructor_school + ".pdf")

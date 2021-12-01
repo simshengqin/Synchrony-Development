@@ -53,11 +53,10 @@ export class DialogBoxComponent implements OnInit {
 
   // Modal //
   onOpen(event: any): void {
-    console.log(event);
+    // console.log(event);
   }
 
   click_to_delete_account(){
-    console.log('User ' + this.username + ' has be hidden!');
     const data = {
       is_delete: true
     };
@@ -85,7 +84,6 @@ export class DialogBoxComponent implements OnInit {
   acquire_file(){
     const arr = this.fileName.split('.');
     this.fileType = arr[arr.length - 1];
-    console.log(this.fileType);
     if (this.fileType === 'pdf'){
       this.getPDF();
     }
@@ -101,7 +99,6 @@ export class DialogBoxComponent implements OnInit {
       this.pdfUrl = data;
     });
     this.pdfSafeUrl = this.ds.bypassSecurityTrustResourceUrl(this.pdfUrl);
-    console.log(this.pdfSafeUrl);
     return this.pdfSafeUrl;
   }
 
@@ -117,7 +114,7 @@ export class DialogBoxComponent implements OnInit {
   }
 
   click_to_view(){
-    console.log('View');
+    // console.log('View');
   }
 
   send_to_parent(value: string) {
@@ -134,12 +131,10 @@ export class DialogBoxComponent implements OnInit {
   }
 
   goBack() {
-    console.log("dialogBox");
     this.router.navigate(['/admin/account/edit']);
   }
 
   goBackAssignment() {
-    console.log("dialogBox");
     this.router.navigate(['/instructor/assignment/edit']);
   }
 
