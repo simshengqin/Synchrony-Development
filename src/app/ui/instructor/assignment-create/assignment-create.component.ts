@@ -326,13 +326,20 @@ export class AssignmentCreateComponent implements OnInit {
       this.timeUndefined = true;
       return;
     }
-    this.assignmentDueDate = Timestamp.fromDate(new Date(this.event.getUTCFullYear(), this.event?.getMonth(),
-      this.event.getDate(), this.timeSelected.substring(0, 2), this.timeSelected.substring(2, 4)));
+
+    // Library glitch. If 1st of Jan, the year does not change 
+    if (this.event?.getMonth() == 0 && this.event.getDate()==1){
+      this.assignmentDueDate = Timestamp.fromDate(new Date(this.event.getUTCFullYear()+1, this.event?.getMonth(),
+    this.event.getDate(), this.timeSelected.substring(0, 2), this.timeSelected.substring(2, 4)));
+    } else {
+      this.assignmentDueDate = Timestamp.fromDate(new Date(this.event.getUTCFullYear(), this.event?.getMonth(),
+    this.event.getDate(), this.timeSelected.substring(0, 2), this.timeSelected.substring(2, 4)));
+    }
 
     // Due date validation
     // Assignment cannot be due before current date
 
-    if (this.assignmentCreateDate > this.assignmentDueDate) {
+    if (this.assignmentCreateDate.toDate().getTime() > this.assignmentDueDate.toDate().getTime()) {
       this.dueDateError = true;
       return;
     } else {
