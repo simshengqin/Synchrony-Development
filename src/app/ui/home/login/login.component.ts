@@ -45,9 +45,11 @@ export class LoginComponent implements OnInit {
     sessionStorage.clear();
     const assignments = await this.crudservice.read('assignments').pipe(first()).toPromise();
     for (const assignment of assignments) {
-      const diff = Math.abs(new Date().getTime() - assignment.due_datetime.toDate().getTime());
+      const diff = new Date().getTime() - assignment.due_datetime.toDate().getTime();
       const diffDays = Math.floor(diff / (1000 * 3600 * 24));
-      if (diffDays > 31 && !assignment.storaged_deleted) {
+      if (diffDays > 30 && !assignment.storaged_deleted) {
+        assignment.storaged_deleted = true;
+        this.crudservice.update('assignments', assignment.docId, assignment);
         for (const filename of assignment.file_names) {
           await this.angularFireStorage.storage.refFromURL('gs://' +
             environment.firebase.storageBucket + '/assignment/' + assignment.docId + '/' + filename).delete();
@@ -68,8 +70,8 @@ export class LoginComponent implements OnInit {
           }
 
         }
-        assignment.storaged_deleted = true;
-        this.crudservice.update('assignments', assignment.docId, assignment);
+
+
       }
 
     }
@@ -119,29 +121,29 @@ export class LoginComponent implements OnInit {
 
         } else if (!bcrypt.compareSync(this.loginForm.value.password, account[0].password)) {
           // username does exist on the database, but password validation fails
-          // add to counter for failed password attempts 
+          // add to counter for failed password attempts
           this.isValidUsernamePasswordCombi = false;
           account[0].login_fail_count += 1;
 
           if (account[0].login_fail_count == 5){
-            // If account fails password validation 5 times, then it is suspended 
+            // If account fails password validation 5 times, then it is suspended
             account[0].is_delete = true;
-            this.crudservice.update("accounts",account[0].docId, account[0]); 
+            this.crudservice.update("accounts",account[0].docId, account[0]);
           } else if (account[0].login_fail_count < 5){
             // else, add update to the database to up the login failure count
-            this.crudservice.update("accounts",account[0].docId, account[0]); 
+            this.crudservice.update("accounts",account[0].docId, account[0]);
           }
 
-          // Check if account has been deleted 
+          // Check if account has been deleted
           if (account[0].is_delete){
             this.error("Account has been suspended","Your account has been suspended. Please seek the admin to reset your account")
-          } 
-          
+          }
+
         } else {
           // Login is successful
-          // Reset login fail counter 
+          // Reset login fail counter
           account[0].login_fail_count = 0;
-          this.crudservice.update("accounts",account[0].docId, account[0]); 
+          this.crudservice.update("accounts",account[0].docId, account[0]);
 
           // Remove password from object
           delete account[0].password;
@@ -158,7 +160,7 @@ export class LoginComponent implements OnInit {
           // Check if user has logged in for the first time. If so, redirect to update password
           if (account[0].first_login){
             // If user has logged in for the first time, redirect to update password page
-            
+
             this.notify("Update Password", "You have logged in for the first time. You are required to change your password.")
             this.router.navigate(["/update_password"]);
           } else {

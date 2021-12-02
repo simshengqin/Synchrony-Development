@@ -43,7 +43,7 @@ export class UpdatePasswordComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // The user can only enter this page if he or she has logged in before. All logged in accounts are stored in sessions 
+    // The user can only enter this page if he or she has logged in before. All logged in accounts are stored in sessions
     this.sessionAccount = JSON.parse(this.sharedservice.getAccount());
     
     // If no session exists, then reroute the user back to the login page 
@@ -105,10 +105,10 @@ export class UpdatePasswordComponent implements OnInit {
         this.crudservice.read("accounts","username","==",this.loginForm.value.username).pipe(first()).subscribe(async (account:any) => {
 
         if (account.length==0 || !bcrypt.compareSync(this.loginForm.value.password, account[0].password)){
-          // username and password does not exist on the database or password fails 
+          // username and password does not exist on the database or password fails
           this.isValidUsernamePasswordCombi = false;
 
-          // Next, validate if password matches 
+          // Next, validate if password matches
         } else {
           // Login is successful
           this.isValidUsernamePasswordCombi = true;
@@ -150,7 +150,7 @@ export class UpdatePasswordComponent implements OnInit {
   }
 
   error(title:string,message:string) {
-    message = "<h4>" + message + "</h4>" 
+    message = "<h4>" + message + "</h4>"
     this.toastr.error(message,title,{
       easeTime: 0,
       positionClass: 'toast-top-full-width',
@@ -160,7 +160,7 @@ export class UpdatePasswordComponent implements OnInit {
   }
 
   success(title:string,message:string) {
-    message = "<h4>" + message + "</h4>" 
+    message = "<h4>" + message + "</h4>"
     this.toastr.success(message,title,{
       easeTime: 0,
       positionClass: 'toast-top-full-width',
